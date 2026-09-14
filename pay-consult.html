@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silverwind — Пакет консультаций</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0A0A0A; --accent: #A8B4BE; }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+
+        .card { max-width:460px; width:100%; border-radius:24px; padding:40px 32px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); }
+        .logo { font-family:'Unbounded',sans-serif; font-size:12px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:28px; }
+        .title { font-family:'Unbounded',sans-serif; font-size:clamp(1.1rem,4vw,1.4rem); font-weight:600; margin-bottom:4px;
+            background:linear-gradient(135deg,#c0c0c0 0%,#fff 30%,#e8e8e8 50%,#a8a8a8 70%,#f0f0f0 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+        .sub { color:rgba(255,255,255,0.35); font-size:13px; margin-bottom:20px; }
+        .price { font-family:'Unbounded',sans-serif; font-size:clamp(2rem,6vw,2.6rem); font-weight:700; margin-bottom:24px;
+            background:linear-gradient(135deg,#c0c0c0 0%,#fff 30%,#e8e8e8 50%,#a8a8a8 70%,#f0f0f0 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+
+        .checkbox-row { display:flex; align-items:flex-start; gap:10px; cursor:pointer; margin-bottom:20px; -webkit-user-select:none; user-select:none; }
+        .checkbox-box { width:20px; height:20px; border-radius:6px; border:1.5px solid rgba(255,255,255,0.2); flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+        .checkbox-box svg { opacity:0; transition:opacity .2s; }
+        .checkbox-row.checked .checkbox-box { border-color:var(--accent); background:rgba(168,180,190,0.12); }
+        .checkbox-row.checked .checkbox-box svg { opacity:1; }
+        .checkbox-text { font-size:13px; line-height:1.6; color:rgba(255,255,255,0.5); }
+        .checkbox-text a { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+
+        .pay-btn {
+            display:block; width:100%; padding:16px; border-radius:9999px; font-family:'Unbounded',sans-serif;
+            font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+            text-decoration:none; text-align:center; border:none; transition:all .3s;
+            background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.15); cursor:default; pointer-events:none;
+        }
+        .pay-btn.enabled {
+            background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);
+            color:#0e1318; cursor:pointer; pointer-events:auto;
+        }
+        .pay-btn.enabled:hover { opacity:0.85; }
+
+        .offer-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; padding:20px; }
+        .offer-modal.active { display:flex; }
+        .offer-box { max-width:600px; width:100%; max-height:80vh; background:#111; border-radius:20px; border:1px solid rgba(255,255,255,0.1); overflow:hidden; display:flex; flex-direction:column; }
+        .offer-head { padding:20px 24px; border-bottom:1px solid rgba(255,255,255,0.06); font-family:'Unbounded',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); flex-shrink:0; display:flex; justify-content:space-between; align-items:center; }
+        .offer-close { background:none; border:none; color:rgba(255,255,255,0.3); font-size:20px; cursor:pointer; }
+        .offer-body { padding:20px 24px; overflow-y:auto; flex:1; font-size:13px; line-height:1.9; color:rgba(255,255,255,0.5); }
+        .offer-body h3 { color:rgba(255,255,255,0.75); font-size:13px; margin:16px 0 6px; font-weight:600; }
+        .offer-body h3:first-child { margin-top:0; }
+        .offer-body p { margin-bottom:8px; }
+        .offer-body ul { padding-left:18px; margin-bottom:8px; }
+        .offer-body ul li { margin-bottom:4px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="logo">Silverwind</div>
+    <div class="title">Пакет консультаций</div>
+    <div class="sub">4 консультации · 30 дней</div>
+    <div class="price">30 000₽</div>
+
+    <label class="checkbox-row" id="checkRow" onclick="toggle()">
+        <span class="checkbox-box">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#A8B4BE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="checkbox-text">
+            Я согласен(-на) с <a href="#" onclick="event.preventDefault();event.stopPropagation();openOffer()">договором оферты</a> и <a href="privacy-policy.html" target="_blank" onclick="event.stopPropagation()">политикой конфиденциальности</a>
+        </span>
+    </label>
+
+    <a id="payBtn" class="pay-btn" href="https://link.payform.ru/?paymentLinkId=a5254cc7-0606-41b0-b284-68f1a2b0fdec" target="_blank">Оплатить</a>
+</div>
+
+<!-- Offer text modal -->
+<div class="offer-modal" id="offerModal">
+    <div class="offer-box">
+        <div class="offer-head">Договор оферты <button class="offer-close" onclick="closeOffer()">✕</button></div>
+        <div class="offer-body">
+            <h3>Публичная оферта на оказание консультационных услуг</h3>
+            <p>г. Москва | Утверждена 18.07.2026</p>
+            <p>Оплата услуг Исполнителя означает Ваше полное согласие со всеми условиями Оферты и надлежащее заключение Договора в порядке, предусмотренном в ст. 435 и п. 2 ст. 437 Гражданского кодекса РФ.</p>
+            <p>Силаева Алина Николаевна (далее — Исполнитель) предлагает любому заинтересованному лицу заключить Договор на оказание консультационных услуг (далее — Договор) на изложенных ниже условиях.</p>
+
+            <h3>1. Термины и определения</h3>
+            <p><strong>Исполнитель</strong> — Силаева Алина Николаевна, автор методики и консультант.</p>
+            <p><strong>Заказчик</strong> — физическое лицо, оформившее и оплатившее Услугу.</p>
+            <p><strong>Услуга</strong> — пакет из 4 (четырёх) индивидуальных онлайн-консультаций продолжительностью 60 минут каждая.</p>
+            <p><strong>Акцепт оферты</strong> — полное и безоговорочное принятие условий оферты путём оплаты Услуги.</p>
+
+            <h3>2. Предмет договора</h3>
+            <p>2.1. Исполнитель обязуется оказать Заказчику консультационные услуги в формате индивидуальных онлайн-консультаций, а Заказчик обязуется оплатить Услуги.</p>
+            <p>2.2. Услуги носят исключительно информационный и образовательный характер и не являются медицинской, психологической, психотерапевтической, юридической или финансовой помощью.</p>
+
+            <h3>3. Порядок оказания услуг</h3>
+            <p>3.1. Пакет включает 4 (четыре) индивидуальные онлайн-консультации продолжительностью 60 (шестьдесят) минут каждая.</p>
+            <p>3.2. Срок использования пакета — 30 (тридцать) календарных дней с момента поступления оплаты Исполнителю.</p>
+            <p>3.3. Инициатором назначения даты и времени каждой консультации является Заказчик.</p>
+            <p>3.4. Неиспользованные в течение 30 календарных дней консультации аннулируются без возможности переноса, продления или возврата денежных средств.</p>
+            <p>3.5. Консультации проводятся дистанционно (онлайн) посредством видео- или аудиосвязи.</p>
+            <p>3.6. Аудио- и видеозапись консультаций не производится. Сохранение записей консультаций не предусмотрено ни одной из сторон.</p>
+            <p>3.7. По истечении 30-дневного срока какая-либо обратная связь со стороны Исполнителя не предусмотрена.</p>
+
+            <h3>4. Стоимость услуг и порядок оплаты</h3>
+            <p>4.1. Стоимость пакета составляет 30 000 (тридцать тысяч) рублей.</p>
+            <p>4.2. Оплата производится единоразово в порядке 100% предоплаты.</p>
+            <p>4.3. С момента поступления оплаты начинается отсчёт 30-дневного срока использования пакета.</p>
+
+            <h3>5. Порядок возврата денежных средств</h3>
+            <p>5.1. Возврат денежных средств за оплаченный пакет не производится.</p>
+            <p>5.2. В соответствии со ст. 782 ГК РФ и ст. 32 Закона РФ «О защите прав потребителей», Заказчик вправе отказаться от услуг в любой момент. Возврат средств за неиспользованные консультации не производится.</p>
+            <p>5.3. Неиспользование консультаций в установленный срок не является основанием для возврата.</p>
+
+            <h3>6. Ответственность</h3>
+            <p>6.1. Заказчик принимает на себя полную ответственность за все решения и действия, совершённые на основании информации, полученной в ходе консультаций. Исполнитель не гарантирует достижение каких-либо конкретных результатов.</p>
+            <p>6.2. Исполнитель не несёт ответственности за жизнь, здоровье, финансовое положение, моральное или психологическое состояние Заказчика.</p>
+            <p>6.3. Оплачивая Услугу, Заказчик подтверждает, что является дееспособным лицом и несёт полную ответственность за любые последствия применения полученной информации.</p>
+            <p>6.4. Несогласие с содержанием консультации не является основанием для возврата или претензий.</p>
+            <p>6.5. Суммарная ответственность Исполнителя ограничивается стоимостью оплаченного пакета.</p>
+
+            <h3>7. Права и обязанности сторон</h3>
+            <p>7.1. Исполнитель обязуется провести консультации в согласованное время и обеспечить конфиденциальность.</p>
+            <p>7.2. Заказчик обязуется:</p>
+            <ul>
+                <li>Оплатить Услугу в полном объёме до начала оказания услуг.</li>
+                <li>Самостоятельно инициировать назначение консультаций в рамках срока.</li>
+                <li>Не распространять материалы в коммерческих целях.</li>
+                <li>Не производить запись консультаций без согласия Исполнителя.</li>
+                <li>Не нарушать деловую репутацию Исполнителя.</li>
+            </ul>
+
+            <h3>8. Интеллектуальная собственность</h3>
+            <p>8.1. Все методики и материалы являются интеллектуальной собственностью Исполнителя.</p>
+            <p>8.2. Копирование и коммерческое использование запрещено без письменного согласия.</p>
+
+            <h3>9. Персональные данные</h3>
+            <p>9.1. Данные обрабатываются в соответствии с ФЗ «О персональных данных» № 152-ФЗ.</p>
+
+            <h3>10. Заключительные положения</h3>
+            <p>10.1. Договор действует с момента оплаты до исполнения обязательств.</p>
+            <p>10.2. Споры разрешаются путём переговоров, претензионный порядок обязателен (20 дней). Суд — по месту регистрации Исполнителя.</p>
+            <p>10.3. Скриншоты переписки являются допустимым доказательством.</p>
+
+            <h3>11. Форс-мажор</h3>
+            <p>11.1. Стороны освобождаются от ответственности при обстоятельствах непреодолимой силы.</p>
+
+            <h3>Реквизиты</h3>
+            <p>Силаева Алина Николаевна · silver.wind@list.ru</p>
+            <p>Дата обновления: 18 июля 2026 г.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+var CONSENT_URL = 'https://script.google.com/macros/s/AKfycbwFszvl4lhvYmlehJs8di1vtImEYPMygbKzE9AhsxstE2uCyhbdb73kbooIiVHP7IJX/exec';
+var checked = false;
+function toggle() {
+    checked = !checked;
+    document.getElementById('checkRow').classList.toggle('checked', checked);
+    var btn = document.getElementById('payBtn');
+    if (checked) { btn.classList.add('enabled'); } else { btn.classList.remove('enabled'); }
+}
+function openOffer() { document.getElementById('offerModal').classList.add('active'); }
+function closeOffer() { document.getElementById('offerModal').classList.remove('active'); }
+document.getElementById('offerModal').addEventListener('click', function(e) { if (e.target === this) closeOffer(); });
+document.getElementById('payBtn').addEventListener('click', function(e) {
+    if (!checked) { e.preventDefault(); return; }
+    fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).then(function(d){
+        return fetch(CONSENT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
+            product: 'Пакет консультаций · 30 000₽',
+            offer: true,
+            privacy: true,
+            ip: d.ip
+        })});
+    }).catch(function(){
+        fetch(CONSENT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
+            product: 'Пакет консультаций · 30 000₽',
+            offer: true,
+            privacy: true,
+            ip: ''
+        })});
+    });
+});
+</script>
+</body>
+</html>

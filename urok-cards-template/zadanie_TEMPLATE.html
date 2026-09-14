@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Идентичность — задание</title>
+<link rel="stylesheet" href="fonts/local-fonts.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0A0A0A; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #ffffff;
+    width: 1080px;
+    height: 1070px;
+    position: relative;
+    overflow: hidden;
+  }
+  .grain {
+    position: absolute; inset: 0; opacity: 0.05; pointer-events: none; z-index: 5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hero { position: relative; width: 1080px; height: 460px; overflow: hidden; }
+  .hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.55) 60%, #0A0A0A 100%);
+  }
+  .hero-title {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding: 0 64px 28px;
+    z-index: 2;
+  }
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 500;
+    font-size: 44px;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #ffffff 0%, #b8c4c8 50%, #dbe4e2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tag {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    color: #A8B4BE;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    white-space: nowrap;
+  }
+
+  .content { padding: 40px 64px 56px; }
+
+  .label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: #A8B4BE;
+    margin-bottom: 26px;
+    margin-top: 52px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .label:first-of-type { margin-top: 0; }
+  .num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #A8B4BE 0%, #d0d8de 100%);
+    color: #0e1318;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  p {
+    font-size: 25px;
+    line-height: 1.6;
+    font-weight: 300;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 20px;
+  }
+  p:last-child { margin-bottom: 0; }
+  p b { color: #d0d8de; font-weight: 500; }
+
+  .note {
+    margin-top: 44px;
+    padding-left: 22px;
+    border-left: 2px solid rgba(168,180,190,0.4);
+    font-size: 19px;
+    line-height: 1.6;
+    font-style: italic;
+    color: rgba(255,255,255,0.5);
+  }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <img src="img/task3_roles.jpg">
+    <div class="hero-title">
+      <h1>ЗАДАНИЕ · ИДЕНТИЧНОСТЬ</h1>
+      <div class="tag">Silverwind</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="label"><span class="num">1</span>Знай себя</div>
+    <p>Выпишите <b>всё, что вы о себе знаете</b> — честно, по сферам: внешность, деньги, реализация, карьера, отношения.</p>
+
+    <div class="label"><span class="num">2</span>Примерь идентичность</div>
+    <p>Выберите идентичность и <b>«наденьте» её на короткий срок</b> — не чтобы укорениться, а чтобы поиграть. В идеале — когда вы одна.</p>
+    <p>Например, «вжейтесь» в ресторане в роль привлекательной версии себя: как бы она себя чувствовала, оделась, несла?</p>
+
+    <div class="note">Это не про притворство. Это доказательство того, что идентичность — всегда выбор, который можно сделать заново.</div>
+  </div>
+
+  <div class="grain"></div>
+</body>
+</html>

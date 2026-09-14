@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;800&family=Inter:wght@300;400;500&display=swap');
+
+body {
+  width: 1080px;
+  height: 1080px;
+  overflow: hidden;
+  background: #080808;
+  font-family: 'Inter', sans-serif;
+}
+
+.wrap {
+  width: 1080px;
+  height: 1080px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 88px;
+  text-align: center;
+}
+
+/* звёзды */
+#stars { position:absolute; inset:0; pointer-events:none; }
+
+/* свечение */
+.glow-center {
+  position: absolute;
+  width: 800px; height: 800px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(137,230,216,0.10) 0%, rgba(137,230,216,0.04) 40%, transparent 70%);
+  pointer-events: none;
+}
+
+/* рамка */
+.corner { position:absolute; width:18px; height:18px; border-color:rgba(137,230,216,0.4); border-style:solid; }
+.tl { top:52px; left:52px; border-width:1px 0 0 1px; }
+.tr { top:52px; right:52px; border-width:1px 1px 0 0; }
+.bl { bottom:52px; left:52px; border-width:0 0 1px 1px; }
+.br { bottom:52px; right:52px; border-width:0 1px 1px 0; }
+
+.line-h {
+  position: absolute; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(137,230,216,0.12), transparent);
+}
+.line-h.top { top: 60px; }
+.line-h.bottom { bottom: 60px; }
+
+/* контент */
+.content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+.community {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(137,230,216,0.6);
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 700;
+  font-size: 78px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  background: linear-gradient(
+    105deg,
+    rgba(160,160,160,0.7) 0%,
+    rgba(255,255,255,1) 18%,
+    rgba(220,235,232,1) 32%,
+    rgba(137,230,216,0.95) 50%,
+    rgba(220,235,232,1) 68%,
+    rgba(255,255,255,1) 82%,
+    rgba(160,160,160,0.7) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 40px rgba(137,230,216,0.12));
+}
+
+.subtitle {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 44px;
+}
+
+/* разделитель */
+.divider {
+  width: 48px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(137,230,216,0.5), transparent);
+  margin-bottom: 44px;
+}
+
+/* список */
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 50px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  text-align: left;
+  padding: 18px 24px;
+  border-radius: 14px;
+  background: rgba(137,230,216,0.04);
+  border: 1px solid rgba(137,230,216,0.1);
+}
+
+.item-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(137,230,216,0.6);
+  flex-shrink: 0;
+  width: 22px;
+  padding-top: 1px;
+}
+
+.item-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.8);
+}
+
+.item-text b {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* цена */
+.price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.price-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.price-label {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(137,230,216,0.5);
+}
+
+.price-val {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #89E6D8 0%, #c8f0eb 50%, #89E6D8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.price-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  font-weight: 300;
+}
+
+.price-arrow {
+  font-size: 18px;
+  color: rgba(137,230,216,0.3);
+}
+
+/* кнопка */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #89E6D8 0%, #a8c8c0 40%, #c8d8d4 60%, #89E6D8 100%);
+  color: #0a1a18;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 16px 48px;
+  border-radius: 9999px;
+  margin-bottom: 24px;
+}
+
+.author {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+}
+.author span { color: rgba(137,230,216,0.4); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <canvas id="stars" width="1080" height="1080"></canvas>
+  <div class="glow-center"></div>
+  <div class="line-h top"></div>
+  <div class="line-h bottom"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="content">
+    <div class="community">Silverwind's Community</div>
+    <div class="title">Закрытый<br>клуб</div>
+    <div class="subtitle">Поддерживающее пространство для ваших изменений</div>
+    <div class="divider"></div>
+
+    <div class="items">
+      <div class="item">
+        <div class="item-num">01</div>
+        <div class="item-text"><b>Базовый урок</b> — теория и инструменты по изменению мышления и программ</div>
+      </div>
+      <div class="item">
+        <div class="item-num">02</div>
+        <div class="item-text"><b>500+ подкастов</b> по темам: деньги, отношения, реализация, любовь к себе</div>
+      </div>
+      <div class="item">
+        <div class="item-num">03</div>
+        <div class="item-text"><b>Прямые эфиры</b> — записи по базовым темам: деньги, проявленность, отношения</div>
+      </div>
+      <div class="item">
+        <div class="item-num">04</div>
+        <div class="item-text"><b>Разборы</b> — возможность получать разборы ваших вопросов</div>
+      </div>
+    </div>
+
+    <div class="price-wrap">
+      <div class="price-block">
+        <div class="price-label">Первый месяц</div>
+        <div class="price-val">3 000₽</div>
+        <div class="price-sub">на 30 дней</div>
+      </div>
+      <div class="price-arrow">→</div>
+      <div class="price-block">
+        <div class="price-label">Со второго месяца</div>
+        <div class="price-val">1 600₽</div>
+        <div class="price-sub">на 30 дней</div>
+      </div>
+    </div>
+
+    <div class="btn">Вступить в клуб</div>
+    <div class="author"><span>silverwind</span>.shop/club</div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+for (let i = 0; i < 280; i++) {
+  const x = Math.random() * 1080;
+  const y = Math.random() * 1080;
+  const r = Math.random() * 1.2 + 0.2;
+  const op = Math.random() * 0.55 + 0.1;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(255,255,255,${op})`;
+  ctx.fill();
+}
+// несколько ярких звёздочек
+for (let i = 0; i < 12; i++) {
+  const x = Math.random() * 1080;
+  const y = Math.random() * 1080;
+  ctx.beginPath();
+  ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(137,230,216,${Math.random()*0.4+0.2})`;
+  ctx.fill();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.DS_Store
+.claude/
+.agents/
+.docx_qa_pool/
+.google-docs-trusted/
+_backup/
+bot.log
+__pycache__/
+*.pyc
+bot-club.txt
+bot-corpus/
+silverwind_ai_core/
+system_prompt_silverwind_*.md
+silverwind_prompt_*.txt

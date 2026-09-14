@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silverwind — Архив материалов закрытого клуба</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { display: ['Unbounded','sans-serif'], body: ['Inter','system-ui','sans-serif'] } } }
+        }
+    </script>
+    <style>
+        :root { --bg: #0A0A0A; --accent: #A8B4BE; --accent-soft: #C8D2DC; }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+        body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:#fff; overflow-x:hidden; }
+
+        /* NOISE */
+        .noise::before { content:''; position:fixed; inset:0; z-index:999; pointer-events:none; opacity:0.03;
+            background:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size:256px; }
+
+        /* SHINY TEXT */
+        @keyframes shinySlide { 0%{background-position:200% center} 100%{background-position:-200% center} }
+        .shiny-text {
+            background:linear-gradient(90deg,rgba(255,255,255,0.3) 0%,rgba(255,255,255,0.3) 25%,rgba(255,255,255,0.7) 37%,#fff 44%,rgba(230,235,240,1) 50%,#fff 56%,rgba(255,255,255,0.7) 63%,rgba(255,255,255,0.3) 75%,rgba(255,255,255,0.3) 100%);
+            background-size:200% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            animation:shinySlide 12s linear infinite;
+        }
+
+        /* STARS */
+        @keyframes drift { from{transform:translateY(0)} to{transform:translateY(-2000px)} }
+        .stars-global { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+        .s-layer { position:absolute; top:0; left:0; width:100%; height:2000px; }
+        .s1{animation:drift 70s linear infinite} .s2{animation:drift 140s linear infinite} .s3{animation:drift 200s linear infinite}
+        .s-dot,.s-dot-c{position:absolute;background:transparent;border-radius:50%;}
+        .s-dot-c{top:2000px;}
+
+        /* GLOWS */
+        @keyframes pulse1{0%,100%{opacity:.06;transform:scale(1)}50%{opacity:.14;transform:scale(1.1)}}
+        @keyframes pulse2{0%,100%{opacity:.04;transform:scale(1.05)}50%{opacity:.1;transform:scale(0.95)}}
+
+        /* ENTRANCE */
+        @keyframes enter { from{opacity:0;transform:translateY(50px)} to{opacity:1;transform:translateY(0)} }
+        .enter{opacity:0;animation:enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards;}
+        .e1{animation-delay:0s} .e2{animation-delay:.15s} .e3{animation-delay:.35s} .e4{animation-delay:.55s}
+
+        /* REVEAL */
+        .reveal{opacity:0;transform:translateY(40px);transition:all 1s cubic-bezier(0.16,1,0.3,1);}
+        .reveal.visible{opacity:1;transform:none;}
+
+        /* SECTION LINE */
+        .section-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);}
+
+        /* SHINY BORDER */
+        @keyframes border-spin{to{transform:rotate(360deg)}}
+        .shiny-media{position:relative;display:block;border-radius:18px;padding:2.5px;overflow:hidden;}
+        .shiny-media::before{content:'';position:absolute;top:-100%;left:-100%;right:-100%;bottom:-100%;
+            background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);
+            animation:border-spin 4s linear infinite;z-index:0;}
+        .shiny-media::after{content:'';position:absolute;inset:2.5px;background:#0A0A0A;border-radius:16px;z-index:1;}
+        .shiny-media>*{position:relative;z-index:2;display:block;width:100%;border-radius:15px;background:#0A0A0A;}
+        .shiny-media.shiny-flat{border-radius:4px;}
+        .shiny-media.shiny-flat::after{border-radius:2px;}
+        .shiny-media.shiny-flat>*{border-radius:1px;}
+        .shiny-media.shiny-screen{border-radius:14px;}
+        .shiny-media.shiny-screen::after{border-radius:12px;}
+        .shiny-media.shiny-screen>*{border-radius:11px;}
+
+        /* STAR BUTTON */
+        @keyframes starBtnLight{0%{offset-distance:0%}100%{offset-distance:100%}}
+        .star-btn{position:relative;z-index:3;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;border-radius:9999px;font-weight:600;transition:all .5s cubic-bezier(0.16,1,0.3,1);isolation:isolate;cursor:pointer;border:none;text-decoration:none;}
+        .star-btn:hover{transform:translateY(-3px) scale(1.02);}
+        .star-btn .star-light{position:absolute;aspect-ratio:1;inset:0;width:110px;background:radial-gradient(ellipse at center,rgba(250,250,250,0.9),transparent,transparent);animation:starBtnLight 3s linear infinite;}
+        .star-btn .star-bg{position:absolute;inset:0;z-index:4;overflow:hidden;border-radius:inherit;border:2px solid rgba(255,255,255,0.15);}
+        .star-btn .star-bg svg{width:100%;height:100%;}
+        .star-btn .star-text{position:relative;z-index:10;background:linear-gradient(to top,#ffffff,#a0a0a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+        /* NUMBER BIG */
+        .num-big{
+            position:absolute;
+            top:-0.12em;
+            left:-0.04em;
+            font-family:'Unbounded',sans-serif;
+            font-size:clamp(9rem,28vw,17rem);
+            font-weight:800;
+            line-height:1;
+            background:linear-gradient(135deg,#A8B4BE 0%,#c8d2dc 50%,#A8B4BE 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            opacity:0.09;
+            pointer-events:none;
+            user-select:none;
+            z-index:0;
+            white-space:nowrap;
+        }
+        .num-item{position:relative;overflow:hidden;padding-left:clamp(4.5rem,13vw,9rem);padding-top:1.2rem;padding-bottom:0.5rem;}
+        /* CIRCLE SHINY */
+        .shiny-media.circle{border-radius:999px;}
+        .shiny-media.circle::after{border-radius:999px;}
+        .shiny-media.circle>*{border-radius:999px;}
+
+        /* BOB */
+        @keyframes bob{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(8px);opacity:.8}}
+        .bob{animation:bob 2.5s ease-in-out infinite;}
+
+        /* OFFER MODAL */
+        .offer-modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.35s ease;}
+        .offer-modal-overlay.active{opacity:1;pointer-events:all;}
+        .offer-modal{background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:36px 32px;max-width:440px;width:100%;transform:translateY(20px) scale(0.97);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+        .offer-modal-overlay.active .offer-modal{transform:translateY(0) scale(1);}
+        .offer-checkbox-row{display:flex;align-items:flex-start;gap:12px;cursor:pointer;user-select:none;}
+        .offer-checkbox-box{flex-shrink:0;width:20px;height:20px;border:1.5px solid rgba(255,255,255,0.2);border-radius:5px;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s,background 0.2s;}
+        .offer-checkbox-box svg{opacity:0;transition:opacity 0.2s;}
+        .offer-checkbox-row.checked .offer-checkbox-box{border-color:var(--accent);background:rgba(168,180,190,0.12);}
+        .offer-checkbox-row.checked .offer-checkbox-box svg{opacity:1;}
+        .offer-pay-btn{width:100%;padding:14px;border-radius:9999px;font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;opacity:0.35;pointer-events:none;}
+        .offer-pay-btn.enabled{opacity:1;pointer-events:all;}
+        .offer-pay-btn.enabled:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(168,180,190,0.25);}
+
+        /* AUDIO PLAYER */
+        .speed-btn{font-family:'Unbounded',sans-serif;}
+
+        /* PHONE CHAT */
+        .phone-frame { width:min(340px,90vw); margin:0 auto; background:#0c0c0c; border-radius:42px; border:2.5px solid rgba(255,255,255,0.08); box-shadow:0 30px 80px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.05); overflow:hidden; }
+        .phone-island { width:118px; height:32px; background:#000; border-radius:0 0 22px 22px; margin:0 auto; }
+        .phone-statusbar { display:flex; justify-content:space-between; align-items:center; padding:5px 26px 8px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.75); font-family:'Inter',sans-serif; }
+        .phone-contact-hdr { display:flex; align-items:center; gap:10px; padding:10px 16px 13px; border-bottom:1px solid rgba(255,255,255,0.06); }
+        .phone-ava { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; background:linear-gradient(135deg,rgba(168,180,190,0.18),rgba(168,180,190,0.04)); border:1px solid rgba(168,180,190,0.22); }
+        .phone-msgs { padding:16px 14px 8px; display:flex; flex-direction:column; gap:14px; }
+        .bubble-out { max-width:82%; background:linear-gradient(145deg,#2a3540,#1e2832); color:rgba(255,255,255,0.93); border-radius:18px 18px 4px 18px; padding:10px 13px; font-size:13px; line-height:1.6; }
+        .bubble-in  { max-width:82%; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.07); color:rgba(255,255,255,0.65); border-radius:18px 18px 18px 4px; padding:10px 13px; font-size:13px; line-height:1.6; }
+        .phone-msg-out { display:flex; justify-content:flex-end; }
+        .phone-msg-in  { display:flex; justify-content:flex-start; }
+        .phone-input-row { display:flex; align-items:center; gap:8px; padding:10px 14px 28px; border-top:1px solid rgba(255,255,255,0.05); }
+        .phone-input-pill { flex:1; background:rgba(255,255,255,0.05); border-radius:22px; padding:9px 15px; font-size:13px; color:rgba(255,255,255,0.18); font-family:'Inter',sans-serif; }
+        .phone-send-btn { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#A8B4BE,#8a9aa8); color:#0e1318; font-size:15px; font-weight:bold; flex-shrink:0; }
+    </style>
+</head>
+<body class="noise">
+
+<!-- Stars -->
+<div class="stars-global" id="starBox">
+    <div class="s-layer s1"><div class="s-dot" id="d1" style="width:1px;height:1px"></div><div class="s-dot-c" id="d1c" style="width:1px;height:1px"></div></div>
+    <div class="s-layer s2"><div class="s-dot" id="d2" style="width:2px;height:2px"></div><div class="s-dot-c" id="d2c" style="width:2px;height:2px"></div></div>
+    <div class="s-layer s3"><div class="s-dot" id="d3" style="width:2.5px;height:2.5px"></div><div class="s-dot-c" id="d3c" style="width:2.5px;height:2.5px"></div></div>
+</div>
+
+<!-- Glows -->
+<div class="fixed inset-0 pointer-events-none" style="z-index:1;">
+    <div class="absolute w-[600px] h-[600px] rounded-full blur-[180px]" style="top:5%;left:50%;transform:translateX(-50%);background:rgba(168,180,190,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
+    <div class="absolute w-[400px] h-[400px] rounded-full blur-[160px]" style="bottom:15%;right:5%;background:rgba(165,240,224,0.03);animation:pulse2 18s ease-in-out infinite 6s;"></div>
+</div>
+
+<!-- NAV -->
+<nav class="fixed inset-x-0 top-0 z-50" style="background:rgba(10,10,10,0.7);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-bottom:1px solid rgba(255,255,255,0.03);">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12 flex items-center justify-between h-[72px]">
+        <a href="index.html" class="font-display text-sm tracking-[0.15em] text-white/70 hover:text-[#C8D2DC] transition-colors duration-700 uppercase">Silverwind</a>
+        <button onclick="openOfferModal('https://web.tribute.tg/s/usf', 'Клуб — навигация')" class="font-display text-[11px] tracking-[0.1em] uppercase px-6 py-2.5 rounded-full font-medium transition-all duration-500 hover:shadow-[0_0_20px_rgba(168,180,190,0.25)]" style="background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4);cursor:pointer;">Вступить</button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-32" style="z-index:2;">
+    <p class="enter e1 font-display text-[10px] tracking-[0.25em] uppercase mb-6" style="color:var(--accent);opacity:0.7;">Silverwind's Community</p>
+    <h1 class="enter e2 font-display font-bold uppercase leading-[1.1] mb-4" style="font-size:clamp(2.4rem,8vw,5.5rem);letter-spacing:0.04em;animation:enter 1.4s cubic-bezier(0.16,1,0.3,1) 0.15s forwards,shinySlide 12s linear infinite;background:linear-gradient(90deg,rgba(255,255,255,0.3) 0%,rgba(255,255,255,0.3) 25%,rgba(255,255,255,0.7) 37%,#fff 44%,rgba(230,235,240,1) 50%,#fff 56%,rgba(255,255,255,0.7) 63%,rgba(255,255,255,0.3) 75%,rgba(255,255,255,0.3) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+        Закрытый<br>клуб
+    </h1>
+    <p class="enter e3 font-display font-light uppercase tracking-[0.1em] mb-6" style="font-size:clamp(1rem,3vw,1.6rem);background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Архив ценных материалов</p>
+    <div class="enter e3 w-16 mx-auto mb-8" style="height:1px;background:linear-gradient(90deg,transparent,rgba(168,180,190,0.5),transparent);"></div>
+    <p class="enter e4 font-body text-[16px] md:text-[18px] leading-[1.9] font-light max-w-xl mx-auto" style="color:rgba(255,255,255,0.55);">
+        Каждый сам ответственен за свою реальность и создаёт её в каждый момент
+    </p>
+    <div class="bob mt-16" style="color:rgba(168,180,190,0.4);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+</section>
+
+<!-- РЕАЛЬНОСТЬ — ЗЕРКАЛО -->
+<section class="relative py-24 md:py-32" style="background: transparent; z-index:2;">
+    <div class="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
+        <p class="reveal font-display text-[1.2rem] md:text-[1.7rem] lg:text-[2rem] font-light leading-[1.5] tracking-[0.02em] text-white text-center mb-16 md:mb-20 max-w-3xl mx-auto">
+            Борьба с внешним миром лишь закрепляет вас в деструктивном сценарии и не дает его изменить
+        </p>
+
+        <div class="phone-frame mx-auto">
+            <div class="phone-island"></div>
+            <div class="phone-statusbar">
+                <span>9:41</span>
+                <div style="display:flex;align-items:center;gap:5px;">
+                    <svg width="17" height="12" viewBox="0 0 17 12" fill="rgba(255,255,255,0.75)"><rect x="0" y="8" width="3" height="4" rx="0.6"/><rect x="4.5" y="5" width="3" height="7" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/><rect x="13.5" y="0" width="3" height="12" rx="0.6" opacity="0.35"/></svg>
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="rgba(255,255,255,0.75)" stroke-linecap="round"><circle cx="8" cy="11" r="1" fill="rgba(255,255,255,0.75)" stroke="none"/><path d="M4.5 8a5 5 0 017 0" stroke-width="1.4"/><path d="M1.5 5a9 9 0 0113 0" stroke-width="1.4" opacity="0.45"/></svg>
+                    <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.5" y="0.5" width="22" height="12" rx="2.5" stroke="rgba(255,255,255,0.45)" stroke-width="1"/><rect x="23" y="4" width="2.5" height="5" rx="1.5" fill="rgba(255,255,255,0.35)"/><rect x="2" y="2" width="16" height="9" rx="1.5" fill="rgba(255,255,255,0.78)"/></svg>
+                </div>
+            </div>
+            <div class="phone-contact-hdr">
+                <button style="color:rgba(255,255,255,0.45);font-size:24px;line-height:1;margin-right:2px;">‹</button>
+                <div class="phone-ava">✦</div>
+                <div style="flex:1;">
+                    <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,0.9);font-family:'Inter',sans-serif;">Реальность</p>
+                    <p style="font-size:11px;color:rgba(168,180,190,0.65);font-family:'Inter',sans-serif;">в сети</p>
+                </div>
+            </div>
+            <div class="phone-msgs">
+                <div class="reveal">
+                    <div class="phone-msg-out">
+                        <div class="bubble-out">Мужчины в наше время — это ужас, опять попался какой-то безответственный, ничего делать для меня не хочет. И где мне найти нормального? Наверное нужно сменить город / страну / работу, может тогда получится..</div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="phone-msg-in mt-1">
+                        <div class="bubble-in">Но ведь в мире огромное количество разных мужчин. Своим вниманием ты выбираешь именно тех, кто соответствует твоим же внутренним программам и убеждениям. Изменив их — изменится реальность и мужчины вокруг. Пока продолжу отражать то, что есть внутри тебя прямо сейчас.</div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="phone-msg-out">
+                        <div class="bubble-out">А ещё — я чувствую в себе потенциал, так хотела бы иметь любимое дело, быть свободной, реализовать себя, но с чего начать я даже не понимаю.. Страшно, а кто что подумает? А вдруг не получится?</div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <div class="phone-msg-in mt-1">
+                        <div class="bubble-in">То, что ты чувствуешь нереализованный потенциал — не случайность. Он есть. Чтобы раскрыть его, нужно трансформировать программы нелюбви к себе, обесценивания и отсутствия веры в себя. А пока продолжу выполнять свою функцию — отражать то, что есть в тебе прямо сейчас.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="phone-input-row">
+                <div class="phone-input-pill">Сообщение</div>
+                <div class="phone-send-btn">↑</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+<!-- ВНУТРИ КЛУБА -->
+<section class="relative py-24 md:py-32" style="z-index:2;">
+    <div class="relative z-10 max-w-3xl mx-auto px-6 md:px-12">
+
+        <h2 class="reveal font-display font-bold text-center mb-16 text-white" style="font-size:clamp(2.2rem,7vw,4.5rem);letter-spacing:0.02em;line-height:1.1;">
+            Что внутри?
+        </h2>
+
+        <div class="flex flex-col gap-16">
+
+            <!-- 1 -->
+            <div class="reveal num-item">
+                <div class="num-big">1</div>
+                <div style="position:relative;z-index:1;">
+                    <p class="font-display font-semibold text-[1rem] md:text-[1.1rem] leading-[1.6] text-white mb-6">
+                        Базовый урок: теория + инструменты по изменению мышления, программ и жизни
+                    </p>
+                    <div class="shiny-media shiny-screen" style="max-width:420px;">
+                        <img loading="lazy" src="baza-urok.jpg" alt="Базовый урок" class="w-full h-auto">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="reveal num-item">
+                <div class="num-big">2</div>
+                <div style="position:relative;z-index:1;">
+                    <p class="font-display font-semibold text-[1rem] md:text-[1.1rem] leading-[1.6] text-white mb-6">
+                        200+ подкастов по темам: деньги, реализация, отношения, любовь к себе
+                    </p>
+                    <div class="grid grid-cols-2 gap-4" style="align-items:start;">
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="vazhnost.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="revnost.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="obescenka.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="mat.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="dolg.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="triggery.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="sostoyanie.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="stradat.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="sotvorenie.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="ubezhdeniya.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="strahi.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                        <div class="reveal" style="position:relative;display:inline-block;border-radius:16px;padding:2px;overflow:hidden;background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.7) 168deg,rgba(220,235,230,1) 180deg,rgba(168,180,190,0.7) 192deg,transparent 230deg,transparent 360deg);"><img loading="lazy" src="zhenshina.jpg" class="w-full h-auto block" style="border-radius:14px;display:block;"></div>
+                    </div>
+
+                    <!-- Видео-подкаст -->
+                    <div class="reveal mt-10">
+                        <div class="shiny-media">
+                            <video class="w-full" controls preload="none" loading="lazy" playsinline style="max-height:85vh;object-fit:contain;background:#0a0a0a;">
+                                <source src="podcast.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 3 -->
+            <div class="reveal num-item">
+                <div class="num-big">3</div>
+                <div style="position:relative;z-index:1;">
+                    <p class="font-display font-semibold text-[1rem] md:text-[1.1rem] leading-[1.6] text-white mb-6">
+                        Несколько прямых эфиров по базовым темам
+                    </p>
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="reveal shiny-media shiny-screen"><img loading="lazy" src="efir-dengi.jpg" class="w-full h-auto" alt="Эфир Деньги"></div>
+                        <div class="reveal shiny-media shiny-screen"><img loading="lazy" src="efir-proyavlennost.jpg" class="w-full h-auto" alt="Эфир Проявленность"></div>
+                        <div class="reveal shiny-media shiny-screen"><img loading="lazy" src="efir-otnosheniya.jpg" class="w-full h-auto" alt="Эфир Отношения"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+<div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+<!-- РЕЗУЛЬТАТЫ УЧАСТНИКОВ -->
+<section id="results" class="relative py-24 md:py-32" style="z-index:2;">
+    <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+        <h2 class="reveal font-display text-[1.4rem] md:text-[2rem] font-bold tracking-[0.04em] uppercase text-center mb-16 md:mb-20 text-white">
+            Результаты
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 mb-16" style="align-items:start;">
+
+            <div class="reveal flex flex-col gap-5">
+                <div class="flex flex-col gap-2">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">долги, жизнь в нехватке, дефицитное мышление</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">мышление изобилия, изменение программ дефицита. <span style="color:#fff;font-weight:600;">Как результат на материи: +100 000₽ из разных источников</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media shiny-screen"><img loading="lazy" src="100tys.jpg" alt="" class="w-full h-auto"></div>
+            </div>
+
+            <div class="reveal flex flex-col gap-5">
+                <div class="flex flex-col gap-2">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">страхи в отношениях, сомнения по поводу намерений партнёра</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">проработка страхов и освобождение от убеждений, которые мешали. <span style="color:#fff;font-weight:600;">Как результат на материи: предложение выйти замуж от любимого человека</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media shiny-screen"><img loading="lazy" src="predlozhenie.png" alt="" class="w-full h-auto"></div>
+            </div>
+
+            <div class="reveal flex flex-col gap-5 items-center">
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">вокруг мужчины, которые не хотят ничего серьёзного и не заботятся</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">изменение внутренних программ и убеждений в теме отношений. <span style="color:#fff;font-weight:600;">Как результат: появление вокруг достойных мужчин, которые проявляются серьёзно впервые в жизни</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media circle" style="width:min(220px,100%);">
+                    <video class="w-full h-full object-cover" style="aspect-ratio:1;" controls preload="none" loading="lazy" playsinline>
+                        <source src="kruzhok-muzhchiny.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <div class="reveal flex flex-col gap-5">
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">мышление дефицита, заработок через тяжесть, программы в теме денег, нехватка</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">изменение убеждений и программ. <span style="color:#fff;font-weight:600;">Как результат: деньги в лёгкости, увеличение заработка в два раза</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media shiny-screen"><img loading="lazy" src="dva-raza.jpeg" alt="" class="w-full h-auto"></div>
+            </div>
+
+            <div class="reveal flex flex-col gap-5 items-center">
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">желание проявляться, вести блог, но много страхов — кто что подумает, из-за этого бездействие</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">перепрошивка страхов и программ. <span style="color:#fff;font-weight:600;">Как результат: исполнила свою мечту — «веду свой блог, выкладываю что хочу и не думаю кто что подумает, начала зарабатывать на рекламе с блога»</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media circle" style="width:min(220px,100%);">
+                    <video class="w-full h-full object-cover" style="aspect-ratio:1;" controls preload="none" loading="lazy" playsinline>
+                        <source src="kruzhok-blog.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <div class="reveal flex flex-col gap-5">
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">мужчины, которые изменяют, плохо относятся, не хотят ничего серьёзного</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">внутренние изменения программ, полностью изменилась сфера отношений. <span style="color:#fff;font-weight:600;">Как результат: встреча мужчины мечты, 9 месяцев вместе, скоро свадьба</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media" style="border-radius:999px;">
+                    <div style="border-radius:999px;background:#0A0A0A;padding:14px 20px;display:flex;align-items:center;gap:12px;">
+                        <svg class="flex-shrink-0 w-5 h-5" style="color:var(--accent);opacity:0.7;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                        <audio controls preload="none" loading="lazy" style="flex:1;min-width:0;height:32px;accent-color:#A8B4BE;">
+                            <source src="audio-svadba..mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Скриншоты отзывов -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16" style="align-items:start;">
+            <div class="reveal flex flex-col gap-5">
+                <div class="flex flex-col gap-2">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">стыдно просить, заявлять о своих желаниях</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;font-weight:600;">лёгкое получение ресурсов от мира</span>
+                    </p>
+                </div>
+                <div class="shiny-media shiny-screen"><img loading="lazy" src="otzyv-iphone.jpg" alt="" class="w-full h-auto"></div>
+            </div>
+            <div class="reveal flex flex-col gap-5">
+                <p class="font-body text-[13px] leading-[1.8] text-white">
+                    <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                    <span style="color:#fff;">абьюзивные мужчины, которые не настроены серьёзно</span>
+                </p>
+                <div class="shiny-media shiny-screen"><img loading="lazy" src="otzyv-muzhchina-1.jpg" alt="" class="w-full h-auto"></div>
+            </div>
+            <div class="reveal flex flex-col gap-5">
+                <p class="font-body text-[13px] leading-[1.8] text-white">
+                    <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                    <span style="color:#fff;font-weight:600;">встреча мужчины мечты, с которым скоро свадьба</span>
+                </p>
+                <div class="shiny-media shiny-screen"><img loading="lazy" src="otzyv-muzhchina-2.jpg" alt="" class="w-full h-auto"></div>
+            </div>
+
+        </div>
+
+        <div class="flex flex-col gap-10">
+
+            <div class="reveal flex flex-col gap-4">
+                <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-1" style="color:var(--accent);opacity:0.6;">Видео-отзыв:</p>
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">лишний вес, мужчины, которые не проявляются</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">изменения мышления и программ. <span style="color:#fff;font-weight:600;">Как результат: свобода от страха осуждения и «кто что подумает», свободное проявление в блоге, появление в поле заботливых достойных мужчин, похудение и качественное изменение жизни</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media w-full">
+                    <video class="w-full" controls preload="none" loading="lazy" playsinline style="max-height:90vh;object-fit:contain;background:#0a0a0a;">
+                        <source src="video-pohudenie.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <div class="reveal flex flex-col gap-4">
+                <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-1" style="color:var(--accent);opacity:0.6;">Видео-отзыв:</p>
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">страх вести блог, непонимание как, нет клиентов с блога, внутренние убеждения и страхи</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">работа с мышлением и инструментами. <span style="color:#fff;font-weight:600;">Как результат: свобода от страха осуждения и «кто что подумает», свободное проявление в блоге, +45 000₽ с блога с нуля без вложений</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media w-full">
+                    <video class="w-full" controls preload="none" loading="lazy" playsinline style="max-height:90vh;object-fit:contain;background:#0a0a0a;">
+                        <source src="video-45000.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <div class="reveal flex flex-col gap-4">
+                <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-1" style="color:var(--accent);opacity:0.6;">Видео-отзыв:</p>
+                <div class="flex flex-col gap-2 w-full">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">блог в ТГ 6 подписчиков, 0 рублей с блога, страхи</span>
+                    </p>
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;">работа с мышлением и инструментами. <span style="color:#fff;font-weight:600;">Как результат: свобода от страха осуждения и «кто что подумает», свободное проявление в блоге, +70 000₽ с блога с нуля без вложений</span></span>
+                    </p>
+                </div>
+                <div class="shiny-media w-full">
+                    <video class="w-full" controls preload="none" loading="lazy" playsinline style="max-height:90vh;object-fit:contain;background:#0a0a0a;">
+                        <source src="video-70000.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+        </div>
+        <p class="font-body text-[13px] leading-[1.9] mt-12 text-center max-w-2xl mx-auto px-6" style="color:#fff;">
+            <span style="color:rgba(168,180,190,0.6);">✦</span>&nbsp; Выше собраны результаты взаимодействия со мной на различных программах, включая клуб, личные консультации и отдельные курсы. Чтобы понять, что именно подойдёт вам — напишите нам в поддержку, и мы вас проконсультируем, ответив на все вопросы.
+        </p>
+    </div>
+</section>
+
+<div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+<!-- ЦЕНА -->
+<section class="relative py-24 md:py-32" style="z-index:2;">
+    <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+        <p class="reveal font-display text-[1rem] md:text-[1.3rem] lg:text-[1.5rem] font-light leading-[1.5] tracking-[0.02em] text-center max-w-3xl mx-auto mb-14" style="background:linear-gradient(135deg,#c0c0c0 0%,#ffffff 30%,#e8e8e8 50%,#a8a8a8 70%,#f0f0f0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+            Архив материалов закрытого клуба с доступом на год
+        </p>
+        <div class="max-w-lg mx-auto mb-10">
+            <div class="reveal flex flex-col gap-5 rounded-2xl p-8" style="border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.02);">
+                <p class="font-display text-[11px] tracking-[0.2em] uppercase" style="color:rgba(255,255,255,0.35);">Архив материалов закрытого клуба</p>
+                <div>
+                    <div class="font-display font-bold leading-none" style="font-size:clamp(2.4rem,7vw,3.6rem);background:linear-gradient(135deg,#c0c0c0 0%,#ffffff 30%,#e8e8e8 50%,#a8a8a8 70%,#f0f0f0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">30 000₽</div>
+                    <p class="font-body text-[13px] mt-2" style="color:rgba(255,255,255,0.4);">доступ на год</p>
+                </div>
+                <ul class="flex flex-col gap-2">
+                    <li class="flex items-start gap-3 font-body text-[15px] leading-[1.7] text-white"><span style="color:rgba(255,255,255,0.4);flex-shrink:0;margin-top:2px;">✦</span>Базовый урок по изменению мышления и программ</li>
+                    <li class="flex items-start gap-3 font-body text-[15px] leading-[1.7] text-white"><span style="color:rgba(255,255,255,0.4);flex-shrink:0;margin-top:2px;">✦</span>200+ подкастов по темам: деньги, отношения, реализация, любовь к себе</li>
+                    <li class="flex items-start gap-3 font-body text-[15px] leading-[1.7] text-white"><span style="color:rgba(255,255,255,0.4);flex-shrink:0;margin-top:2px;">✦</span>Записи прямых эфиров</li>
+                    <li class="flex items-start gap-3 font-body text-[15px] leading-[1.7] text-white"><span style="color:rgba(255,255,255,0.4);flex-shrink:0;margin-top:2px;">✦</span>Доступ навсегда</li>
+                </ul>
+                <button onclick="openOfferModal('https://web.tribute.tg/s/usf', 'Клуб — доступ')" style="margin-top:auto;width:100%;padding:14px 24px;border-radius:9999px;font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:none;cursor:pointer;transition:all .3s ease;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Получить доступ</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+<!-- CTA -->
+<section class="relative py-24 md:py-32 text-center" style="z-index:2;">
+    <div class="relative z-10 max-w-xl mx-auto px-6 md:px-12">
+        <h2 class="reveal font-display text-[1.3rem] md:text-[1.8rem] font-bold tracking-[0.04em] uppercase mb-4 text-white">
+            Возникли вопросы?
+        </h2>
+        <p class="reveal font-body text-[14px] mb-10" style="color:rgba(255,255,255,0.4);">Напишите нам — поможем выбрать подходящий формат</p>
+        <div class="reveal">
+            <a href="https://t.me/silverwind_care" target="_blank"
+               style="display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:18px 52px;border-radius:9999px;font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4);transition:all .4s ease;"
+               onmouseover="this.style.opacity='0.85';this.style.transform='translateY(-2px)'"
+               onmouseout="this.style.opacity='1';this.style.transform=''">
+                Задать свой вопрос
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="relative py-12" style="border-top:1px solid rgba(255,255,255,0.04);z-index:2;">
+    <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
+        <a href="index.html" class="font-display text-sm tracking-[0.15em] uppercase shiny-text">Silverwind</a>
+        <div class="flex flex-wrap justify-center gap-6 text-[12px] text-white/25">
+            <a href="https://t.me/silverwind37" target="_blank" class="hover:text-white/60 transition-colors">Тг канал</a>
+            <a href="oferta.html" target="_blank" class="hover:text-white/60 transition-colors">Договор оферты</a>
+            <a href="privacy-policy.html" target="_blank" class="hover:text-white/60 transition-colors">Политика конфиденциальности</a>
+            <a href="https://t.me/silverwind_care" target="_blank" class="hover:text-white/60 transition-colors">Задать вопрос</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Stars
+    function stars(n,c){var s=[];for(var i=0;i<n;i++)s.push((Math.random()*4000-2000|0)+'px '+(Math.random()*4000-2000|0)+'px '+c);return s.join(',');}
+    var a=stars(700,'rgba(255,255,255,0.5)'),b=stars(250,'rgba(200,240,232,0.4)'),c=stars(80,'rgba(165,240,224,0.35)');
+    document.getElementById('d1').style.boxShadow=a;document.getElementById('d1c').style.boxShadow=a;
+    document.getElementById('d2').style.boxShadow=b;document.getElementById('d2c').style.boxShadow=b;
+    document.getElementById('d3').style.boxShadow=c;document.getElementById('d3c').style.boxShadow=c;
+
+    // Parallax
+    var box=document.getElementById('starBox'),mx=0,my=0,sx=0,sy=0;
+    document.addEventListener('mousemove',function(e){mx=-(e.clientX-innerWidth/2)*0.01;my=-(e.clientY-innerHeight/2)*0.01;});
+    (function tick(){sx+=(mx-sx)*0.03;sy+=(my-sy)*0.03;box.style.transform='translate('+sx+'px,'+sy+'px)';requestAnimationFrame(tick);})();
+
+    // Reveal
+    var revealEls=document.querySelectorAll('.reveal');
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');}});},{threshold:0.12});
+    revealEls.forEach(function(el){io.observe(el);});
+
+    // Star buttons
+    document.querySelectorAll('[data-star-btn]').forEach(function(btn){
+        btn.style.offsetPath='path("M 0,20 Q 50,0 100,20 Q 150,40 200,20")';
+    });
+
+    // Audio player
+    (function(){
+        var audio=document.getElementById('clubAudio');
+        var playIcon=document.getElementById('clubPlayIcon');
+        var pauseIcon=document.getElementById('clubPauseIcon');
+        var currentTimeEl=document.getElementById('clubCurrentTime');
+        var durationEl=document.getElementById('clubDuration');
+        var waveBars=document.getElementById('clubWaveBars');
+        var waveProgress=document.getElementById('clubWaveProgress');
+
+        var barCount=48;
+        for(var i=0;i<barCount;i++){
+            var h=20+Math.random()*60;
+            var bg=document.createElement('div');
+            bg.style.cssText='flex:1;border-radius:2px;background:rgba(255,255,255,0.12);height:'+h+'%;';
+            waveBars.appendChild(bg);
+            var bc=document.createElement('div');
+            bc.style.cssText='flex:1;border-radius:2px;background:rgba(168,180,190,0.75);height:'+h+'%;';
+            waveProgress.appendChild(bc);
+        }
+
+        function fmt(s){if(isNaN(s))return'—:——';var m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;}
+
+        audio.addEventListener('loadedmetadata',function(){durationEl.textContent=fmt(audio.duration);});
+        audio.addEventListener('timeupdate',function(){
+            currentTimeEl.textContent=fmt(audio.currentTime);
+            var pct=audio.duration?(audio.currentTime/audio.duration)*100:0;
+            waveProgress.style.clipPath='inset(0 '+(100-pct)+'% 0 0)';
+        });
+        audio.addEventListener('ended',function(){
+            playIcon.style.display='';pauseIcon.style.display='none';
+            waveProgress.style.clipPath='inset(0 100% 0 0)';audio.currentTime=0;
+        });
+
+        window.toggleClubAudio=function(){
+            if(audio.paused){audio.play();playIcon.style.display='none';pauseIcon.style.display='';}
+            else{audio.pause();playIcon.style.display='';pauseIcon.style.display='none';}
+        };
+        window.seekClubAudio=function(e){
+            var rect=document.getElementById('clubWaveContainer').getBoundingClientRect();
+            var pct=(e.clientX-rect.left)/rect.width;
+            if(audio.duration)audio.currentTime=pct*audio.duration;
+        };
+        window.setClubSpeed=function(rate){
+            audio.playbackRate=rate;
+            ['cspd1','cspd15','cspd2'].forEach(function(id){
+                var b=document.getElementById(id);
+                b.style.background='transparent';b.style.color='rgba(255,255,255,0.3)';b.style.borderColor='rgba(255,255,255,0.08)';
+            });
+            var map={1:'cspd1',1.5:'cspd15',2:'cspd2'};
+            var active=document.getElementById(map[rate]);
+            if(active){active.style.background='rgba(168,180,190,0.1)';active.style.color='rgba(168,180,190,0.9)';active.style.borderColor='rgba(168,180,190,0.3)';}
+        };
+    })();
+</script>
+
+    <!-- Offer Modal -->
+    <div class="offer-modal-overlay" id="offerModal">
+        <div class="offer-modal">
+            <p class="font-display text-[11px] tracking-[0.2em] uppercase mb-6" style="color:var(--accent);opacity:0.7;">Подтверждение</p>
+            <p class="font-body text-[15px] leading-[1.8] mb-6" style="color:rgba(255,255,255,0.7);">Перед оплатой подтвердите согласие с документами:</p>
+
+            <input type="email" id="offerEmail" placeholder="Ваш email *" required onclick="event.stopPropagation()"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;outline:none;margin-bottom:12px;box-sizing:border-box;"
+                onfocus="this.style.borderColor='rgba(168,180,190,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'"/>
+            <input type="text" id="offerTg" placeholder="Ник в Telegram (например @name) *" onclick="event.stopPropagation()"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;outline:none;margin-bottom:20px;box-sizing:border-box;"
+                onfocus="this.style.borderColor='rgba(168,180,190,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'"/>
+
+            <label class="offer-checkbox-row mb-8" id="offerCheckboxRow">
+                <span class="offer-checkbox-box">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <polyline points="2,6 5,9 10,3" stroke="#A8B4BE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span class="font-body text-[14px] leading-[1.75]" style="color:rgba(255,255,255,0.6);">
+                    Я ознакомился(-ась) и согласен(-на) с
+                    <a href="oferta.html" target="_blank" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px;" onclick="event.stopPropagation()">Договором оферты</a>
+                    и
+                    <a href="privacy-policy.html" target="_blank" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px;" onclick="event.stopPropagation()">Политикой конфиденциальности</a>
+                </span>
+            </label>
+            <button class="offer-pay-btn mb-4" id="offerPayBtn">Перейти к оплате</button>
+            <button onclick="closeOfferModal()" class="w-full py-3 font-body text-[13px] transition-colors duration-300" style="background:none;border:none;color:rgba(255,255,255,0.25);cursor:pointer;">Отмена</button>
+        </div>
+    </div>
+
+    <script>
+        var _offerLink = '';
+        var _offerTariff = '';
+        function openOfferModal(payLink, tariff) {
+            _offerLink = payLink;
+            _offerTariff = tariff || 'Клуб';
+            var modal = document.getElementById('offerModal');
+            var row = document.getElementById('offerCheckboxRow');
+            var btn = document.getElementById('offerPayBtn');
+            document.getElementById('offerEmail').value = '';
+            document.getElementById('offerTg').value = '';
+            row.classList.remove('checked');
+            btn.classList.remove('enabled');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeOfferModal() {
+            document.getElementById('offerModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('offerCheckboxRow').addEventListener('click', function() {
+            this.classList.toggle('checked');
+            var btn = document.getElementById('offerPayBtn');
+            if (this.classList.contains('checked')) { btn.classList.add('enabled'); }
+            else { btn.classList.remove('enabled'); }
+        });
+        document.getElementById('offerPayBtn').addEventListener('click', function() {
+            if (_offerLink) {
+                var email = document.getElementById('offerEmail').value.trim();
+                var tg = document.getElementById('offerTg').value.trim();
+                if (!email || !tg) {
+                    if (!email) document.getElementById('offerEmail').style.borderColor = 'rgba(255,100,100,0.6)';
+                    if (!tg) document.getElementById('offerTg').style.borderColor = 'rgba(255,100,100,0.6)';
+                    return;
+                }
+                var consentText = 'Я ознакомился(-ась) и согласен(-на) с Договором оферты и Политикой конфиденциальности';
+                try {
+                    fetch('https://api.ipify.org?format=json')
+                        .then(function(r){ return r.json(); })
+                        .then(function(ipData){
+                            fetch('https://script.google.com/macros/s/AKfycbxARFmo2YOsgA4qpq49zbFmsUPTfPCCF6nwy_kWwrm4NSqBMWX33GmslXR2eWm_9NfbXQ/exec', {
+                                method: 'POST', mode: 'no-cors',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    email: email, telegram: tg, tariff: _offerTariff,
+                                    ip: ipData.ip, userAgent: navigator.userAgent,
+                                    offerVersion: 'v1 от 26.05.2026',
+                                    url: window.location.href,
+                                    consent: consentText
+                                })
+                            });
+                        }).catch(function(){
+                            fetch('https://script.google.com/macros/s/AKfycbxARFmo2YOsgA4qpq49zbFmsUPTfPCCF6nwy_kWwrm4NSqBMWX33GmslXR2eWm_9NfbXQ/exec', {
+                                method: 'POST', mode: 'no-cors',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    email: email, telegram: tg, tariff: _offerTariff,
+                                    ip: 'н/д', userAgent: navigator.userAgent,
+                                    offerVersion: 'v1 от 26.05.2026',
+                                    url: window.location.href,
+                                    consent: consentText
+                                })
+                            });
+                        });
+                } catch(err) {}
+                closeOfferModal();
+                window.open(_offerLink, '_blank');
+            }
+        });
+        document.getElementById('offerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeOfferModal();
+        });
+    </script>
+</body>
+</html>

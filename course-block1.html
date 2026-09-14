@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Блок 1 — Мироустройство</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #banner {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background: #000;
+      flex-shrink: 0;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+    }
+
+    /* Угловые уголки */
+    .corner {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-color: rgba(255,255,255,0.18);
+      border-style: solid;
+    }
+    .tl { top: 28px; left: 28px;  border-width: 1px 0 0 1px; }
+    .tr { top: 28px; right: 28px; border-width: 1px 1px 0 0; }
+    .bl { bottom: 28px; left: 28px;  border-width: 0 0 1px 1px; }
+    .br { bottom: 28px; right: 28px; border-width: 0 1px 1px 0; }
+
+    /* Контент */
+    .content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .block-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: rgba(137,230,216,0.75);
+      margin-bottom: 28px;
+    }
+
+    .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 96px;
+      font-weight: 300;
+      font-style: italic;
+      text-align: center;
+      line-height: 1.05;
+      letter-spacing: 2px;
+      background: linear-gradient(
+        160deg,
+        #ffffff 0%,
+        #d4d4d4 25%,
+        #f8f8f8 45%,
+        #a8a8a8 65%,
+        #ececec 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(137,230,216,0.4),
+        rgba(255,255,255,0.6),
+        rgba(137,230,216,0.4),
+        transparent
+      );
+      margin: 30px auto;
+    }
+
+    /* Нижняя панель */
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 18px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 12px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(200,200,200,0.4);
+    }
+    .brand b {
+      font-weight: 400;
+      color: rgba(220,220,220,0.65);
+    }
+
+    .block-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: rgba(137,230,216,0.35);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+<div id="banner">
+  <canvas id="c" width="1280" height="720"></canvas>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="content">
+    <div class="block-label">Блок 1</div>
+    <div class="title">Мироустройство</div>
+    <div class="divider"></div>
+  </div>
+
+  <div class="bottom">
+    <div class="brand"><b>Silver</b>wind</div>
+    <div class="block-num">Онлайн-программа</div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const W = 1280, H = 720;
+
+const small = Array.from({ length: 420 }, () => ({
+  x: Math.random() * W, y: Math.random() * H,
+  r: Math.random() * 0.8 + 0.2,
+  a: Math.random() * 0.55 + 0.08,
+  ph: Math.random() * Math.PI * 2,
+  sp: Math.random() * 0.008 + 0.002
+}));
+
+const mid = Array.from({ length: 90 }, () => ({
+  x: Math.random() * W, y: Math.random() * H,
+  r: Math.random() * 1.2 + 0.5,
+  ph: Math.random() * Math.PI * 2,
+  sp: Math.random() * 0.005 + 0.002
+}));
+
+const big = Array.from({ length: 16 }, () => ({
+  x: Math.random() * W, y: Math.random() * H,
+  r: Math.random() * 1.6 + 1.0,
+  ph: Math.random() * Math.PI * 2,
+  sp: Math.random() * 0.003 + 0.001
+}));
+
+function draw() {
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, W, H);
+
+  // Лёгкая дымка
+  const fog = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, 460);
+  fog.addColorStop(0,   'rgba(20,30,28,0.22)');
+  fog.addColorStop(0.6, 'rgba(8,12,11,0.08)');
+  fog.addColorStop(1,   'rgba(0,0,0,0)');
+  ctx.fillStyle = fog;
+  ctx.fillRect(0, 0, W, H);
+
+  for (const s of small) {
+    s.ph += s.sp;
+    const a = s.a * (0.5 + Math.sin(s.ph) * 0.5);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.fill();
+  }
+
+  for (const s of mid) {
+    s.ph += s.sp;
+    const a = 0.2 + Math.sin(s.ph) * 0.3;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(220,240,235,${a})`;
+    ctx.fill();
+  }
+
+  for (const s of big) {
+    s.ph += s.sp;
+    const a = 0.25 + Math.sin(s.ph) * 0.35;
+    const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 6);
+    glow.addColorStop(0, `rgba(200,235,230,${a * 0.45})`);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r * 6, 0, Math.PI*2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.fill();
+  }
+
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>

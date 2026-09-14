@@ -1,0 +1,13 @@
+ОРИГИНАЛЬНЫЕ МЯТНЫЕ ЦВЕТА (для отката):
+--accent: #89E6D8
+--accent-soft: #A5F0E0
+gradient: #89E6D8, #a8c8c0, #c8d8d4, #89E6D8
+dark text on buttons: #0a1a18
+send btn gradient: #89E6D8, #5bc4b0
+light gradient: #c8f0eb
+radial bg: #0f1f1d
+rgba: rgba(137,230,216,...)
+checkbox bg: rgba(137,230,216,0.12)
+audio accent-color: #89E6D8
+hover text: #A5F0E0
+border: rgba(200,220,215,0.4)

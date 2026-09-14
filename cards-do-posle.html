@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>До / После</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #3a3228;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  font-family: 'Unbounded', sans-serif;
+}
+
+/* ── GLOWING WRAPPER ── */
+.wrap {
+  width: min(1080px, 100%);
+  border-radius: 36px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+.wrap.do {
+  background: linear-gradient(135deg, #8A9A50 0%, #bbc87a 35%, #A8B870 65%, #6e7d38 100%);
+  box-shadow:
+    0 0 60px rgba(138,154,80,0.7),
+    0 0 120px rgba(138,154,80,0.35),
+    0 0 200px rgba(138,154,80,0.2);
+}
+.wrap.posle {
+  background: linear-gradient(135deg, #8A9A50 0%, #bbc87a 35%, #A8B870 65%, #6e7d38 100%);
+  box-shadow:
+    0 0 60px rgba(138,154,80,0.7),
+    0 0 120px rgba(138,154,80,0.35),
+    0 0 200px rgba(138,154,80,0.2);
+}
+
+/* ── CARD ── */
+.card {
+  background: linear-gradient(160deg, #FBF6EE 0%, #F5ECD8 55%, #F0E4CC 100%);
+  border-radius: 34px;
+  padding: clamp(40px, 6.5vw, 70px) clamp(36px, 7.4vw, 80px) clamp(40px, 5.9vw, 64px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  min-height: min(1080px, 92vw);
+}
+
+/* subtle inner glow top-right */
+.card::before {
+  content:'';
+  position:absolute;
+  top:-120px; right:-120px;
+  width:400px; height:400px;
+  border-radius:50%;
+  pointer-events:none;
+}
+.do .card::before { background: radial-gradient(circle, rgba(196,144,106,0.12) 0%, transparent 65%); }
+.posle .card::before { background: radial-gradient(circle, rgba(168,184,112,0.14) 0%, transparent 65%); }
+
+/* subtle inner glow bottom-left */
+.card::after {
+  content:'';
+  position:absolute;
+  bottom:-100px; left:-100px;
+  width:360px; height:360px;
+  border-radius:50%;
+  pointer-events:none;
+}
+.do .card::after { background: radial-gradient(circle, rgba(168,184,112,0.1) 0%, transparent 65%); }
+.posle .card::after { background: radial-gradient(circle, rgba(212,144,138,0.12) 0%, transparent 65%); }
+
+/* ── LABEL ── */
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.do .label { color: #C4906A; }
+.posle .label { color: #8A9A50; }
+
+/* ── TITLE ── */
+.title {
+  font-size: clamp(32px, 5.4vw, 58px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.do .title {
+  font-size: clamp(22px, 3.6vw, 40px);
+  font-weight: 600;
+  color: #6B7A30;
+}
+.posle .title { color: #6B7A30; }
+
+/* ── THIN RULE ── */
+.rule {
+  height: 2px;
+  width: 100%;
+  margin-bottom: 40px;
+  border-radius: 2px;
+}
+.do .rule { background: linear-gradient(90deg, #C4906A 0%, rgba(196,144,106,0.1) 60%, transparent 100%); }
+.posle .rule { background: linear-gradient(90deg, #8A9A50 0%, rgba(138,154,80,0.1) 60%, transparent 100%); }
+
+/* ── LIST ── */
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  margin-bottom: 48px;
+}
+.list li {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(180,140,100,0.14);
+  font-size: clamp(15px, 2.4vw, 26px);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.list li:last-child { border-bottom: none; }
+.do .list li { color: #8B3A52; }
+.posle .list li { color: #4A5E20; }
+
+.star {
+  flex-shrink: 0;
+  font-size: 14px;
+  margin-top: 2px;
+}
+.do .star { color: #C4906A; text-shadow: 0 0 12px rgba(196,144,106,0.8); }
+.posle .star { color: #8A9A50; text-shadow: 0 0 12px rgba(138,154,80,0.8); }
+
+/* ── PHOTOS SECTION ── */
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.photo-col { display: flex; flex-direction: column; gap: 12px; }
+
+.photo-lbl {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.do .photo-lbl { color: #B8906A; }
+.posle .photo-lbl { color: #8A9A50; }
+
+.photo-box {
+  border-radius: 20px;
+  overflow: hidden;
+  height: 280px;
+  border: 1.5px solid rgba(180,150,110,0.2);
+  background: rgba(180,150,110,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.posle .photo-box { border-color: rgba(138,154,80,0.2); background: rgba(138,154,80,0.05); }
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.no-photo {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+.do .no-photo { color: #C4906A; }
+.posle .no-photo { color: #8A9A50; }
+
+/* ── BOTTOM LINE ── */
+.bot-line {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5px;
+  border-radius: 0 0 34px 34px;
+}
+.do .bot-line {
+  background: linear-gradient(90deg, transparent 0%, #C4906A 30%, #A8B870 70%, transparent 100%);
+  opacity: 0.6;
+}
+.posle .bot-line {
+  background: linear-gradient(90deg, transparent 0%, #A8B870 30%, #D4908A 70%, transparent 100%);
+  opacity: 0.6;
+}
+</style>
+</head>
+<body>
+
+<!-- ДО -->
+<div class="wrap do" id="card-do">
+  <div class="card do">
+
+<h1 class="title">ДО РАБОТЫ<br>С НУТРИЦИОЛОГОМ:</h1>
+    <div class="rule"></div>
+
+    <ul class="list">
+      <li><span class="star">✦</span>Вздутый живот после еды, отрыжка, понос</li>
+      <li><span class="star">✦</span>Лишние 5 кг, которые никак не уходят</li>
+      <li><span class="star">✦</span>Прыщики, сухая кожа</li>
+      <li><span class="star">✦</span>Ад перед месячными и во время</li>
+      <li><span class="star">✦</span>Боли при сексе</li>
+      <li><span class="star">✦</span>Проблемы со сном, разбитость, 0 энергии в течение дня</li>
+      <li><span class="star">✦</span>СИБР</li>
+    </ul>
+
+    <div class="photos">
+      <div class="photo-col">
+        <span class="photo-lbl">скрин с умных весов, 65 кг:</span>
+        <div class="photo-box">
+          <img src="scale-do.jpg" alt="весы до" onerror="this.outerHTML='<span class=\'no-photo\'>фото</span>'">
+        </div>
+      </div>
+      <div class="photo-col">
+        <span class="photo-lbl">рацион до:</span>
+        <div class="photo-box">
+          <img src="food-do.jpg" alt="рацион до" onerror="this.outerHTML='<span class=\'no-photo\'>фото</span>'">
+        </div>
+      </div>
+    </div>
+
+    <div class="bot-line"></div>
+  </div>
+</div>
+
+<!-- ПОСЛЕ -->
+<div class="wrap posle" id="card-posle">
+  <div class="card posle">
+
+<h1 class="title">ПОСЛЕ:</h1>
+    <div class="rule"></div>
+
+    <ul class="list">
+      <li><span class="star">✦</span>Минус 5 кг, которые никак не уходили</li>
+      <li><span class="star">✦</span>Живот перестало раздувать после еды, внутри появилась лёгкость</li>
+      <li><span class="star">✦</span>Полностью ушли симптомы СИБР</li>
+      <li><span class="star">✦</span>Стул стал нормальным, а не «лотерея»</li>
+      <li><span class="star">✦</span>Прыщи прошли, отёки исчезли</li>
+      <li><span class="star">✦</span>Месячные и секс больше не болезненные</li>
+      <li><span class="star">✦</span>Нет тумана в голове, ушли усталость и сонливость в течение дня</li>
+      <li><span class="star">✦</span>Взамен — бодрость, много энергии, лёгкость и желание жить</li>
+    </ul>
+
+    <div class="photos">
+      <div class="photo-col">
+        <span class="photo-lbl">скрин с умных весов, 61 кг:</span>
+        <div class="photo-box">
+          <img src="scale-posle.jpg" alt="весы после" onerror="this.outerHTML='<span class=\'no-photo\'>фото</span>'">
+        </div>
+      </div>
+      <div class="photo-col">
+        <span class="photo-lbl">рацион после:</span>
+        <div class="photo-box">
+          <img src="food-posle.jpg" alt="рацион после" onerror="this.outerHTML='<span class=\'no-photo\'>фото</span>'">
+        </div>
+      </div>
+    </div>
+
+    <div class="bot-line"></div>
+  </div>
+</div>
+
+</body>
+</html>

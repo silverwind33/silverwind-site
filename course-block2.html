@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Блок 2 — Программы</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #banner {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background: #000;
+      flex-shrink: 0;
+    }
+
+    canvas { position: absolute; top: 0; left: 0; }
+
+    .content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .block-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: rgba(137,230,216,0.85);
+      margin-bottom: 22px;
+    }
+
+    .divider {
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      margin: 22px auto;
+    }
+
+    .title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 100px;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1;
+      letter-spacing: -1px;
+      background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #e8e8e8 40%,
+        #b0b0b0 75%,
+        #d0d0d0 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 32px;
+      width: 100%;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 200;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(200,200,200,0.3);
+    }
+  </style>
+</head>
+<body>
+<div id="banner">
+  <canvas id="c" width="1280" height="720"></canvas>
+
+  <div class="content">
+    <div class="block-label">Блок 2</div>
+    <div class="divider"></div>
+    <div class="title">Программы</div>
+    <div class="divider"></div>
+  </div>
+
+  <div class="bottom">Silverwind &nbsp;·&nbsp; Алина</div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const W = 1280, H = 720;
+
+const small = Array.from({ length: 500 }, () => ({
+  x: Math.random() * W, y: Math.random() * H,
+  r: Math.random() * 0.9 + 0.15,
+  a: Math.random() * 0.55 + 0.08,
+  ph: Math.random() * Math.PI * 2,
+  sp: Math.random() * 0.008 + 0.002
+}));
+
+const big = Array.from({ length: 20 }, () => ({
+  x: Math.random() * W, y: Math.random() * H,
+  r: Math.random() * 1.8 + 1.0,
+  ph: Math.random() * Math.PI * 2,
+  sp: Math.random() * 0.003 + 0.001
+}));
+
+function draw() {
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, H);
+
+  // Зеленоватая дымка слева (как на скриншоте)
+  const fog1 = ctx.createRadialGradient(200, H/2, 0, 200, H/2, 500);
+  fog1.addColorStop(0,   'rgba(10,30,22,0.35)');
+  fog1.addColorStop(1,   'rgba(0,0,0,0)');
+  ctx.fillStyle = fog1;
+  ctx.fillRect(0, 0, W, H);
+
+  const fog2 = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, 400);
+  fog2.addColorStop(0,   'rgba(15,25,22,0.18)');
+  fog2.addColorStop(1,   'rgba(0,0,0,0)');
+  ctx.fillStyle = fog2;
+  ctx.fillRect(0, 0, W, H);
+
+  for (const s of small) {
+    s.ph += s.sp;
+    const a = s.a * (0.4 + Math.sin(s.ph) * 0.6);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.fill();
+  }
+
+  for (const s of big) {
+    s.ph += s.sp;
+    const a = 0.2 + Math.sin(s.ph) * 0.35;
+    const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 7);
+    glow.addColorStop(0, `rgba(200,235,230,${a * 0.4})`);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r * 7, 0, Math.PI*2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.fill();
+  }
+
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>

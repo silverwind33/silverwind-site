@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silverwind — Трансформация реальности</title>
+    <meta name="description" content="Онлайн-тренинг Silverwind — трансформация реальности через работу с внутренними программами.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Unbounded', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        body: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        :root {
+            --bg: #0A0A0A;
+            --accent: #A8B4BE;
+            --accent-soft: #C8D2DC;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; }
+
+        /* ══════ NOISE ══════ */
+        .noise::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.03;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        /* ══════ SHINY TEXT ══════ */
+        @keyframes shinySlide {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+        .shiny-text {
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.3) 0%,
+                rgba(255,255,255,0.3) 25%,
+                rgba(255,255,255,0.7) 37%,
+                #ffffff 44%,
+                rgba(230,235,240,1) 50%,
+                #ffffff 56%,
+                rgba(255,255,255,0.7) 63%,
+                rgba(255,255,255,0.3) 75%,
+                rgba(255,255,255,0.3) 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shinySlide 12s linear infinite;
+        }
+
+        /* ══════ STARS (global) ══════ */
+        @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-2000px); } }
+        .stars-global {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .s-layer { position: absolute; top: 0; left: 0; width: 100%; height: 2000px; }
+        .s1 { animation: drift 70s linear infinite; }
+        .s2 { animation: drift 140s linear infinite; }
+        .s3 { animation: drift 200s linear infinite; }
+        .s-dot, .s-dot-c { position: absolute; background: transparent; border-radius: 50%; }
+        .s-dot-c { top: 2000px; }
+
+        /* ══════ GLOWS ══════ */
+        @keyframes pulse1 {
+            0%, 100% { opacity: 0.06; transform: scale(1); }
+            50% { opacity: 0.14; transform: scale(1.1); }
+        }
+        @keyframes pulse2 {
+            0%, 100% { opacity: 0.04; transform: scale(1.05); }
+            50% { opacity: 0.10; transform: scale(0.95); }
+        }
+
+        /* ══════ ENTRANCE ══════ */
+        @keyframes enter {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .enter { opacity: 0; animation: enter 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .e1 { animation-delay: 0.0s; }
+        .e2 { animation-delay: 0.15s; }
+        .e3 { animation-delay: 0.35s; }
+        .e4 { animation-delay: 0.55s; }
+        .e5 { animation-delay: 0.75s; }
+
+        /* ══════ DIVIDER ══════ */
+        @keyframes expandIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        .divider { transform: scaleX(0); animation: expandIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; }
+
+        /* ══════ STAR BUTTON ══════ */
+        @keyframes starBtnLight {
+            0% { offset-distance: 0%; }
+            100% { offset-distance: 100%; }
+        }
+        .star-btn {
+            position: relative;
+            z-index: 3;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            isolation: isolate;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        .star-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+        .star-btn .star-light {
+            position: absolute;
+            aspect-ratio: 1;
+            inset: 0;
+            width: 110px;
+            background: radial-gradient(ellipse at center, rgba(250,250,250,0.9), transparent, transparent);
+            animation: starBtnLight 3s linear infinite;
+        }
+        .star-btn .star-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 4;
+            overflow: hidden;
+            border-radius: inherit;
+            border: 2px solid rgba(255,255,255,0.15);
+        }
+        .star-btn .star-bg svg {
+            width: 100%;
+            height: 100%;
+        }
+        .star-btn .star-text {
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(to top, #ffffff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ══════ GHOST BUTTON ══════ */
+        .cta-ghost {
+            color: rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cta-ghost:hover {
+            color: var(--accent-soft);
+            border-color: rgba(165,240,224,0.25);
+            transform: translateY(-3px);
+        }
+
+        /* ══════ TEAL BUTTON ══════ */
+        .cta-teal {
+            background: rgba(168,180,190,0.1);
+            color: var(--accent);
+            border: 1px solid rgba(168,180,190,0.2);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cta-teal:hover {
+            background: rgba(168,180,190,0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(168,180,190,0.1);
+        }
+
+        /* ══════ SCROLL ══════ */
+        @keyframes bob {
+            0%, 100% { transform: translateY(0); opacity: 0.2; }
+            50% { transform: translateY(10px); opacity: 0.5; }
+        }
+        .bob { animation: bob 3s ease-in-out infinite; }
+
+        /* ══════ REVEAL ══════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        /* ══════ FAQ ══════ */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease;
+            padding: 0 0;
+        }
+        .faq-answer.open {
+            max-height: 2000px;
+            padding: 16px 0 0 0;
+        }
+        .faq-answer p {
+            color: rgba(255,255,255,0.9) !important;
+        }
+        .faq-icon { transition: transform 0.4s ease; }
+        .faq-icon.open { transform: rotate(45deg); }
+
+        /* ══════ TYPING CURSOR ══════ */
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* ══════ BUBBLE LABEL ══════ */
+        .bubble-label-big {
+            font-family: 'Unbounded', sans-serif;
+            font-size: clamp(1.3rem, 4vw, 2rem);
+            font-weight: 200;
+            letter-spacing: 0.15em;
+            cursor: default;
+        }
+        .bubble-label-big[data-color="accent"] { color: var(--accent); }
+        .bubble-label-big[data-color="dim"] { color: rgba(255,255,255,0.35); }
+        .bubble-label-big .bl-char {
+            display: inline-block;
+            transition: font-weight 0.2s ease, color 0.2s ease;
+        }
+
+        /* ══════ SHINY MEDIA BORDER ══════ */
+        @keyframes border-spin { to { transform: rotate(360deg); } }
+        .shiny-media {
+            position: relative;
+            display: block;
+            border-radius: 18px;
+            padding: 2.5px;
+            overflow: hidden;
+        }
+        .shiny-media::before {
+            content: '';
+            position: absolute;
+            top: -100%; left: -100%; right: -100%; bottom: -100%;
+            background: conic-gradient(from 0deg,
+                transparent 0deg, transparent 130deg,
+                rgba(168,180,190,0.7) 168deg,
+                rgba(220,235,230,1) 180deg,
+                rgba(168,180,190,0.7) 192deg,
+                transparent 230deg, transparent 360deg);
+            animation: border-spin 4s linear infinite;
+            z-index: 0;
+        }
+        /* Silver shimmer border */
+        .shiny-silver::before {
+            background: conic-gradient(from 0deg,
+                transparent 0deg, transparent 110deg,
+                rgba(180,180,190,0.5) 148deg,
+                rgba(255,255,255,1) 180deg,
+                rgba(220,220,230,0.9) 195deg,
+                rgba(180,180,190,0.5) 212deg,
+                transparent 250deg, transparent 360deg);
+            animation: border-spin 3s linear infinite;
+        }
+        .shiny-media::after {
+            content: '';
+            position: absolute;
+            inset: 2.5px;
+            background: #0A0A0A;
+            border-radius: 16px;
+            z-index: 1;
+        }
+        .shiny-media > * {
+            position: relative;
+            z-index: 2;
+            display: block;
+            width: 100%;
+            border-radius: 15px;
+            background: #0A0A0A;
+        }
+        .shiny-media.circle { border-radius: 50%; }
+        .shiny-media.circle::after { border-radius: 50%; inset: 2.5px; }
+        .shiny-media.circle > * { border-radius: 50%; }
+        .shiny-media.shiny-flat { border-radius: 4px; }
+        .shiny-media.shiny-flat::after { border-radius: 2px; }
+        .shiny-media.shiny-flat > * { border-radius: 1px; }
+        .shiny-media.shiny-screen { border-radius: 14px; }
+        .shiny-media.shiny-screen::after { border-radius: 12px; }
+        .shiny-media.shiny-screen > * { border-radius: 11px; }
+
+        /* ══════ PHONE FRAME ══════ */
+        .phone-frame {
+            width: min(360px, 88vw);
+            border-radius: 52px;
+            background: #0d0d0d;
+            box-shadow:
+                0 0 0 1.5px rgba(255,255,255,0.1),
+                0 0 0 5px rgba(255,255,255,0.03),
+                0 60px 140px rgba(0,0,0,0.85),
+                inset 0 0 60px rgba(168,180,190,0.02);
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-island { width: 118px; height: 32px; background: #000; border-radius: 0 0 22px 22px; margin: 0 auto; }
+        .phone-statusbar { display:flex; justify-content:space-between; align-items:center; padding:5px 26px 8px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.75); font-family:'Inter',sans-serif; }
+        .phone-contact-hdr { display:flex; align-items:center; gap:10px; padding:10px 16px 13px; border-bottom:1px solid rgba(255,255,255,0.06); }
+        .phone-ava { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; background:linear-gradient(135deg,rgba(168,180,190,0.18),rgba(168,180,190,0.04)); border:1px solid rgba(168,180,190,0.22); }
+        .phone-msgs { padding:16px 14px 8px; display:flex; flex-direction:column; gap:14px; max-height:480px; overflow-y:auto; scroll-behavior:smooth; }
+        .phone-msgs::-webkit-scrollbar { display:none; }
+        .phone-msg-out { display:flex; justify-content:flex-end; }
+        .phone-msg-in  { display:flex; justify-content:flex-start; }
+        .bubble-out { max-width:82%; background:linear-gradient(145deg,#2a3540,#1e2832); color:rgba(255,255,255,0.93); border-radius:18px 18px 4px 18px; padding:10px 13px; font-size:13px; line-height:1.6; }
+        .bubble-in  { max-width:82%; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.07); color:rgba(255,255,255,0.65); border-radius:18px 18px 18px 4px; padding:10px 13px; font-size:13px; line-height:1.6; }
+        .typing-dots-wrap { display:flex; align-items:center; gap:4px; padding:10px 13px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.07); border-radius:18px 18px 18px 4px; }
+        .typing-dots-wrap span { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.4); animation:dot-pulse 1.4s ease-in-out infinite; }
+        .typing-dots-wrap span:nth-child(2){animation-delay:.22s}
+        .typing-dots-wrap span:nth-child(3){animation-delay:.44s}
+        @keyframes dot-pulse { 0%,60%,100%{opacity:.35;transform:scale(1)} 30%{opacity:1;transform:scale(1.25)} }
+        .phone-input-row { display:flex; align-items:center; gap:8px; padding:10px 14px 28px; border-top:1px solid rgba(255,255,255,0.05); }
+        .phone-input-pill { flex:1; background:rgba(255,255,255,0.05); border-radius:22px; padding:9px 15px; font-size:13px; color:rgba(255,255,255,0.18); font-family:'Inter',sans-serif; }
+        .phone-send-btn { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#A8B4BE,#8a9aa8); color:#0e1318; font-size:15px; font-weight:bold; flex-shrink:0; }
+
+        /* ══════ SECTION DIVIDER ══════ */
+        .section-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+        }
+
+        /* ══════ DIALOGUE BUBBLES ══════ */
+        @keyframes bubbleIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .bubble {
+            position: relative;
+            padding: 24px 28px;
+            border-radius: 20px;
+            max-width: 85%;
+            line-height: 1.8;
+        }
+        .bubble-you {
+            background: rgba(168,180,190,0.06);
+            border: 1px solid rgba(168,180,190,0.12);
+            margin-left: auto;
+            border-bottom-right-radius: 6px;
+        }
+        .bubble-reality {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-right: auto;
+            border-bottom-left-radius: 6px;
+        }
+        .bubble-label {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .bubble-you .bubble-label { color: var(--accent); }
+        .bubble-reality .bubble-label { color: rgba(255,255,255,0.35); }
+
+        /* ══════ OFFER MODAL ══════ */
+        .offer-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .offer-modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .offer-modal {
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 36px 32px;
+            max-width: 440px;
+            width: 100%;
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .offer-modal-overlay.active .offer-modal {
+            transform: translateY(0) scale(1);
+        }
+        .offer-checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .offer-checkbox-box {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .offer-checkbox-box svg { opacity: 0; transition: opacity 0.2s; }
+        .offer-checkbox-row.checked .offer-checkbox-box {
+            border-color: var(--accent);
+            background: rgba(168,180,190,0.12);
+        }
+        .offer-checkbox-row.checked .offer-checkbox-box svg { opacity: 1; }
+        .offer-pay-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 9999px;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            background: linear-gradient(135deg, #A8B4BE 0%, #b0bcc6 40%, #d0d8de 60%, #A8B4BE 100%);
+            color: #0e1318;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+        .offer-pay-btn.enabled {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .offer-pay-btn.enabled:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 24px rgba(168,180,190,0.25);
+        }
+
+        /* ══════ ЗАЯВКА MODAL ══════ */
+        .zayavka-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .zayavka-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .zayavka-modal {
+            background: #0f0f0f;
+            border: 1px solid rgba(168,180,190,0.12);
+            border-radius: 28px;
+            padding: 40px 36px;
+            max-width: 460px;
+            width: 100%;
+            transform: translateY(24px) scale(0.97);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+            position: relative;
+        }
+        .zayavka-overlay.active .zayavka-modal {
+            transform: translateY(0) scale(1);
+        }
+        .zayavka-input {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 16px 18px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.25s;
+            margin-bottom: 14px;
+        }
+        .zayavka-input::placeholder { color: rgba(255,255,255,0.3); }
+        .zayavka-input:focus { border-color: rgba(168,180,190,0.5); background: rgba(168,180,190,0.04); }
+        .zayavka-submit {
+            width: 100%;
+            padding: 16px;
+            border-radius: 9999px;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #A8B4BE 0%, #b0bcc6 40%, #d0d8de 60%, #A8B4BE 100%);
+            color: #0e1318;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+        .zayavka-submit:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(168,180,190,0.3); }
+        .zayavka-success { display: none; text-align: center; padding: 20px 0; }
+    </style>
+</head>
+<body class="noise">
+
+    <!-- ══════ GLOBAL STARS ══════ -->
+    <div class="stars-global" id="starBox">
+        <div class="s-layer s1"><div class="s-dot" id="d1" style="width:1px;height:1px"></div><div class="s-dot-c" id="d1c" style="width:1px;height:1px"></div></div>
+        <div class="s-layer s2"><div class="s-dot" id="d2" style="width:2px;height:2px"></div><div class="s-dot-c" id="d2c" style="width:2px;height:2px"></div></div>
+        <div class="s-layer s3"><div class="s-dot" id="d3" style="width:2.5px;height:2.5px"></div><div class="s-dot-c" id="d3c" style="width:2.5px;height:2.5px"></div></div>
+    </div>
+
+    <!-- ══════════════ NAV ══════════════ -->
+    <nav class="fixed inset-x-0 top-0 z-50" style="background: rgba(10,10,10,0.7); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-[72px]">
+            <a href="#" class="font-display text-sm tracking-[0.15em] text-white/70 hover:text-[#C8D2DC] transition-colors duration-700 uppercase">Silverwind</a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#how" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Как это работает</a>
+                <a href="#program" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Программа</a>
+                <a href="#tariffs" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Тарифы</a>
+                <a href="https://t.me/silverwind_care" target="_blank" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Задать вопрос</a>
+                <a href="https://t.me/+Hs6HMf698N1iZDM6" target="_blank" class="text-[11px] tracking-[0.1em] uppercase ml-2 px-7 py-2.5 rounded-full font-medium transition-all duration-500 hover:shadow-[0_0_20px_rgba(168,180,190,0.25)]" style="background: linear-gradient(135deg, #A8B4BE 0%, #b0bcc6 40%, #d0d8de 60%, #A8B4BE 100%); color: #0e1318; border: 1px solid rgba(168,180,190,0.4); text-shadow: none;">Занять место</a>
+            </div>
+            <button id="menuBtn" class="md:hidden text-white/40 p-2" aria-label="Меню">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 17h16"/></svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden px-6 pb-6 pt-2 flex flex-col gap-4" style="border-top: 1px solid rgba(255,255,255,0.03);">
+            <a href="#how" class="text-sm tracking-wide text-white/35">Как это работает</a>
+            <a href="#program" class="text-sm tracking-wide text-white/35">Программа</a>
+            <a href="#tariffs" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Тарифы</a>
+            <a href="https://t.me/silverwind_care" target="_blank" class="text-sm tracking-wide text-white/35">Задать вопрос</a>
+            <a href="https://t.me/+Hs6HMf698N1iZDM6" target="_blank" class="mt-1 text-center text-sm px-6 py-3 rounded-full font-medium" style="background: linear-gradient(135deg, #A8B4BE 0%, #b0bcc6 40%, #d0d8de 60%, #A8B4BE 100%); color: #0e1318; border: 1px solid rgba(168,180,190,0.4);">Занять место</a>
+        </div>
+    </nav>
+
+    <!-- ══════════════ HERO ══════════════ -->
+    <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style="background: var(--bg);">
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse 100% 70% at 50% 110%, #0f1419 0%, var(--bg) 65%);">
+        </div>
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute w-[700px] h-[700px] rounded-full blur-[200px]" style="top:5%;left:5%;background:rgba(168,180,190,0.035);animation:pulse1 14s ease-in-out infinite;"></div>
+            <div class="absolute w-[500px] h-[500px] rounded-full blur-[180px]" style="bottom:0;right:0;background:rgba(165,240,224,0.025);animation:pulse2 18s ease-in-out infinite 6s;"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-5xl mx-auto px-6 md:px-12 text-center pt-36 pb-28 md:pt-44 md:pb-36">
+            <div class="enter e1 mb-8 md:mb-10">
+                <h1 class="shiny-text font-display leading-[1.1] text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4.2rem] font-bold tracking-[0.06em] uppercase">
+                    ВАША РЕАЛЬНОСТЬ — ЭТО ЗЕРКАЛО
+                </h1>
+            </div>
+            <p class="enter e2 font-body text-[14px] md:text-[16px] font-light leading-[2] tracking-wide mb-10 md:mb-14 text-white/70">
+                Хотите изменить картинку — измените того, кто стоит напротив
+            </p>
+            <div class="divider w-12 md:w-16 h-px mx-auto mb-10 md:mb-14" style="background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.3;"></div>
+            <p class="enter e3 max-w-2xl mx-auto text-[14px] md:text-[16px] leading-[2] font-light tracking-wide font-body mb-6 md:mb-8 text-white/80">
+                Глубинная трансформация внутренних программ, которые управляют вашими деньгами, отношениями, самоценностью и&nbsp;реализацией
+            </p>
+            <p class="enter e3 font-display text-[11px] tracking-[0.22em] uppercase mb-14 md:mb-18" style="color:var(--accent);">Онлайн-программа · 1 месяц</p>
+            <div class="enter e4 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-16">
+                <a href="#tariffs" class="star-btn w-full sm:w-auto px-12 py-5 md:px-16 md:py-6 text-[13px] md:text-[14px] tracking-[0.08em] uppercase font-body" data-star-btn>
+                    <div class="star-light"></div>
+                    <div class="star-bg">
+                        <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#sc1)"><path d="M32.34 26.68C32.34 26.3152 32.0445 26.02 31.68 26.02C31.3155 26.02 31.02 26.3152 31.02 26.68C31.02 27.0448 31.3155 27.34 31.68 27.34C32.0445 27.34 32.34 27.0448 32.34 26.68Z" fill="#0A0A0A"/><path fill-rule="evenodd" clip-rule="evenodd" d="M56.1 3.96C56.4645 3.96 56.76 4.25519 56.76 4.62C56.76 4.98481 56.4645 5.28 56.1 5.28C55.9131 5.28 55.7443 5.20201 55.624 5.07762C55.5632 5.01446 55.5147 4.93904 55.4829 4.8559C55.4552 4.78243 55.44 4.70315 55.44 4.62C55.44 4.5549 55.4494 4.49174 55.4668 4.43244C55.4906 4.35188 55.5292 4.27775 55.5795 4.21329C55.7004 4.05926 55.8885 3.96 56.1 3.96ZM40.26 17.16C40.6245 17.16 40.92 17.4552 40.92 17.82C40.92 18.1848 40.6245 18.48 40.26 18.48C39.8955 18.48 39.6 18.1848 39.6 17.82C39.6 17.4552 39.8955 17.16 40.26 17.16ZM74.58 5.28C74.7701 5.28 74.9413 5.36057 75.0618 5.48882C75.073 5.50043 75.0837 5.51268 75.094 5.52557C75.1088 5.54426 75.1231 5.56359 75.1359 5.58357L75.1479 5.60291L75.1595 5.62353C75.1711 5.64481 75.1814 5.66672 75.1906 5.68928C75.2226 5.76662 75.24 5.85106 75.24 5.94C75.24 6.1585 75.1336 6.3525 74.9699 6.47238C74.9158 6.51234 74.8555 6.54393 74.7908 6.56584C74.7247 6.58775 74.6538 6.6 74.58 6.6C74.2156 6.6 73.92 6.30481 73.92 5.94C73.92 5.87684 73.929 5.8156 73.9455 5.7576C73.9596 5.70862 73.979 5.66221 74.0032 5.61903C74.0657 5.50688 74.1595 5.41471 74.2728 5.35541C74.3647 5.30707 74.4691 5.28 74.58 5.28ZM21.66 33.52C22.0245 33.52 22.32 33.8152 22.32 34.18C22.32 34.5448 22.0245 34.84 21.66 34.84C21.2955 34.84 21 34.5448 21 34.18C21 33.8152 21.2955 33.52 21.66 33.52ZM8.16 32.86C8.16 32.4952 7.8645 32.2 7.5 32.2C7.1355 32.2 6.84 32.4952 6.84 32.86C6.84 33.2248 7.1355 33.52 7.5 33.52C7.8645 33.52 8.16 33.2248 8.16 32.86ZM7.5 23.68C7.8645 23.68 8.16 23.9752 8.16 24.34C8.16 24.7048 7.8645 25 7.5 25C7.1355 25 6.84 24.7048 6.84 24.34C6.84 23.9752 7.1355 23.68 7.5 23.68ZM19.32 18.48C19.32 18.1152 19.0245 17.82 18.66 17.82C18.2955 17.82 18 18.1152 18 18.48C18 18.8448 18.2955 19.14 18.66 19.14C19.0245 19.14 19.32 18.8448 19.32 18.48ZM5.66 11.84C6.0245 11.84 6.32001 12.1352 6.32001 12.5C6.32001 12.8648 6.0245 13.16 5.66 13.16C5.2955 13.16 5 12.8648 5 12.5C5 12.1352 5.2955 11.84 5.66 11.84ZM35.16 35.5C35.16 35.1352 34.8645 34.84 34.5 34.84C34.1355 34.84 33.84 35.1352 33.84 35.5C33.84 35.8648 34.1355 36.16 34.5 36.16C34.8645 36.16 35.16 35.8648 35.16 35.5ZM53.5 36.18C53.8645 36.18 54.16 36.4752 54.16 36.84C54.16 37.2048 53.8645 37.5 53.5 37.5C53.1355 37.5 52.84 37.2048 52.84 36.84C52.84 36.4752 53.1355 36.18 53.5 36.18ZM48.5 28.66C48.5 28.2952 48.2045 28 47.84 28C47.4755 28 47.18 28.2952 47.18 28.66C47.18 29.0248 47.4755 29.32 47.84 29.32C48.2045 29.32 48.5 29.0248 48.5 28.66ZM60.34 27.34C60.7045 27.34 61 27.6352 61 28C61 28.3648 60.7045 28.66 60.34 28.66C59.9755 28.66 59.68 28.3648 59.68 28C59.68 27.6352 59.9755 27.34 60.34 27.34ZM56.284 16.5C56.284 16.1352 55.9885 15.84 55.624 15.84C55.2595 15.84 54.964 16.1352 54.964 16.5C54.964 16.8648 55.2595 17.16 55.624 17.16C55.9885 17.16 56.284 16.8648 56.284 16.5ZM46.2 7.26C46.2 6.89519 45.9045 6.6 45.54 6.6C45.1755 6.6 44.88 6.89519 44.88 7.26C44.88 7.62481 45.1755 7.92 45.54 7.92C45.9045 7.92 46.2 7.62481 46.2 7.26ZM33 9.34C33 8.9752 32.7045 8.68 32.34 8.68C31.9755 8.68 31.68 8.9752 31.68 9.34C31.68 9.7048 31.9755 10 32.34 10C32.7045 10 33 9.7048 33 9.34ZM16 4.8559C16.3645 4.8559 16.66 5.1511 16.66 5.5159C16.66 5.8807 16.3645 6.1759 16 6.1759C15.6355 6.1759 15.34 5.8807 15.34 5.5159C15.34 5.1511 15.6355 4.8559 16 4.8559ZM69.66 21.16C69.66 20.7952 69.3645 20.5 69 20.5C68.6355 20.5 68.34 20.7952 68.34 21.16C68.34 21.5248 68.6355 21.82 69 21.82C69.3645 21.82 69.66 21.5248 69.66 21.16ZM80.52 15.18C80.52 14.8152 80.2245 14.52 79.86 14.52C79.4956 14.52 79.2 14.8152 79.2 15.18C79.2 15.5448 79.4956 15.84 79.86 15.84C80.2245 15.84 80.52 15.5448 80.52 15.18ZM85.66 24.34C86.0245 24.34 86.32 24.6352 86.32 25C86.32 25.3648 86.0245 25.66 85.66 25.66C85.2955 25.66 85 25.3648 85 25C85 24.6352 85.2955 24.34 85.66 24.34ZM91.32 10C91.32 9.6352 91.0245 9.34 90.66 9.34C90.2955 9.34 90 9.6352 90 10C90 10.3648 90.2955 10.66 90.66 10.66C91.0245 10.66 91.32 10.3648 91.32 10Z" fill="#0A0A0A"/></g><defs><clipPath id="sc1"><rect width="100" height="40" fill="white"/></clipPath></defs></svg>
+                    </div>
+                    <span class="star-text">Присоединиться к программе</span>
+                    <svg class="w-4 h-4 relative z-10" style="color: #ccc;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                </a>
+                <a href="#results" class="cta-ghost w-full sm:w-auto inline-flex items-center justify-center px-12 py-5 md:px-16 md:py-6 rounded-full text-[13px] md:text-[14px] tracking-[0.04em] font-body font-light">
+                    Посмотреть результаты
+                </a>
+            </div>
+        </div>
+        <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to bottom, var(--bg) 0%, transparent 12%, transparent 88%, var(--bg) 100%);"></div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 bob">
+            <svg class="w-5 h-5" style="color: rgba(165,240,224,0.15);" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7"/></svg>
+        </div>
+    </section>
+
+    <!-- ══════════════ КАК ЭТО РАБОТАЕТ ══════════════ -->
+    <section id="how" class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
+            <p class="reveal font-display text-[1.2rem] md:text-[1.7rem] lg:text-[2rem] font-light leading-[1.5] tracking-[0.02em] text-white text-center mb-16 md:mb-20 max-w-3xl mx-auto">
+                Борьба с внешним миром лишь закрепляет вас в деструктивном сценарии и не дает его изменить
+            </p>
+
+            <!-- Phone frame -->
+            <div class="phone-frame mx-auto">
+                <!-- Dynamic island -->
+                <div class="phone-island"></div>
+                <!-- Status bar -->
+                <div class="phone-statusbar">
+                    <span>9:41</span>
+                    <div style="display:flex;align-items:center;gap:5px;">
+                        <svg width="17" height="12" viewBox="0 0 17 12" fill="rgba(255,255,255,0.75)"><rect x="0" y="8" width="3" height="4" rx="0.6"/><rect x="4.5" y="5" width="3" height="7" rx="0.6"/><rect x="9" y="2" width="3" height="10" rx="0.6"/><rect x="13.5" y="0" width="3" height="12" rx="0.6" opacity="0.35"/></svg>
+                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="rgba(255,255,255,0.75)" stroke-linecap="round"><circle cx="8" cy="11" r="1" fill="rgba(255,255,255,0.75)" stroke="none"/><path d="M4.5 8a5 5 0 017 0" stroke-width="1.4"/><path d="M1.5 5a9 9 0 0113 0" stroke-width="1.4" opacity="0.45"/></svg>
+                        <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.5" y="0.5" width="22" height="12" rx="2.5" stroke="rgba(255,255,255,0.45)" stroke-width="1"/><rect x="23" y="4" width="2.5" height="5" rx="1.5" fill="rgba(255,255,255,0.35)"/><rect x="2" y="2" width="16" height="9" rx="1.5" fill="rgba(255,255,255,0.78)"/></svg>
+                    </div>
+                </div>
+                <!-- Contact header -->
+                <div class="phone-contact-hdr">
+                    <button style="color:rgba(255,255,255,0.45);font-size:24px;line-height:1;margin-right:2px;">‹</button>
+                    <div class="phone-ava">✦</div>
+                    <div style="flex:1;">
+                        <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,0.9);font-family:'Inter',sans-serif;">Реальность</p>
+                        <p style="font-size:11px;color:rgba(168,180,190,0.65);font-family:'Inter',sans-serif;">в сети</p>
+                    </div>
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"><path stroke-linecap="round" d="M2.25 6.75c0-1.1.89-1.99 2-1.99l2.2.48c.43.1.77.43.88.85l.87 2.85c.12.4-.03.84-.37 1.1L6.54 11.3A10 10 0 0012.7 17.5l1.27-1.28c.27-.27.65-.4 1.03-.33l2.92.83c.43.12.74.48.82.92l.48 2.2c.18.9-.56 1.72-1.48 1.72A16.5 16.5 0 012.25 6.75z"/></svg>
+                </div>
+                <!-- Messages -->
+                <div class="phone-msgs" id="chatDialogue">
+                    <!-- Диалог 1 -->
+                    <div class="chat-msg-anim" style="opacity:0;transform:translateY(12px);transition:opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);">
+                        <div class="phone-msg-out">
+                            <div class="bubble-out">Мужчины в наше время — это ужас, опять попался какой-то безответственный, ничего делать для меня не хочет. И где мне найти нормального? Наверное нужно сменить город / страну / работу, может тогда получится.. Или вообще откажусь от идеи строить отношения.</div>
+                        </div>
+                    </div>
+                    <div class="chat-msg-anim" style="opacity:0;transform:translateY(12px);transition:opacity 0.5s ease 0.3s, transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.3s;">
+                        <div class="phone-msg-in mt-1">
+                            <div class="bubble-in">Но ведь в мире огромное количество разных мужчин. Своим вниманием ты выбираешь именно тех, кто соответствует твоим же внутренним программам и убеждениям. Изменив их — изменится реальность и мужчины вокруг. Пока продолжу отражать то, что есть внутри тебя прямо сейчас.</div>
+                        </div>
+                    </div>
+                    <!-- Диалог 2 -->
+                    <div class="chat-msg-anim" style="opacity:0;transform:translateY(12px);transition:opacity 0.5s ease 0.6s, transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.6s;">
+                        <div class="phone-msg-out">
+                            <div class="bubble-out">А ещё — я чувствую в себе потенциал, так хотела бы иметь любимое дело, быть свободной, реализовать себя, но с чего начать я даже не понимаю.. Страшно, а кто что подумает? А вдруг не получится?</div>
+                        </div>
+                    </div>
+                    <div class="chat-msg-anim" style="opacity:0;transform:translateY(12px);transition:opacity 0.5s ease 0.9s, transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.9s;">
+                        <div class="phone-msg-in mt-1">
+                            <div class="bubble-in">То, что ты чувствуешь нереализованный потенциал — не случайность. Он есть. Чтобы раскрыть его, нужно трансформировать программы нелюбви к себе, обесценивания и отсутствия веры в себя. А пока продолжу выполнять свою функцию — отражать то, что есть в тебе прямо сейчас.</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decorative input bar -->
+                <div class="phone-input-row">
+                    <div class="phone-input-pill">Сообщение</div>
+                    <div class="phone-send-btn">↑</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+    <!-- ══════════════ КОМУ ПОДОЙДЁТ ══════════════ -->
+    <section id="who" class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+            <h2 class="reveal font-display text-[1.2rem] md:text-[1.7rem] lg:text-[2rem] font-light tracking-[0.02em] text-center mb-20 md:mb-24 text-white leading-[1.4]" style="max-width:860px;margin-left:auto;margin-right:auto;">
+                Выход из деструктивного сценария — следствие внутренней перепрошивки мышления
+            </h2>
+
+            <!-- Кому подойдёт -->
+            <p class="reveal font-display text-[11px] tracking-[0.2em] uppercase text-center mb-12" style="color: var(--accent); opacity: 0.6;">Кому подойдёт эта программа</p>
+
+            <div class="space-y-4">
+
+                <div class="reveal p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05);">
+                    <p class="font-display text-[11px] tracking-[0.18em] uppercase mb-3" style="color: var(--accent); opacity: 0.75;">Отношения:</p>
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Попадаются «не те» — безответственные, не проявляются, не ценят. Не получается встретить подходящего человека, хотя очень хочется. Повторяются одни и те же сценарии, как будто по кругу.</p>
+                </div>
+
+                <div class="reveal p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05);">
+                    <p class="font-display text-[11px] tracking-[0.18em] uppercase mb-3" style="color: var(--accent); opacity: 0.75;">Деньги:</p>
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Нет желаемого дохода, зависимость от партнёра или родителей. Долги, страх потерять деньги, постоянное напряжение вокруг темы. Деньги приходят и уходят, не задерживаются, сложно накопить.</p>
+                </div>
+
+                <div class="reveal p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05);">
+                    <p class="font-display text-[11px] tracking-[0.18em] uppercase mb-3" style="color: var(--accent); opacity: 0.75;">Реализация:</p>
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Хотите найти своё дело, но страшно начинать, не понимаете с чего. Работаете в найме, чувствуете нереализованный потенциал внутри. Стоите на месте — страх осуждения, провала, «а вдруг не получится».</p>
+                </div>
+
+                <div class="reveal p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05);">
+                    <p class="font-display text-[11px] tracking-[0.18em] uppercase mb-3" style="color: var(--accent); opacity: 0.75;">Самоценность:</p>
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Не чувствуете себя достойной лучшего, сомневаетесь в себе. Реальность не устраивает, хочется другого, но как — непонятно. Ставите чужие потребности выше своих, сложно говорить «нет».</p>
+                </div>
+
+                <div class="reveal shiny-media shiny-silver" style="border-radius: 18px;">
+                    <div class="p-7 md:p-8" style="border-radius: 16px; background: rgba(10,10,10,0.95);">
+                        <p class="text-[14px] md:text-[15px] leading-[1.9] text-white">Вы готовы работать над собой, понимаете, что любые внешние инструменты и информация — это не волшебная таблетка, и хотите изменить своё мышление и жизнь.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+    <!-- ══════════════ ПРОГРАММА ══════════════ -->
+    <section id="program" class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
+            <h2 class="reveal font-display text-[1.4rem] md:text-[2rem] font-bold tracking-[0.04em] uppercase text-center mb-14 md:mb-16 text-white">
+                Что входит в онлайн-программу
+            </h2>
+
+            <div class="flex flex-col gap-4">
+
+                <!-- Блок 1 -->
+                <div class="reveal rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b1')">
+                        <div>
+                            <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 1</p>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Мироустройство</h3>
+                        </div>
+                        <span id="b1-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
+                    </button>
+                    <div id="b1" style="display:none;padding:0 28px 28px;">
+                        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
+                            <p class="lesson-item">Урок 1. Перепрошивка мышления. То, без чего менять реальность невозможно</p>
+                            <p class="lesson-item">Урок 2. Мир — и есть вы. У каждого своя персональная симуляция. Что это значит и как этим управлять</p>
+                            <p class="lesson-item">Урок 3. Как выйти из лимитов и ограничений ума</p>
+                            <p class="lesson-item">Урок 4. Если что-то проявилось в материальном мире, то только потому, что оно имело корень в вашем сознании</p>
+                            <p class="lesson-item">Урок 5. Про природу ума и физическую реальность</p>
+                            <p class="lesson-item">Урок 6. Вы — широкое сознание, а личность является лишь частью вас</p>
+                            <p class="lesson-item">Урок 7. Как менять идентичность, чтобы поменять реальность</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок 2 -->
+                <div class="reveal rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b2')">
+                        <div>
+                            <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 2</p>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Перепрошивка бессознательных программ</h3>
+                        </div>
+                        <span id="b2-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
+                    </button>
+                    <div id="b2" style="display:none;padding:0 28px 28px;">
+                        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
+                            <p class="lesson-item">Урок 1. Реальность меняет смена наблюдения, какое место во всем этом занимают программы и работа с ними</p>
+                            <p class="lesson-item">Урок 2. Что такое программы и как они создают вашу реальность</p>
+                            <p class="lesson-item">Урок 3. В мире все правды и все линии сосуществуют, своим вниманием вы просто выбираете</p>
+                            <p class="lesson-item">Урок 4. Как находить программы, которые создают вашу реальность. Конкретные методы 1–2</p>
+                            <p class="lesson-item">Урок 5. Как находить программы, которые создают вашу реальность. Конкретные методы 3–5</p>
+                            <p class="lesson-item">Урок 6. Как трансформировать любую программу. Конкретные шаги</p>
+                            <p class="lesson-item">Урок 7. Программы ума и истинный голос: как отличать?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок 3 -->
+                <div class="reveal rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b3')">
+                        <div>
+                            <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 3</p>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Отделение от семейной системы</h3>
+                        </div>
+                        <span id="b3-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
+                    </button>
+                    <div id="b3" style="display:none;padding:0 28px 28px;">
+                        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
+                            <p class="lesson-item">Урок 1. Роль семейной системы и рода</p>
+                            <p class="lesson-item">Урок 2. Через какие три точки формируется восприятие в семейной системе</p>
+                            <p class="lesson-item">Урок 3. Как лояльность к роду не даёт начать жить свою жизнь</p>
+                            <p class="lesson-item">Урок 4. Выявление программ через семейную систему</p>
+                            <p class="lesson-item">Урок 5. Как ваше бессознательное создаёт реальность и события</p>
+                            <p class="lesson-item">Урок 6. Как перепрошить бессознательное</p>
+                            <p class="lesson-item">Урок 7. Суть инструмента перепрошивки бессознательного</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок 4 -->
+                <div class="reveal rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b4')">
+                        <div>
+                            <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 4</p>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Деньги · Отношения · Реализация</h3>
+                        </div>
+                        <span id="b4-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
+                    </button>
+                    <div id="b4" style="display:none;padding:0 28px 28px;">
+                        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
+                            <p class="lesson-item">Урок 1. Что такое на самом деле реализация?</p>
+                            <p class="lesson-item">Урок 2. Как найти себя и любимое дело?</p>
+                            <p class="lesson-item">Урок 3. Разбор программ, из-за которых вы не реализованы</p>
+                            <p class="lesson-item">Урок 4. Главный закон денег</p>
+                            <p class="lesson-item">Урок 5. Как создать изобилие в своей жизни</p>
+                            <p class="lesson-item">Урок 6. Разбор программ, из-за которых вы живёте в денежном дефиците</p>
+                            <p class="lesson-item">Урок 7. Как создать желаемые отношения</p>
+                            <p class="lesson-item">Урок 8. Любые отношения и партнёры — наше зеркало</p>
+                            <p class="lesson-item">Урок 9. Разбор программ, из-за которых вы не можете создать желаемые отношения</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Бонусы -->
+                <div class="reveal rounded-2xl overflow-hidden" style="background: rgba(168,180,190,0.04); border: 1px solid rgba(168,180,190,0.15);">
+                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b5')">
+                        <div>
+                            <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent);">Бонусы</p>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Бонусные подкасты и практики</h3>
+                        </div>
+                        <span id="b5-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
+                    </button>
+                    <div id="b5" style="display:none;padding:0 28px 28px;">
+                        <div style="border-top:1px solid rgba(168,180,190,0.15);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
+                            <p class="lesson-item">Вы как сознание можете создать всё, если осознаванием сужаться в личность — это всегда будет ограниченная версия реальности</p>
+                            <p class="lesson-item">Ключевое, что нужно сделать, чтобы отделиться от семейной системы и позволить себе свою жизнь</p>
+                            <p class="lesson-item">Связь денег и удовольствия, почему она прямая и как этим управлять</p>
+                            <p class="lesson-item">Как менять реальность — метод 1</p>
+                            <p class="lesson-item">Как менять реальность — метод 2</p>
+                            <p class="lesson-item">Ключевое в изменениях — не отождествлять себя с картинками, которые наблюдаете; вы в любой момент можете всё изменить</p>
+                            <p class="lesson-item">Почему «как» что-то проявится — это ловушка и вам не нужно об этом задумываться при осознанном проявлении желаемого</p>
+                            <p class="lesson-item">Жизнь из женского начала в отношениях ≠ инфантильность</p>
+                            <p class="lesson-item">Как понять, уходить от мужчины или возвращаться — про расставание и почему это уже поверхность</p>
+                            <p class="lesson-item">Как убрать внутреннего бомжа и выйти из программы дефицита</p>
+                            <p class="lesson-item">Возможный этап перед тем, как вы полностью уберёте бессознательную программу</p>
+                            <p class="lesson-item">Про деньги</p>
+                            <p class="lesson-item">Как перестать быть для всех спасателем</p>
+                            <p class="lesson-item">Большой подкаст про тело: как начать выглядеть так, как вам хочется</p>
+                            <p class="lesson-item">Как понять, почему вызывают сильные эмоции и/или триггерят слабые / богатые / другие люди — почему это всегда про вас и как брать из этого свою силу</p>
+                            <p class="lesson-item">Про экономию и страх потратить — как выйти из этого паттерна</p>
+                            <p class="lesson-item">Как перестать себя со всеми сравнивать</p>
+                            <p class="lesson-item">🎧 Практика — исцеление бессознательного чувства</p>
+                            <p class="lesson-item">🎧 Практика — проживание идеального дня</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <style>
+        .block-toggle { background: none; border: none; cursor: pointer; }
+        .block-toggle:hover h3 { color: var(--accent); transition: color 0.2s; }
+        .lesson-item { font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.9); padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.02); cursor: default; transition: color 0.25s ease, background 0.25s ease; }
+        .lesson-item:hover { color: #A8B4BE; background: rgba(168,180,190,0.06); }
+    </style>
+    <script>
+        function toggleBlock(id) {
+            var el = document.getElementById(id);
+            var icon = document.getElementById(id + '-icon');
+            var isOpen = el.style.display !== 'none';
+            el.style.display = isOpen ? 'none' : 'block';
+            icon.textContent = isOpen ? '+' : '×';
+            icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(0deg)';
+        }
+    </script>
+
+
+    <div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+    <!-- ══════════════ ТАРИФЫ ══════════════ -->
+    <section id="tariffs" class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+            <h2 class="reveal font-display text-[1.4rem] md:text-[2rem] font-bold tracking-[0.04em] uppercase text-center mb-16 md:mb-20 text-white">
+                Тарифы
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
+
+                <!-- Тариф 1 — Базовый -->
+                <div class="reveal rounded-2xl p-8 md:p-9 flex flex-col" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); position:relative; overflow:hidden;">
+                    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;overflow:hidden;"><div style="position:absolute;width:1px;height:1px;border-radius:50%;"></div></div>
+                    <div style="position:relative;z-index:1;display:contents;">
+                    <div class="flex items-start gap-3 mb-5">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);">1</span>
+                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Базовый</h3>
+                    </div>
+                    <p class="text-[13px] text-white/30 mb-6"></p>
+                    <ul class="space-y-2 mb-5 flex-grow">
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">25+ аудиоуроков по блокам:</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Перепрошивка программ</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги, отношения, реализация</li>
+                    </ul>
+                    <div class="mb-7 p-3 rounded-xl" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
+                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +1 месяц после окончания основного срока</p>
+                    </div>
+                    <button disabled style="width:100%;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;color:rgba(255,255,255,0.2);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:default;">Набор закрыт</button>
+                    </div>
+                </div>
+
+                <!-- Тариф 2 — Базовый плюс с AI куратором -->
+                <div class="reveal rounded-2xl p-8 md:p-9 flex flex-col relative" style="background: rgba(168,180,190,0.04); border: 1px solid rgba(168,180,190,0.15);">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] tracking-[0.15em] uppercase font-semibold" style="background: var(--accent); color: #0A0A0A;">Популярный</div>
+                    <div class="flex items-start gap-3 mb-5">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);">2</span>
+                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Базовый +</h3>
+                    </div>
+                    <p class="text-[13px] text-white/30 mb-6"></p>
+                    <ul class="space-y-2 mb-4 flex-grow">
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">25+ аудиоуроков по блокам:</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Перепрошивка программ</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги, отношения, реализация</li>
+
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">20 бонусных подкастов по темам:</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про расставание и как понять уходить или нет</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать себя сравнивать с другими</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать быть для всех спасателем</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про деньги, триггеры, изменения и другие темы</li>
+
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">2 нейропрактики</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Исцеление бессознательного чувства</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Проживание идеального дня</li>
+
+                        <li class="flex items-start gap-3 text-[14px] text-white mt-3"><span style="color: var(--accent);">✓</span> Сопровождение моего клона — AI куратора на протяжении месяца 24/7</li>
+                        <li class="flex items-start gap-3 text-[14px] text-white"><span style="color: var(--accent);">✓</span> 2-часовая личная консультация со мной</li>
+                    </ul>
+                    <div class="mb-7 p-3 rounded-xl" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
+                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +2 месяца после окончания основного срока</p>
+                    </div>
+                    <button disabled style="width:100%;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;color:rgba(255,255,255,0.2);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:default;">Набор закрыт</button>
+                </div>
+
+                <!-- Тариф 3 — Личное сопровождение -->
+                <div class="reveal rounded-2xl p-8 md:p-9 flex flex-col" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);">
+                    <div class="flex items-start gap-3 mb-5">
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);margin-top:2px;">3</span>
+                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Личное сопровождение</h3>
+                    </div>
+                    <ul class="space-y-2 mb-4 flex-grow">
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">25+ аудиоуроков по блокам:</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Перепрошивка программ</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги, отношения, реализация</li>
+
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">20 бонусных подкастов по темам:</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про расставание и как понять уходить или нет</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать себя сравнивать с другими</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать быть для всех спасателем</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про деньги, триггеры, изменения и другие темы</li>
+
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">2 нейропрактики</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Исцеление бессознательного чувства</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Проживание идеального дня</li>
+
+                        <li class="flex items-start gap-3 text-[14px] text-white mt-3"><span style="color: var(--accent);">✓</span> Сопровождение моего клона — AI куратора на протяжении месяца 24/7</li>
+                        <li class="flex items-start gap-3 text-[14px] text-white"><span style="color: var(--accent);">✓</span> Личный чат со мной на протяжении месяца</li>
+                        <li class="flex items-start gap-3 text-[14px] text-white"><span style="color: var(--accent);">✓</span> 5 двухчасовых созвонов 1 на 1</li>
+                    </ul>
+                    <div class="mb-7 p-3 rounded-xl space-y-2" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
+                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +6 месяцев после окончания основного срока</p>
+                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к закрытому клубу в подарок</p>
+                    </div>
+                    <button disabled style="width:100%;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;color:rgba(255,255,255,0.2);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:default;">Набор закрыт</button>
+                </div>
+
+            </div>
+
+
+        </div>
+    </section>
+
+    <div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+    <!-- ══════════════ РЕЗУЛЬТАТЫ ══════════════ -->
+    <section id="results" class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+            <h2 class="reveal font-display text-[1.4rem] md:text-[2rem] font-bold tracking-[0.04em] uppercase text-center mb-16 md:mb-20 text-white">
+                Результаты
+            </h2>
+
+            <!-- Текстовые отзывы + кружочки вперемешку -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 mb-16" style="align-items: start;">
+
+                <!-- 1 — +100к -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">долги, жизнь в нехватке, дефицитное мышление</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">мышление изобилия, изменение программ дефицита. <span style="color:#fff;font-weight:600;">Как результат на материи: +100 000₽ из разных источников</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="100tys.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- 2 — Предложение -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">страхи в отношениях, сомнения по поводу намерений партнёра</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">проработка страхов и освобождение от убеждений, которые мешали. <span style="color:#fff;font-weight:600;">Как результат на материи: предложение выйти замуж от любимого человека</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="predlozhenie.png" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- 4 — Кружок мужчины -->
+                <div class="reveal flex flex-col gap-5 items-center">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">вокруг мужчины, которые не хотят ничего серьёзного и не заботятся</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">изменение внутренних программ и убеждений в теме отношений. <span style="color:#fff;font-weight:600;">Как результат: появление вокруг достойных мужчин, которые проявляются серьёзно впервые в жизни</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media circle" style="width: min(220px, 100%);">
+                        <video class="w-full h-full object-cover" style="aspect-ratio:1;" controls preload="metadata" playsinline>
+                            <source src="kruzhok-muzhchiny.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 3 — Х2 -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">мышление дефицита, заработок через тяжесть, программы в теме денег, нехватка</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">изменение убеждений и программ. <span style="color:#fff;font-weight:600;">Как результат: деньги в лёгкости, увеличение заработка в два раза</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="dva-raza.jpeg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- 5 — Кружок блог -->
+                <div class="reveal flex flex-col gap-5 items-center">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">желание проявляться, вести блог, но много страхов — кто что подумает, из-за этого бездействие</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">перепрошивка страхов и программ. <span style="color:#fff;font-weight:600;">Как результат: исполнила свою мечту — «веду свой блог, выкладываю что хочу и не думаю кто что подумает, начала зарабатывать на рекламе с блога»</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media circle" style="width: min(220px, 100%);">
+                        <video class="w-full h-full object-cover" style="aspect-ratio:1;" controls preload="metadata" playsinline>
+                            <source src="kruzhok-blog.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 6 — Аудио свадьба -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">мужчины, которые изменяют, плохо относятся, не хотят ничего серьёзного</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">внутренние изменения программ, полностью изменилась сфера отношений. <span style="color:#fff;font-weight:600;">Как результат: встреча мужчины мечты, 9 месяцев вместе, скоро свадьба</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media" style="border-radius: 999px;">
+                        <div style="border-radius: 999px; background: #0A0A0A; padding: 14px 20px; display:flex; align-items:center; gap:12px;">
+                            <svg class="flex-shrink-0 w-5 h-5" style="color:var(--accent);opacity:0.7;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                            <audio controls preload="metadata" style="flex:1;min-width:0;height:32px;accent-color:#A8B4BE;">
+                                <source src="audio-svadba..mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Новые отзывы -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16" style="align-items:start;">
+
+                <!-- Айфон -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">стыдно просить, заявлять о своих желаниях</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;font-weight:600;">лёгкое получение ресурсов от мира</span>
+                        </p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="otzyv-iphone.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- Муж 1 — До -->
+                <div class="reveal flex flex-col gap-5">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">абьюзивные мужчины, которые не настроены серьёзно</span>
+                    </p>
+                    <div class="shiny-media shiny-screen"><img src="otzyv-muzhchina-1.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- Муж 2 — После -->
+                <div class="reveal flex flex-col gap-5">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;font-weight:600;">встреча мужчины мечты, с которым скоро свадьба</span>
+                    </p>
+                    <div class="shiny-media shiny-screen"><img src="otzyv-muzhchina-2.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+
+
+            </div>
+
+            <!-- Видео во всю ширину -->
+            <div class="flex flex-col gap-10">
+
+                <!-- 7 — Видео похудение -->
+                <div class="reveal flex flex-col gap-4">
+                    <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-1" style="color:var(--accent);opacity:0.6;">Видео-отзыв:</p>
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">лишний вес, мужчины, которые не проявляются</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">изменения мышления и программ. <span style="color:#fff;font-weight:600;">Как результат: свобода от страха осуждения и «кто что подумает», свободное проявление в блоге, появление в поле заботливых достойных мужчин, похудение и качественное изменение жизни</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media w-full">
+                        <video class="w-full" controls preload="metadata" playsinline style="max-height:90vh;object-fit:contain;background:#0a0a0a;">
+                            <source src="video-pohudenie.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 8 — Видео 45к -->
+                <div class="reveal flex flex-col gap-4">
+                    <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-1" style="color:var(--accent);opacity:0.6;">Видео-отзыв:</p>
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">страх вести блог, непонимание как, нет клиентов с блога, внутренние убеждения и страхи</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">работа с мышлением и инструментами. <span style="color:#fff;font-weight:600;">Как результат: свобода от страха осуждения и «кто что подумает», свободное проявление в блоге, +45 000₽ с блога с нуля без вложений</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media w-full">
+                        <video class="w-full" controls preload="metadata" playsinline style="max-height:90vh;object-fit:contain;background:#0a0a0a;">
+                            <source src="video-45000.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 9 — Видео 70к -->
+                <div class="reveal flex flex-col gap-4">
+                    <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-1" style="color:var(--accent);opacity:0.6;">Видео-отзыв:</p>
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">блог в ТГ 6 подписчиков, 0 рублей с блога, страхи</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">работа с мышлением и инструментами. <span style="color:#fff;font-weight:600;">Как результат: свобода от страха осуждения и «кто что подумает», свободное проявление в блоге, +70 000₽ с блога с нуля без вложений</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media w-full">
+                        <video class="w-full" controls preload="metadata" playsinline style="max-height:90vh;object-fit:contain;background:#0a0a0a;">
+                            <source src="video-70000.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+    <!-- ══════════════ FAQ ══════════════ -->
+    <section class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-3xl mx-auto px-6 md:px-12">
+            <h2 class="reveal font-display text-[1.4rem] md:text-[2rem] font-bold tracking-[0.04em] uppercase text-center mb-16 md:mb-20 text-white">
+                Частые вопросы
+            </h2>
+
+            <div class="space-y-4">
+                <div class="reveal faq-item rounded-xl" style="border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="text-[15px] text-white/70 font-medium pr-4">Хочу точно понять, подойдет ли мне программа с моим запросом.</span>
+                        <span class="faq-icon text-white/30 text-xl flex-shrink-0">+</span>
+                    </button>
+                    <div class="faq-answer px-6 pb-6">
+                        <p class="text-[14px] leading-[1.8] text-white/40">Основные запросы и темы, которые будут раскрываться на программе: деньги, реализация, отношения, самоценность, родители. Вы можете написать нам в поддержку и описать свой запрос, если хотите уточнить: @silverwind_care (tg)</p>
+                    </div>
+                </div>
+
+                <div class="reveal faq-item rounded-xl" style="border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="text-[15px] text-white/70 font-medium pr-4">Есть ли внутренняя рассрочка, оплата частями?</span>
+                        <span class="faq-icon text-white/30 text-xl flex-shrink-0">+</span>
+                    </button>
+                    <div class="faq-answer px-6 pb-6">
+                        <p class="text-[14px] leading-[1.8] text-white/40">Да, мы предоставляем возможность оплатить частями, для этого напишите в поддержку: @silverwind_care (tg)</p>
+                    </div>
+                </div>
+
+                <div class="reveal faq-item rounded-xl" style="border: 1px solid rgba(255,255,255,0.04);">
+                    <button class="faq-btn w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)">
+                        <span class="text-[15px] text-white/70 font-medium pr-4">Сколько длится программа?</span>
+                        <span class="faq-icon text-white/30 text-xl flex-shrink-0">+</span>
+                    </button>
+                    <div class="faq-answer px-6 pb-6">
+                        <p class="text-[14px] leading-[1.8] text-white/40">Программа по продолжительности 1 месяц.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ ФИНАЛЬНЫЙ CTA ══════════════ -->
+    <section class="relative py-24 md:py-32 text-center" style="background: transparent;">
+        <div class="relative z-10 max-w-3xl mx-auto px-6 md:px-12">
+            <h2 class="reveal font-display text-[1.4rem] md:text-[2.2rem] font-bold tracking-[0.04em] uppercase mb-6 text-white">
+                Готовы изменить свою реальность?
+            </h2>
+            <p class="reveal text-[15px] md:text-[16px] leading-[1.8] text-white/40 mb-12">
+                Начните трансформацию прямо сейчас
+            </p>
+            <a href="#tariffs" class="reveal star-btn px-14 py-6 text-[14px] tracking-[0.08em] uppercase font-body" data-star-btn>
+                <div class="star-light"></div>
+                <div class="star-bg">
+                    <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#sc4)"><path fill-rule="evenodd" clip-rule="evenodd" d="M56.1 3.96C56.4645 3.96 56.76 4.25519 56.76 4.62C56.76 4.98481 56.4645 5.28 56.1 5.28C55.7355 5.28 55.44 4.98481 55.44 4.62C55.44 4.25519 55.7355 3.96 56.1 3.96ZM40.26 17.16C40.6245 17.16 40.92 17.4552 40.92 17.82C40.92 18.1848 40.6245 18.48 40.26 18.48C39.8955 18.48 39.6 18.1848 39.6 17.82C39.6 17.4552 39.8955 17.16 40.26 17.16ZM74.58 5.28C74.9445 5.28 75.24 5.57519 75.24 5.94C75.24 6.30481 74.9445 6.6 74.58 6.6C74.2156 6.6 73.92 6.30481 73.92 5.94C73.92 5.57519 74.2156 5.28 74.58 5.28ZM21.66 33.52C22.0245 33.52 22.32 33.8152 22.32 34.18C22.32 34.5448 22.0245 34.84 21.66 34.84C21.2955 34.84 21 34.5448 21 34.18C21 33.8152 21.2955 33.52 21.66 33.52ZM85.66 24.34C86.0245 24.34 86.32 24.6352 86.32 25C86.32 25.3648 86.0245 25.66 85.66 25.66C85.2955 25.66 85 25.3648 85 25C85 24.6352 85.2955 24.34 85.66 24.34ZM91.32 10C91.32 9.6352 91.0245 9.34 90.66 9.34C90.2955 9.34 90 9.6352 90 10C90 10.3648 90.2955 10.66 90.66 10.66C91.0245 10.66 91.32 10.3648 91.32 10ZM138.6 0H0V46.2H138.6V0Z" fill="#0A0A0A"/></g><defs><clipPath id="sc4"><rect width="100" height="40" fill="white"/></clipPath></defs></svg>
+                </div>
+                <span class="star-text">Выбрать тариф</span>
+                <svg class="w-4 h-4 relative z-10" style="color: #ccc;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <div class="section-line max-w-5xl mx-auto relative z-10"></div>
+
+    <!-- ══════════════ ДРУГИЕ ПРОДУКТЫ ══════════════ -->
+    <section class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+
+            <h2 class="reveal font-display text-[1.4rem] md:text-[2rem] font-bold tracking-[0.04em] uppercase text-center mb-16 md:mb-20 text-white">
+                Другие продукты
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+                <!-- Закрытый клуб -->
+                <a href="club.html" target="_blank" class="reveal group shiny-media block transition-all duration-500 hover:-translate-y-1" style="text-decoration: none; border-radius: 22px;">
+                <div class="p-8 md:p-10 h-full flex flex-col" style="background: linear-gradient(135deg, rgba(168,180,190,0.07) 0%, rgba(168,180,190,0.03) 50%, rgba(165,240,224,0.07) 100%); border-radius: 20px;">
+                    <div class="mb-6">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-6" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.15);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(168,180,190,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-3" style="color: var(--accent); opacity: 0.6;">Сообщество</p>
+                        <h3 class="font-display text-[1.1rem] md:text-[1.25rem] font-semibold uppercase tracking-wide text-white mb-4">Закрытый клуб</h3>
+                        <p class="font-body text-[14px] leading-[1.85]" style="color: rgba(255,255,255,0.45);">Закрытое сообщество единомышленников — практики, разборы, поддержка и развитие в кругу людей на одной волне.</p>
+                    </div>
+                    <div class="flex items-center gap-2 mt-auto" style="color: rgba(168,180,190,0.6);">
+                        <span class="font-display text-[11px] tracking-[0.15em] uppercase">Узнать подробнее</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </div></a>
+
+                <!-- Личная работа 1 на 1 -->
+                <a href="https://t.me/silverwind_care" target="_blank" class="reveal group shiny-media block transition-all duration-500 hover:-translate-y-1" style="text-decoration: none; border-radius: 22px;">
+                <div class="p-8 md:p-10 h-full flex flex-col" style="background: linear-gradient(135deg, rgba(168,180,190,0.07) 0%, rgba(168,180,190,0.03) 50%, rgba(165,240,224,0.07) 100%); border-radius: 20px;">
+                    <div class="mb-6">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-6" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.15);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(168,180,190,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-3" style="color: var(--accent); opacity: 0.6;">Индивидуально</p>
+                        <h3 class="font-display text-[1.1rem] md:text-[1.25rem] font-semibold uppercase tracking-wide text-white mb-4">Личная работа 1 на 1</h3>
+                        <p class="font-body text-[14px] leading-[1.85]" style="color: rgba(255,255,255,0.45);">Глубокая индивидуальная работа — персональный разбор вашей ситуации, трансформация в вашем темпе и с полным вниманием.</p>
+                    </div>
+                    <div class="flex items-center gap-2 mt-auto" style="color: rgba(168,180,190,0.6);">
+                        <span class="font-display text-[11px] tracking-[0.15em] uppercase">Записаться</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:translate-x-1"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </div></a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="relative py-12 md:py-16" style="border-top: 1px solid rgba(255,255,255,0.04);">
+        <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <a href="#" class="font-display text-sm tracking-[0.15em] uppercase shiny-text">Silverwind</a>
+                <div class="flex flex-wrap justify-center gap-6 text-[12px] text-white/25">
+                    <a href="https://t.me/silverwind37" target="_blank" class="hover:text-white/60 transition-colors">Тг канал</a>
+                    <a href="oferta.html" target="_blank" class="hover:text-white/60 transition-colors">Договор оферты</a>
+                    <a href="privacy-policy.html" target="_blank" class="hover:text-white/60 transition-colors">Политика конфиденциальности</a>
+                    <a href="https://t.me/silverwind_care" target="_blank" class="hover:text-white/60 transition-colors">Задать вопрос</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu
+        document.getElementById('menuBtn').onclick = function() { document.getElementById('mobileMenu').classList.toggle('hidden'); };
+        document.querySelectorAll('#mobileMenu a').forEach(function(a) { a.onclick = function() { document.getElementById('mobileMenu').classList.add('hidden'); }; });
+
+        // Card stars (tariff 1)
+        (function() {
+            function cardStars(n, c, W, H) {
+                var s = [];
+                for (var i = 0; i < n; i++) s.push((Math.random()*W|0)+'px '+(Math.random()*H|0)+'px '+c);
+                return s.join(',');
+            }
+            var card = document.getElementById('cardStars');
+            if (card) {
+                var W = 400, H = 500;
+                var d1 = document.getElementById('csd1'), d2 = document.getElementById('csd2');
+                d1.style.boxShadow = cardStars(120, 'rgba(255,255,255,0.45)', W, H);
+                d2.style.boxShadow = cardStars(40, 'rgba(165,240,224,0.35)', W, H);
+            }
+        })();
+
+        // Stars
+        function stars(n, c) { for (var s=[], i=0; i<n; i++) s.push((Math.random()*4000-2000|0)+'px '+(Math.random()*4000-2000|0)+'px '+c); return s.join(','); }
+        var a=stars(700,'rgba(255,255,255,0.5)'), b=stars(250,'rgba(200,240,232,0.4)'), c=stars(80,'rgba(165,240,224,0.35)');
+        document.getElementById('d1').style.boxShadow=a; document.getElementById('d1c').style.boxShadow=a;
+        document.getElementById('d2').style.boxShadow=b; document.getElementById('d2c').style.boxShadow=b;
+        document.getElementById('d3').style.boxShadow=c; document.getElementById('d3c').style.boxShadow=c;
+
+        // Parallax on stars (subtle, whole page)
+        var box=document.getElementById('starBox'),mx=0,my=0,sx=0,sy=0;
+        document.addEventListener('mousemove',function(e){mx=-(e.clientX-innerWidth/2)*0.01;my=-(e.clientY-innerHeight/2)*0.01;});
+        (function tick(){sx+=(mx-sx)*0.03;sy+=(my-sy)*0.03;box.style.transform='translate('+sx+'px,'+sy+'px)';requestAnimationFrame(tick)})();
+
+        // Reveal
+        document.querySelectorAll('.reveal').forEach(function(el){
+            new IntersectionObserver(function(ee){ee.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -60px 0px'}).observe(el);
+        });
+
+        // FAQ
+        function toggleFaq(btn) {
+            var answer = btn.nextElementSibling;
+            var icon = btn.querySelector('.faq-icon');
+            answer.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        // Star Buttons — set offset-path dynamically
+        document.querySelectorAll('[data-star-btn]').forEach(function(btn) {
+            function setPath() {
+                var w = btn.offsetWidth;
+                var h = btn.offsetHeight;
+                var light = btn.querySelector('.star-light');
+                if (light && w && h) {
+                    light.style.offsetPath = "path('M 0 0 H " + w + " V " + h + " H 0 V 0')";
+                }
+            }
+            setPath();
+            window.addEventListener('resize', setPath);
+        });
+
+        // Bubble text labels
+        document.querySelectorAll('.bubble-label-big').forEach(function(el) {
+            var text = el.textContent.trim();
+            var isAccent = el.getAttribute('data-color') === 'accent';
+            // Rebuild as spans, keep any child SVG
+            var svg = el.querySelector('svg');
+            el.innerHTML = '';
+            if (svg) { el.appendChild(svg); el.appendChild(document.createTextNode(' ')); }
+            text.split('').forEach(function(ch) {
+                var s = document.createElement('span');
+                s.className = 'bl-char';
+                s.textContent = ch === ' ' ? '\u00A0' : ch;
+                el.appendChild(s);
+            });
+            el.addEventListener('mouseleave', function() {
+                el.querySelectorAll('.bl-char').forEach(function(s) { s.style.fontWeight = '200'; s.style.opacity = '1'; });
+            });
+            el.querySelectorAll('.bl-char').forEach(function(span, i, all) {
+                span.addEventListener('mouseenter', function() {
+                    all.forEach(function(s, j) {
+                        var dist = Math.abs(i - j);
+                        if (dist === 0) { s.style.fontWeight = '800'; s.style.opacity = '1'; }
+                        else if (dist === 1) { s.style.fontWeight = '500'; s.style.opacity = '0.85'; }
+                        else if (dist === 2) { s.style.fontWeight = '300'; s.style.opacity = '0.6'; }
+                        else { s.style.fontWeight = '200'; s.style.opacity = '0.4'; }
+                    });
+                });
+            });
+        });
+
+        // Chat — simple fade-in on scroll
+        (function() {
+            var msgs = document.querySelectorAll('.chat-msg-anim');
+            if (!msgs.length) return;
+            var started = false;
+            new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && !started) {
+                        started = true;
+                        msgs.forEach(function(el) {
+                            el.style.opacity = '1';
+                            el.style.transform = 'translateY(0)';
+                        });
+                    }
+                });
+            }, {threshold: 0.25}).observe(msgs[0]);
+        })();
+    </script>
+
+    </script>
+
+    <!-- Group Modal -->
+    <div class="offer-modal-overlay" id="groupModal">
+        <div class="offer-modal" style="max-width:420px;text-align:center;">
+            <div class="mb-6" style="color:var(--accent);display:flex;justify-content:center;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+            </div>
+            <p class="font-display text-[11px] tracking-[0.2em] uppercase mb-5" style="color:var(--accent);opacity:0.7;">Тариф с обратной связью</p>
+            <p class="font-body text-[15px] leading-[1.85] mb-8" style="color:rgba(255,255,255,0.75);">
+                Чтобы занять место на тариф с обратной связью, напишите в поддержку и опишите свой запрос
+            </p>
+            <button onclick="event.stopPropagation(); window.open('https://t.me/silverwind_care','_blank');"
+               style="display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:16px 24px;border-radius:9999px;font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4);margin-bottom:12px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.68 7.92c-.12.56-.46.7-.92.44l-2.56-1.88-1.24 1.18c-.14.14-.26.26-.52.26l.18-2.6 4.74-4.28c.2-.18-.04-.28-.32-.1L7.5 14.4l-2.5-.78c-.54-.18-.56-.54.12-.8l9.76-3.76c.46-.16.86.12.76.74z"/></svg>
+                Написать в поддержку
+            </button>
+            <button onclick="closeGroupModal()" style="background:none;border:none;width:100%;padding:12px;font-family:'Inter',sans-serif;font-size:13px;color:rgba(255,255,255,0.25);cursor:pointer;">
+                Закрыть
+            </button>
+        </div>
+    </div>
+
+    <!-- Заявка Modal -->
+    <div class="zayavka-overlay" id="zayavkaModal">
+        <div class="zayavka-modal">
+            <button onclick="closeZayavkaModal()" style="position:absolute;top:18px;right:20px;background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:22px;line-height:1;">×</button>
+
+            <div id="zayavkaForm">
+                <p style="color:var(--accent);font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.7;margin-bottom:10px;">Оставить заявку</p>
+                <h3 id="zayavkaTariffTitle" style="color:#fff;font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;line-height:1.3;"></h3>
+                <p style="color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif;font-size:14px;margin-bottom:28px;">Оставьте контакты — я свяжусь с вами в течение 24 часов</p>
+
+                <input class="zayavka-input" id="zayavkaName" type="text" placeholder="Ваше имя" />
+                <input class="zayavka-input" id="zayavkaPhone" type="text" placeholder="Телефон или Telegram (@username)" />
+                <textarea class="zayavka-input" id="zayavkaComment" placeholder="Комментарий (необязательно)" rows="3" style="resize:none;margin-bottom:14px;"></textarea>
+
+                <button class="zayavka-submit" onclick="submitZayavka()">Отправить заявку</button>
+                <button onclick="closeZayavkaModal()" style="width:100%;padding:12px;background:none;border:none;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;margin-top:6px;">Отмена</button>
+            </div>
+
+            <div class="zayavka-success" id="zayavkaSuccess">
+                <div style="font-size:48px;margin-bottom:16px;">✨</div>
+                <h3 style="color:#fff;font-family:'Unbounded',sans-serif;font-size:20px;font-weight:700;margin-bottom:12px;">Заявка отправлена!</h3>
+                <p style="color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;font-size:15px;line-height:1.7;">Я свяжусь с вами в течение 24 часов 🤍</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Choice Modal -->
+    <div class="zayavka-overlay" id="paymentChoiceModal">
+        <div class="zayavka-modal" style="max-width:480px;">
+            <button onclick="closePaymentChoiceModal()" style="position:absolute;top:18px;right:20px;background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:22px;line-height:1;">×</button>
+            <p style="color:var(--accent);font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.7;margin-bottom:10px;">Доступ прямо сейчас</p>
+            <h3 id="payChoiceTitle" style="color:#fff;font-family:'Unbounded',sans-serif;font-size:17px;font-weight:700;margin-bottom:6px;line-height:1.3;"></h3>
+            <p style="color:rgba(255,255,255,0.4);font-family:'Inter',sans-serif;font-size:13px;margin-bottom:28px;">Выберите удобный формат оплаты</p>
+
+            <!-- Рассрочка -->
+            <button id="payBtnInstallment" onclick="choosePayment('installment')" style="width:100%;margin-bottom:12px;padding:18px 20px;border-radius:16px;background:rgba(168,180,190,0.06);border:1px solid rgba(168,180,190,0.2);cursor:pointer;text-align:left;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(168,180,190,0.12)'" onmouseout="this.style.background='rgba(168,180,190,0.06)'">
+                <div style="color:#fff;font-family:'Unbounded',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;" id="payInstallLabel">0 ₽ сейчас · 2 100 ₽/мес</div>
+                <div style="color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif;font-size:12px;">Рассрочка — первый платёж через месяц</div>
+            </button>
+
+            <!-- Полная оплата -->
+            <button id="payBtnFull" onclick="choosePayment('full')" style="width:100%;margin-bottom:12px;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);cursor:pointer;text-align:left;transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,255,255,0.07)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+                <div style="color:#fff;font-family:'Unbounded',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;" id="payFullLabel">Полная оплата · 25 000 ₽</div>
+                <div style="color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif;font-size:12px;">Единовременно, сразу получаете доступ</div>
+            </button>
+
+            <!-- Консультация (только тариф 2) -->
+            <button id="payBtnConsult" onclick="choosePayment('consult')" style="width:100%;padding:18px 20px;border-radius:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);cursor:pointer;text-align:left;transition:all 0.3s ease;display:none;" onmouseover="this.style.background='rgba(255,255,255,0.07)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+                <div style="color:#fff;font-family:'Unbounded',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;">Консультация</div>
+                <div style="color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif;font-size:12px;">Записаться на включённую 2-часовую встречу</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Личное сопровождение — анкета -->
+    <div class="zayavka-overlay" id="soproModal">
+        <div class="zayavka-modal" style="max-width:480px;">
+            <button onclick="closeSoproModal()" style="position:absolute;top:18px;right:20px;background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:22px;line-height:1;">×</button>
+
+            <div id="soproForm">
+                <p style="color:var(--accent);font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.7;margin-bottom:10px;">Личное сопровождение</p>
+                <h3 style="color:#fff;font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;margin-bottom:12px;line-height:1.3;">Давайте познакомимся</h3>
+                <p style="color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;font-size:14px;line-height:1.7;margin-bottom:24px;">Личное сопровождение — это глубокая работа один на один. Перед стартом я провожу короткий созвон, чтобы услышать ваш запрос и убедиться, что мы подходим друг другу 🤍</p>
+
+                <input class="zayavka-input" id="soproName" type="text" placeholder="Ваше имя" />
+                <input class="zayavka-input" id="soproAge" type="text" placeholder="Возраст" />
+                <input class="zayavka-input" id="soproTg" type="text" placeholder="Telegram (@username)" />
+                <textarea class="zayavka-input" id="soproRequest" placeholder="Ваш запрос — что хотите изменить в жизни?" rows="4" style="resize:none;margin-bottom:14px;"></textarea>
+
+                <button class="zayavka-submit" onclick="submitSopro()">Отправить анкету</button>
+                <button onclick="closeSoproModal()" style="width:100%;padding:12px;background:none;border:none;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;margin-top:6px;">Отмена</button>
+            </div>
+
+            <div class="zayavka-success" id="soproSuccess">
+                <div style="font-size:48px;margin-bottom:16px;">✨</div>
+                <h3 style="color:#fff;font-family:'Unbounded',sans-serif;font-size:20px;font-weight:700;margin-bottom:12px;">Анкета отправлена!</h3>
+                <p style="color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;font-size:15px;line-height:1.7;">Я свяжусь с вами для согласования созвона в течение 24 часов 🤍</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offer Modal -->
+    <div class="offer-modal-overlay" id="offerModal">
+        <div class="offer-modal">
+            <p class="font-display text-[11px] tracking-[0.2em] uppercase mb-6" style="color: var(--accent); opacity: 0.7;">Подтверждение</p>
+            <p class="font-body text-[15px] leading-[1.8] mb-6" style="color: rgba(255,255,255,0.7);">Перед оплатой подтвердите согласие с документами:</p>
+
+            <input type="email" id="offerEmail" placeholder="Ваш email *" required onclick="event.stopPropagation()"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;outline:none;margin-bottom:12px;box-sizing:border-box;"
+                onfocus="this.style.borderColor='rgba(168,180,190,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'"/>
+            <input type="text" id="offerTg" placeholder="Ник в Telegram (например @name) *" onclick="event.stopPropagation()"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 16px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;outline:none;margin-bottom:20px;box-sizing:border-box;"
+                onfocus="this.style.borderColor='rgba(168,180,190,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'"/>
+
+            <label class="offer-checkbox-row mb-8" id="offerCheckboxRow">
+                <span class="offer-checkbox-box">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <polyline points="2,6 5,9 10,3" stroke="#A8B4BE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span class="font-body text-[14px] leading-[1.75]" style="color: rgba(255,255,255,0.6);">
+                    Я ознакомился(-ась) и согласен(-на) с
+                    <a href="oferta.html" target="_blank" style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;" onclick="event.stopPropagation()">Договором оферты</a>
+                    и
+                    <a href="privacy-policy.html" target="_blank" style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;" onclick="event.stopPropagation()">Политикой конфиденциальности</a>
+                </span>
+            </label>
+
+            <button class="offer-pay-btn mb-4" id="offerPayBtn">Перейти к оплате</button>
+
+            <button onclick="closeOfferModal()" class="w-full py-3 font-body text-[13px] transition-colors duration-300" style="background:none;border:none;color:rgba(255,255,255,0.25);cursor:pointer;">
+                Отмена
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function openGroupModal() {
+            document.getElementById('groupModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGroupModal() {
+            document.getElementById('groupModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('groupModal').addEventListener('click', function(e) {
+            if (e.target === this) closeGroupModal();
+        });
+
+        var _offerLink = '';
+
+        function openOfferModal(payLink) {
+            _offerLink = payLink;
+            var modal = document.getElementById('offerModal');
+            var row = document.getElementById('offerCheckboxRow');
+            var btn = document.getElementById('offerPayBtn');
+            document.getElementById('offerEmail').value = '';
+            document.getElementById('offerTg').value = '';
+            row.classList.remove('checked');
+            btn.classList.remove('enabled');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOfferModal() {
+            document.getElementById('offerModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('offerCheckboxRow').addEventListener('click', function() {
+            this.classList.toggle('checked');
+            var btn = document.getElementById('offerPayBtn');
+            if (this.classList.contains('checked')) {
+                btn.classList.add('enabled');
+            } else {
+                btn.classList.remove('enabled');
+            }
+        });
+
+        document.getElementById('offerPayBtn').addEventListener('click', function() {
+            if (_offerLink) {
+                var email = document.getElementById('offerEmail').value.trim();
+                var tg = document.getElementById('offerTg').value.trim();
+                if (!email || !tg) {
+                    if (!email) document.getElementById('offerEmail').style.borderColor = 'rgba(255,100,100,0.6)';
+                    if (!tg) document.getElementById('offerTg').style.borderColor = 'rgba(255,100,100,0.6)';
+                    return;
+                }
+                var tariff = _offerLink.includes('aaa68d46') ? 'Без обратной связи' : 'Другой тариф';
+                var consentText = 'Я ознакомился(-ась) и согласен(-на) с Договором оферты и Политикой конфиденциальности';
+                try {
+                    fetch('https://api.ipify.org?format=json')
+                        .then(function(r){ return r.json(); })
+                        .then(function(ipData){
+                            fetch('https://script.google.com/macros/s/AKfycbxARFmo2YOsgA4qpq49zbFmsUPTfPCCF6nwy_kWwrm4NSqBMWX33GmslXR2eWm_9NfbXQ/exec', {
+                                method: 'POST',
+                                mode: 'no-cors',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    email: email,
+                                    telegram: tg,
+                                    tariff: tariff,
+                                    ip: ipData.ip,
+                                    userAgent: navigator.userAgent,
+                                    offerVersion: 'v1 от 26.05.2026',
+                                    url: window.location.href,
+                                    consent: consentText
+                                })
+                            });
+                        })
+                        .catch(function(){
+                            fetch('https://script.google.com/macros/s/AKfycbxARFmo2YOsgA4qpq49zbFmsUPTfPCCF6nwy_kWwrm4NSqBMWX33GmslXR2eWm_9NfbXQ/exec', {
+                                method: 'POST',
+                                mode: 'no-cors',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    email: email,
+                                    telegram: tg,
+                                    tariff: tariff,
+                                    ip: 'н/д',
+                                    userAgent: navigator.userAgent,
+                                    offerVersion: 'v1 от 26.05.2026',
+                                    url: window.location.href,
+                                    consent: consentText
+                                })
+                            });
+                        });
+                } catch(err) {}
+                closeOfferModal();
+                window.open(_offerLink, '_blank');
+            }
+        });
+
+        document.getElementById('offerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeOfferModal();
+        });
+
+        // ══════ ЗАЯВКА ══════
+        var _zayavkaTariff = '';
+
+        function openZayavkaModal(tariff) {
+            _zayavkaTariff = tariff;
+            document.getElementById('zayavkaTariffTitle').textContent = tariff;
+            document.getElementById('zayavkaName').value = '';
+            document.getElementById('zayavkaPhone').value = '';
+            document.getElementById('zayavkaComment').value = '';
+            document.getElementById('zayavkaForm').style.display = '';
+            document.getElementById('zayavkaSuccess').style.display = 'none';
+            document.getElementById('zayavkaModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeZayavkaModal() {
+            document.getElementById('zayavkaModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('zayavkaModal').addEventListener('click', function(e) {
+            if (e.target === this) closeZayavkaModal();
+        });
+
+        function submitZayavka() {
+            var name = document.getElementById('zayavkaName').value.trim();
+            var phone = document.getElementById('zayavkaPhone').value.trim();
+            var comment = document.getElementById('zayavkaComment').value.trim();
+            if (!name || !phone) {
+                document.getElementById('zayavkaName').style.borderColor = !name ? 'rgba(255,100,100,0.6)' : 'rgba(255,255,255,0.1)';
+                document.getElementById('zayavkaPhone').style.borderColor = !phone ? 'rgba(255,100,100,0.6)' : 'rgba(255,255,255,0.1)';
+                return;
+            }
+            var btn = document.querySelector('.zayavka-submit');
+            btn.textContent = 'Отправляю...';
+            btn.style.opacity = '0.6';
+            btn.style.pointerEvents = 'none';
+            fetch('https://script.google.com/macros/s/AKfycbxARFmo2YOsgA4qpq49zbFmsUPTfPCCF6nwy_kWwrm4NSqBMWX33GmslXR2eWm_9NfbXQ/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'zayavka',
+                    name: name,
+                    phone: phone,
+                    comment: comment,
+                    tariff: _zayavkaTariff,
+                    url: window.location.href
+                })
+            }).finally(function() {
+                document.getElementById('zayavkaForm').style.display = 'none';
+                document.getElementById('zayavkaSuccess').style.display = 'block';
+                setTimeout(closeZayavkaModal, 3000);
+            });
+        }
+
+        // ══════ PAYMENT CHOICE MODAL ══════
+        var _payChoiceTariff = 1;
+
+        function openPaymentChoiceModal(tariff) {
+            _payChoiceTariff = tariff;
+            if (tariff === 1) {
+                document.getElementById('payChoiceTitle').textContent = 'Базовый — 25 000 ₽';
+                document.getElementById('payInstallLabel').textContent = '0 ₽ сейчас · 2 100 ₽/мес';
+                document.getElementById('payFullLabel').textContent = 'Полная оплата · 25 000 ₽';
+                document.getElementById('payBtnConsult').style.display = 'none';
+            } else {
+                document.getElementById('payChoiceTitle').textContent = 'Базовый + — 39 000 ₽';
+                document.getElementById('payInstallLabel').textContent = '0 ₽ сейчас · 3 250 ₽/мес';
+                document.getElementById('payFullLabel').textContent = 'Полная оплата · 39 000 ₽';
+                document.getElementById('payBtnConsult').style.display = 'block';
+            }
+            document.getElementById('paymentChoiceModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentChoiceModal() {
+            document.getElementById('paymentChoiceModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function choosePayment(type) {
+            closePaymentChoiceModal();
+            if (type === 'full') {
+                var link = _payChoiceTariff === 1
+                    ? 'https://link.payform.ru/?paymentLinkId=2eab2fbd-c77c-433d-954c-8cdd5d931a88'
+                    : 'https://link.payform.ru/?paymentLinkId=2eab2fbd-c77c-433d-954c-8cdd5d931a88'; // ← сюда ссылку тарифа 2
+                openOfferModal(link);
+            } else if (type === 'installment') {
+                window.open('https://t.me/silverwind_care', '_blank');
+            } else if (type === 'consult') {
+                window.open('https://t.me/silverwind_care', '_blank');
+            }
+        }
+
+        document.getElementById('paymentChoiceModal').addEventListener('click', function(e) {
+            if (e.target === this) closePaymentChoiceModal();
+        });
+
+        // ══════ ЛИЧНОЕ СОПРОВОЖДЕНИЕ MODAL ══════
+        function openSoproModal() {
+            document.getElementById('soproName').value = '';
+            document.getElementById('soproAge').value = '';
+            document.getElementById('soproTg').value = '';
+            document.getElementById('soproRequest').value = '';
+            document.getElementById('soproForm').style.display = '';
+            document.getElementById('soproSuccess').style.display = 'none';
+            document.getElementById('soproModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSoproModal() {
+            document.getElementById('soproModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function submitSopro() {
+            var name = document.getElementById('soproName').value.trim();
+            var age = document.getElementById('soproAge').value.trim();
+            var tg = document.getElementById('soproTg').value.trim();
+            var request = document.getElementById('soproRequest').value.trim();
+            if (!name || !tg || !request) {
+                if (!name) document.getElementById('soproName').style.borderColor = 'rgba(255,100,100,0.6)';
+                if (!tg) document.getElementById('soproTg').style.borderColor = 'rgba(255,100,100,0.6)';
+                if (!request) document.getElementById('soproRequest').style.borderColor = 'rgba(255,100,100,0.6)';
+                return;
+            }
+            fetch('https://script.google.com/macros/s/AKfycbxARFmo2YOsgA4qpq49zbFmsUPTfPCCF6nwy_kWwrm4NSqBMWX33GmslXR2eWm_9NfbXQ/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'zayavka',
+                    name: name,
+                    phone: tg,
+                    comment: 'Возраст: ' + age + ' | Запрос: ' + request,
+                    tariff: 'Личное сопровождение',
+                    url: window.location.href
+                })
+            }).finally(function() {
+                document.getElementById('soproForm').style.display = 'none';
+                document.getElementById('soproSuccess').style.display = 'block';
+                setTimeout(closeSoproModal, 3500);
+            });
+        }
+
+        document.getElementById('soproModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSoproModal();
+        });
+    </script>
+</body>
+</html>

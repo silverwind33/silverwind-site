@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Идентичность</title>
+<link rel="stylesheet" href="fonts/local-fonts.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0A0A0A; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #ffffff;
+    width: 1600px;
+    height: 1270px;
+    position: relative;
+    overflow: hidden;
+  }
+  .grain {
+    position: absolute; inset: 0; opacity: 0.05; pointer-events: none; z-index: 5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hero { position: relative; width: 1600px; height: 380px; overflow: hidden; }
+  .hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.55) 60%, #0A0A0A 100%);
+  }
+  .hero-title {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding: 0 64px 26px;
+    z-index: 2;
+  }
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 500;
+    font-size: 56px;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #ffffff 0%, #b8c4c8 50%, #dbe4e2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tag {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.12em;
+    color: #A8B4BE;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    white-space: nowrap;
+  }
+
+  .columns { display: flex; padding: 40px 64px 56px; gap: 56px; }
+  .col { flex: 1; min-width: 0; }
+  .divider { width: 1px; background: rgba(168,180,190,0.25); }
+
+  .col-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 31px;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    margin-bottom: 30px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(168,180,190,0.3);
+  }
+
+  .label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: #A8B4BE;
+    margin-bottom: 16px;
+    margin-top: 34px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .label:first-of-type { margin-top: 0; }
+  .num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #A8B4BE 0%, #d0d8de 100%);
+    color: #0e1318;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  p {
+    font-size: 22px;
+    line-height: 1.55;
+    font-weight: 300;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 14px;
+  }
+  p:last-child { margin-bottom: 0; }
+  p b { color: #d0d8de; font-weight: 500; }
+
+  .img-box {
+    float: right;
+    width: 42%;
+    margin: 2px 0 14px 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .img-box img { width: 100%; display: block; aspect-ratio: 1376 / 768; object-fit: contain; background: #0A0A0A; }
+  .clearfix { clear: both; }
+
+  .note {
+    margin-top: 70px;
+    padding-left: 18px;
+    border-left: 2px solid rgba(168,180,190,0.6);
+    font-size: 22px;
+    line-height: 1.55;
+    font-style: italic;
+    color: rgba(255,255,255,0.85);
+  }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <img src="img/01_title.jpg">
+    <div class="hero-title">
+      <h1>ИДЕНТИЧНОСТЬ</h1>
+      <div class="tag">Silverwind</div>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="col">
+      <div class="col-title">Конспект</div>
+
+      <div class="label">Кто вы есть</div>
+      <div class="img-box"><img src="img/02_timeline.jpg"></div>
+      <p>Вы никогда не были формой — ни в 5, ни в 15, ни сейчас. Вы — тот, кто <b>перетекает</b> в форму, а не сама форма. Вы можете выбрать любую форму, и реальность её отзеркалит.</p>
+      <div class="clearfix"></div>
+
+      <div class="label">Перевыберите файлы</div>
+      <div class="img-box"><img src="img/konspekt_files.jpg"></div>
+      <p>Знания о себе — это файлы, которые вам загрузили. Вы не выбирали их осознанно. А истинная природа по умолчанию — изобилие, любовь, достаток.</p>
+      <div class="clearfix"></div>
+
+      <div class="label">Реальность зеркалит форму</div>
+      <p>Вы — не вчерашняя версия себя. Разотождествитесь с формой, которая больше не служит, и выбирайте новую осознанно.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="col">
+      <div class="col-title">Задание</div>
+
+      <div class="label"><span class="num">1</span>Что вы знаете о себе? Откуда?</div>
+      <p>Выпишите <b>всё, что вы о себе знаете</b> — честно, по сферам: внешность, деньги, реализация, карьера, отношения.</p>
+
+      <div class="label"><span class="num">2</span>Выберите любую форму, доступно всё</div>
+      <div class="img-box"><img src="img/task3_roles.jpg"></div>
+      <p>Выберите идентичность и <b>«наденьте» её на короткий срок</b> — не чтобы укорениться, а чтобы поиграть. В идеале — когда вы одна. Например: супер привлекательная, бизнес-вумен, стройная, любимая.</p>
+      <p style="font-size:18px;font-style:italic;color:rgba(255,255,255,0.65);">Как бы вы себя чувствовали, самоощущали? Что бы делали иначе? Что бы делали по-новому?</p>
+      <div class="clearfix"></div>
+
+      <div class="note">Идентичность меняется в момент. Это просто выбор, который всегда можно сделать заново.</div>
+    </div>
+  </div>
+
+  <div class="grain"></div>
+</body>
+</html>

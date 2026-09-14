@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silverwind — Курс без обратной связи</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0A0A0A; --accent: #A8B4BE; --mint: #89E6D8; }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+
+        .card { max-width:460px; width:100%; border-radius:24px; padding:40px 32px;
+            border:1px solid rgba(192,192,192,0.35);
+            background:linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(192,192,192,0.03) 50%, rgba(255,255,255,0.02) 100%);
+            box-shadow: 0 0 40px rgba(192,192,192,0.08), inset 0 1px 0 rgba(255,255,255,0.12); }
+        .logo { font-family:'Unbounded',sans-serif; font-size:12px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:28px;
+            background:linear-gradient(135deg,#c0c0c0 0%,#fff 40%,#a8a8a8 60%,#f0f0f0 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; transition:all .3s; cursor:default; }
+        .logo:hover { background:linear-gradient(135deg,#e0e0e0 0%,#fff 40%,#d0d0d0 60%,#f8f8f8 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+        .title { font-family:'Unbounded',sans-serif; font-size:clamp(1.1rem,4vw,1.4rem); font-weight:600; margin-bottom:4px;
+            background:linear-gradient(135deg,#c0c0c0 0%,#fff 30%,#e8e8e8 50%,#a8a8a8 70%,#f0f0f0 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+        .sub { color:rgba(255,255,255,0.35); font-size:13px; margin-bottom:6px; }
+        .price { font-family:'Unbounded',sans-serif; font-size:20px; font-weight:500; color:#fff; margin-bottom:24px; transition:color .3s; }
+        .price:hover { color:#d0d8de; }
+
+        .checkbox-row { display:flex; align-items:flex-start; gap:10px; cursor:pointer; margin-bottom:20px; -webkit-user-select:none; user-select:none; }
+        .checkbox-box { width:20px; height:20px; border-radius:6px; border:1.5px solid rgba(255,255,255,0.2); flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+        .checkbox-box svg { opacity:0; transition:opacity .2s; }
+        .checkbox-row.checked .checkbox-box { border-color:var(--accent); background:rgba(168,180,190,0.12); }
+        .checkbox-row.checked .checkbox-box svg { opacity:1; }
+        .checkbox-text { font-size:13px; line-height:1.6; color:rgba(255,255,255,0.5); }
+        .checkbox-text a { color:#c0ccd4; text-decoration:underline; text-underline-offset:3px; }
+
+        .pay-btn {
+            display:block; width:100%; padding:16px; border-radius:9999px; font-family:'Unbounded',sans-serif;
+            font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+            text-decoration:none; text-align:center; border:none; transition:all .3s;
+            background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.15); cursor:default; pointer-events:none;
+        }
+        .pay-btn.enabled {
+            background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);
+            color:#0e1318; cursor:pointer; pointer-events:auto;
+        }
+        .pay-btn.enabled:hover { opacity:0.85; }
+
+        .offer-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; padding:20px; }
+        .offer-modal.active { display:flex; }
+        .offer-box { max-width:600px; width:100%; max-height:80vh; background:#111; border-radius:20px; border:1px solid rgba(255,255,255,0.1); overflow:hidden; display:flex; flex-direction:column; }
+        .offer-head { padding:20px 24px; border-bottom:1px solid rgba(255,255,255,0.06); font-family:'Unbounded',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); flex-shrink:0; display:flex; justify-content:space-between; align-items:center; }
+        .offer-close { background:none; border:none; color:rgba(255,255,255,0.3); font-size:20px; cursor:pointer; }
+        .offer-body { padding:20px 24px; overflow-y:auto; flex:1; font-size:13px; line-height:1.9; color:rgba(255,255,255,0.5); }
+        .offer-body h3 { color:rgba(255,255,255,0.75); font-size:13px; margin:16px 0 6px; font-weight:600; }
+        .offer-body h3:first-child { margin-top:0; }
+        .offer-body p { margin-bottom:8px; }
+        .offer-body ul { padding-left:18px; margin-bottom:8px; }
+        .offer-body ul li { margin-bottom:4px; }
+
+        .form-field { margin-bottom:14px; }
+        .form-field input { width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:#fff; font-family:'Inter',sans-serif; font-size:14px; outline:none; transition:border-color .2s; }
+        .form-field input::placeholder { color:rgba(255,255,255,0.25); }
+        .form-field input:focus { border-color:rgba(137,230,216,0.4); }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="logo">Silverwind</div>
+    <div class="title">Курс без обратной связи</div>
+    <div class="price">20 000 ₽</div>
+
+    <div class="form-field">
+        <input type="text" id="nameField" placeholder="Имя" required>
+    </div>
+    <div class="form-field">
+        <input type="email" id="emailField" placeholder="Email" required>
+    </div>
+
+    <label class="checkbox-row" id="checkRow" onclick="toggle()">
+        <span class="checkbox-box">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#A8B4BE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="checkbox-text">
+            Я согласен(-на) с <a href="#" onclick="event.preventDefault();event.stopPropagation();openOffer()">договором оферты</a> и <a href="privacy-policy.html" target="_blank" onclick="event.stopPropagation()">политикой конфиденциальности</a>
+        </span>
+    </label>
+
+    <a id="payBtn" class="pay-btn" href="https://t.me/tribute/app?startapp=s13sk" target="_blank">Оплатить</a>
+</div>
+
+<!-- Offer text modal -->
+<div class="offer-modal" id="offerModal">
+    <div class="offer-box">
+        <div class="offer-head">Договор оферты <button class="offer-close" onclick="closeOffer()">✕</button></div>
+        <div class="offer-body">
+            <h3>Публичная оферта на оказание образовательных услуг</h3>
+            <p>г. Москва | Утверждена 07.08.2026</p>
+            <p>Оплата услуг Исполнителя означает Ваше полное согласие со всеми условиями Оферты и надлежащее заключение Договора в порядке, предусмотренном в ст. 435 и п. 2 ст. 437 Гражданского кодекса РФ.</p>
+            <p>Силаева Алина Николаевна (далее — Исполнитель) предлагает любому заинтересованному лицу заключить Договор на оказание образовательных услуг (далее — Договор) на изложенных ниже условиях.</p>
+
+            <h3>1. Термины и определения</h3>
+            <p><strong>Исполнитель</strong> — Силаева Алина Николаевна, автор методики Silverwind.</p>
+            <p><strong>Заказчик</strong> — физическое лицо, оформившее и оплатившее Услугу.</p>
+            <p><strong>Услуга</strong> — доступ к онлайн-курсу в формате аудио-уроков без обратной связи от Исполнителя.</p>
+            <p><strong>Акцепт оферты</strong> — полное и безоговорочное принятие условий оферты путём оплаты Услуги.</p>
+
+            <h3>2. Предмет договора</h3>
+            <p>2.1. Исполнитель обязуется предоставить Заказчику доступ к онлайн-курсу в формате аудио-уроков.</p>
+            <p>2.2. Обратная связь, консультации и индивидуальное сопровождение в рамках данного тарифа не предусмотрены.</p>
+            <p>2.3. Услуги носят исключительно информационный и образовательный характер и <strong>не являются</strong> медицинской, психологической, психотерапевтической, юридической или финансовой помощью.</p>
+            <p>2.4. Исполнитель не даёт гарантий достижения конкретных результатов. Результат зависит от действий Заказчика.</p>
+
+            <h3>3. Порядок оказания услуг</h3>
+            <p>3.1. Доступ к материалам курса предоставляется после поступления оплаты.</p>
+            <p>3.2. Формат и содержание курса определяются Исполнителем.</p>
+            <p>3.3. Курс проводится дистанционно (онлайн).</p>
+
+            <h3>4. Стоимость услуг и порядок оплаты</h3>
+            <p>4.1. Стоимость курса составляет 20 000 (двадцать тысяч) рублей.</p>
+            <p>4.2. Оплата производится через платёжную систему Tribute. Допускается оплата частями по согласованию с Исполнителем. Заказчик обязуется оплатить полную стоимость курса — это ответственность Заказчика.</p>
+
+            <h3>5. Порядок возврата денежных средств</h3>
+            <p>5.1. В соответствии со ст. 782 ГК РФ и ст. 32 Закона РФ «О защите прав потребителей», Заказчик вправе отказаться от услуг в любой момент. Возврат денежных средств производится за вычетом фактически понесённых Исполнителем расходов.</p>
+            <p>5.2. Несогласие с содержанием курса или неудовлетворённость результатами не является основанием для возврата.</p>
+
+            <h3>6. Ответственность</h3>
+            <p>6.1. <strong>Заказчик принимает на себя полную ответственность</strong> за все решения и действия, совершённые на основании информации, полученной в ходе прохождения курса.</p>
+            <p>6.2. Исполнитель не гарантирует достижение каких-либо конкретных результатов. Результат определяется исключительно действиями, решениями и вовлечённостью Заказчика.</p>
+            <p>6.3. Исполнитель не несёт ответственности за жизнь, здоровье, финансовое положение, моральное или психологическое состояние Заказчика.</p>
+            <p>6.4. Оплачивая Услугу, Заказчик подтверждает, что является дееспособным лицом и осознаёт, что курс не заменяет медицинскую, психологическую, юридическую или финансовую помощь.</p>
+            <p>6.5. Суммарная ответственность Исполнителя ограничивается стоимостью оплаченного курса.</p>
+
+            <h3>7. Права и обязанности сторон</h3>
+            <p>7.1. Исполнитель обязуется предоставить доступ к материалам курса и обеспечить конфиденциальность.</p>
+            <p>7.2. Заказчик обязуется:</p>
+            <ul>
+                <li>Оплатить Услугу в полном объёме;</li>
+                <li>Не распространять материалы в коммерческих целях;</li>
+                <li>Не нарушать деловую репутацию Исполнителя.</li>
+            </ul>
+
+            <h3>8. Интеллектуальная собственность</h3>
+            <p>8.1. Все методики, аудио-уроки и материалы являются интеллектуальной собственностью Исполнителя.</p>
+            <p>8.2. Копирование и коммерческое использование запрещено без письменного согласия.</p>
+
+            <h3>9. Персональные данные</h3>
+            <p>9.1. Данные обрабатываются в соответствии с ФЗ «О персональных данных» № 152-ФЗ и <a href="privacy-policy.html" target="_blank">Политикой конфиденциальности</a>.</p>
+
+            <h3>10. Заключительные положения</h3>
+            <p>10.1. Договор действует с момента оплаты до исполнения обязательств.</p>
+            <p>10.2. Споры разрешаются путём переговоров, претензионный порядок обязателен (20 дней). Суд — по месту регистрации Исполнителя.</p>
+            <p>10.3. Скриншоты переписки являются допустимым доказательством.</p>
+
+            <h3>11. Форс-мажор</h3>
+            <p>11.1. Стороны освобождаются от ответственности при обстоятельствах непреодолимой силы.</p>
+
+            <h3>Реквизиты</h3>
+            <p>Силаева Алина Николаевна · silver.wind@list.ru</p>
+            <p>Дата обновления: 07 августа 2026 г.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+var CONSENT_URL = 'https://script.google.com/macros/s/AKfycbzCqyg3p-dqSSxaa0qC-B3JwONjZK03TfoTXM0EQjU11Tjg0G3qkNy9C6EqbZ38K4OI/exec';
+var checked = false;
+function updateBtn() {
+    var name = document.getElementById('nameField').value.trim();
+    var email = document.getElementById('emailField').value.trim();
+    var btn = document.getElementById('payBtn');
+    if (checked && name && email) { btn.classList.add('enabled'); } else { btn.classList.remove('enabled'); }
+}
+function toggle() {
+    checked = !checked;
+    document.getElementById('checkRow').classList.toggle('checked', checked);
+    updateBtn();
+}
+document.getElementById('nameField').addEventListener('input', updateBtn);
+document.getElementById('emailField').addEventListener('input', updateBtn);
+function openOffer() { document.getElementById('offerModal').classList.add('active'); }
+function closeOffer() { document.getElementById('offerModal').classList.remove('active'); }
+document.getElementById('offerModal').addEventListener('click', function(e) { if (e.target === this) closeOffer(); });
+document.getElementById('payBtn').addEventListener('click', function(e) {
+    var name = document.getElementById('nameField').value.trim();
+    var email = document.getElementById('emailField').value.trim();
+    if (!checked || !name || !email) { e.preventDefault(); return; }
+    fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).then(function(d){
+        return fetch(CONSENT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
+            name: name,
+            email: email,
+            product: 'Курс без обратной связи (Tribute) · 20 000₽',
+            offer: true,
+            privacy: true,
+            ip: d.ip
+        })});
+    }).catch(function(){
+        fetch(CONSENT_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
+            name: name,
+            email: email,
+            product: 'Курс без обратной связи (Tribute) · 20 000₽',
+            offer: true,
+            privacy: true,
+            ip: ''
+        })});
+    });
+});
+</script>
+</body>
+</html>

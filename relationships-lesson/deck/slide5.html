@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
+<link rel="stylesheet" href="../fonts/local-fonts.css">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0A0A0A; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #ffffff;
+    width: 1600px; height: 1000px;
+    position: relative; overflow: hidden;
+  }
+  .grain { position: absolute; inset: 0; opacity: 0.05; pointer-events: none; z-index: 5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .eyebrow { position: absolute; top: 56px; left: 72px; z-index: 3;
+    font-family: 'Unbounded', sans-serif; font-size: 21px; letter-spacing: 0.14em;
+    color: #A8B4BE; text-transform: uppercase; }
+  .pagenum { position: absolute; top: 56px; right: 72px; z-index: 3;
+    font-family: 'Unbounded', sans-serif; font-size: 21px; letter-spacing: 0.1em;
+    color: rgba(168,180,190,0.6); }
+
+  h1.title {
+    font-family: 'Unbounded', sans-serif; font-weight: 500; font-size: 108px;
+    letter-spacing: -0.01em; line-height: 1.05;
+    background: linear-gradient(135deg, #ffffff 0%, #b8c4c8 50%, #dbe4e2 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .label {
+    font-family: 'Unbounded', sans-serif; font-weight: 500; font-size: 52px;
+    letter-spacing: -0.005em; color: #ffffff; margin-bottom: 32px; line-height: 1.2;
+    display: flex; align-items: flex-start; gap: 20px;
+  }
+  .num {
+    width: 60px; height: 60px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #A8B4BE 0%, #d0d8de 100%); color: #0e1318;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Unbounded', sans-serif; font-size: 26px; font-weight: 500;
+    margin-top: 4px;
+  }
+  p { font-size: 33px; line-height: 1.7; font-weight: 300; color: rgba(255,255,255,0.97); margin-bottom: 38px; }
+  p:last-child { margin-bottom: 0; }
+  p b { color: #ffffff; font-weight: 600; }
+  p.small { font-size: 26px; font-style: italic; color: rgba(255,255,255,0.82); }
+
+  .bullets { list-style: none; margin: 4px 0 0; padding: 0; }
+  .bullets li { position: relative; padding-left: 34px; font-size: 28px; line-height: 1.6;
+    font-weight: 300; color: rgba(255,255,255,0.94); margin-bottom: 18px; }
+  .bullets li::before { content: ''; position: absolute; left: 0; top: 12px; width: 10px; height: 10px;
+    border-radius: 50%; background: linear-gradient(135deg, #A8B4BE, #d0d8de); }
+  .bullets li b { color: #ffffff; font-weight: 600; }
+
+  .takeaway { margin-top: 22px; padding: 16px 22px; border-left: 2px solid rgba(168,180,190,0.6);
+    background: rgba(168,180,190,0.06); border-radius: 0 8px 8px 0; }
+  .takeaway p { font-size: 24px; font-style: italic; color: rgba(255,255,255,0.95); margin: 0; }
+
+  .split { position: absolute; inset: 0; display: flex; align-items: flex-start; padding: 150px 72px 70px; gap: 64px; }
+  .split .text { flex: 1.25; min-width: 0; }
+  .split .imgwrap { flex: 1; align-self: center; display: flex; align-items: center; justify-content: center; }
+  .split .imgwrap img { width: 100%; max-height: 500px; object-fit: contain; border-radius: 14px; }
+
+  .hero-full { position: absolute; inset: 0; }
+  .hero-full img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; display: block; }
+  .hero-full::after { content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,0.05) 0%, rgba(10,10,10,0.45) 55%, #0A0A0A 100%); }
+  .hero-bottom { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    display: flex; justify-content: space-between; align-items: flex-end; padding: 0 72px 64px; }
+  .tag { font-family: 'Unbounded', sans-serif; font-size: 24px; letter-spacing: 0.12em;
+    color: #A8B4BE; text-transform: uppercase; padding-bottom: 14px; white-space: nowrap; }
+
+  .centered { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; padding: 0 160px; }
+  .centered p { font-size: 50px; line-height: 1.4; font-style: italic; font-weight: 300;
+    color: rgba(255,255,255,0.92); }
+  .rule { width: 64px; height: 2px; background: linear-gradient(90deg, #A8B4BE, #d0d8de); margin: 32px 0; }
+
+  .agenda { position: absolute; inset: 0; display: flex; flex-direction: column;
+    justify-content: center; padding: 0 100px; gap: 52px; }
+  .agenda-item { display: flex; align-items: flex-start; gap: 30px; }
+  .agenda-item .num { width: 64px; height: 64px; font-size: 28px; }
+  .agenda-item .a-title { font-family: 'Unbounded', sans-serif; font-size: 43px; font-weight: 500;
+    color: #ffffff; margin-bottom: 10px; }
+  .agenda-item .a-desc { font-size: 27px; color: rgba(255,255,255,0.68); font-weight: 300; }
+
+  .points-page { position: absolute; inset: 0; display: flex; flex-direction: column;
+    justify-content: center; padding: 0 130px; }
+  .points-page .label { margin-bottom: 46px; }
+  .points-page .bullets li { font-size: 32px; line-height: 1.65; margin-bottom: 34px; padding-left: 40px; }
+  .points-page .bullets li::before { width: 12px; height: 12px; top: 12px; }
+  .points-page .takeaway { margin-top: 40px; padding: 22px 28px; }
+  .points-page .takeaway p { font-size: 27px; }
+  .points-page.tall { justify-content: flex-start; padding-top: 150px; }
+  .points-page.tall .bullets li { margin-bottom: 20px; }
+  .bullets.twocol { column-count: 2; column-gap: 56px; }
+  .bullets.twocol li { font-size: 25px; line-height: 1.45; margin-bottom: 26px; padding-left: 30px;
+    break-inside: avoid; }
+  .bullets.twocol li::before { width: 9px; height: 9px; top: 9px; }
+  .bullets.twocol.big li { font-size: 30px; line-height: 1.4; margin-bottom: 30px; padding-left: 34px; }
+  .bullets.twocol.big li::before { width: 11px; height: 11px; top: 11px; }
+  .bullets.twocol.big li b { color: #d0d8de; font-weight: 600; }
+  .bullets.big:not(.twocol) li { font-size: 34px; line-height: 1.5; margin-bottom: 26px; padding-left: 40px; }
+  .bullets.big:not(.twocol) li::before { width: 13px; height: 13px; top: 13px; }
+</style>
+</head><body>
+  <div class="eyebrow">Практика</div>
+  <div class="points-page">
+    <div class="label"><span class="num">1</span>Выберите область отношений</div>
+    <p style="font-size:30px;margin-bottom:32px;">Возьмите одну группу людей, с которой хотите глубже разобраться прямо сейчас:</p>
+    <ul class='bullets twocol big'><li>мужчины или романтические партнёры</li><li>подруги, женщины или коллеги</li><li>работодатели, клиенты или партнёры по работе</li><li>родители, дети или другие близкие</li></ul>
+    <div class="takeaway"><p>Пишите или надиктовывайте честно — этот материал остаётся только между вами и листом или диктофоном.</p></div>
+  </div>
+<div class="pagenum">05 / 12</div><div class="grain"></div></body></html>

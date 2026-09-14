@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silverwind — Оставить заявку</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0A0A0A; --accent: #89E6D8; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; min-height: 100vh; }
+
+        .noise::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.03;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        @keyframes shinySlide {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+        .shiny-text {
+            background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.7) 37%, #fff 44%, rgba(230,235,240,1) 50%, #fff 56%, rgba(255,255,255,0.7) 63%, rgba(255,255,255,0.3) 75%, rgba(255,255,255,0.3) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shinySlide 12s linear infinite;
+        }
+
+        @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-2000px); } }
+        .stars-global { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .s-layer { position: absolute; top: 0; left: 0; width: 100%; height: 2000px; }
+        .s1 { animation: drift 70s linear infinite; }
+        .s2 { animation: drift 140s linear infinite; }
+        .s3 { animation: drift 200s linear infinite; }
+        .s-dot, .s-dot-c { position: absolute; background: transparent; border-radius: 50%; }
+        .s-dot-c { top: 2000px; }
+
+        @keyframes enter { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .enter { opacity: 0; animation: enter 1.2s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .e1 { animation-delay: 0s; }
+        .e2 { animation-delay: 0.15s; }
+        .e3 { animation-delay: 0.3s; }
+        .e4 { animation-delay: 0.45s; }
+
+        /* Поля формы */
+        .form-field {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 16px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease;
+            resize: none;
+        }
+        .form-field::placeholder { color: rgba(255,255,255,0.2); }
+        .form-field:focus {
+            border-color: rgba(137,230,216,0.4);
+            background: rgba(137,230,216,0.04);
+        }
+
+        /* Кнопка отправки */
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            border-radius: 9999px;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            background: linear-gradient(135deg, #89E6D8 0%, #a8c8c0 40%, #c8d8d4 60%, #89E6D8 100%);
+            color: #0a1a18;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(137,230,216,0.3); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* Чекбокс согласия */
+        .consent-row { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; user-select: none; }
+        .consent-box {
+            flex-shrink: 0;
+            width: 20px; height: 20px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            margin-top: 2px;
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .consent-box svg { opacity: 0; transition: opacity 0.2s; }
+        .consent-row.checked .consent-box { border-color: var(--accent); background: rgba(137,230,216,0.12); }
+        .consent-row.checked .consent-box svg { opacity: 1; }
+
+        /* Успех */
+        .success-state { display: none; }
+        .success-state.show { display: flex; }
+
+        @keyframes pulse1 { 0%,100%{opacity:.06;transform:scale(1)} 50%{opacity:.14;transform:scale(1.1)} }
+    </style>
+</head>
+<body class="noise">
+
+<!-- Stars -->
+<div class="stars-global" id="starBox">
+    <div class="s-layer s1"><div class="s-dot" id="d1" style="width:1px;height:1px"></div><div class="s-dot-c" id="d1c" style="width:1px;height:1px"></div></div>
+    <div class="s-layer s2"><div class="s-dot" id="d2" style="width:2px;height:2px"></div><div class="s-dot-c" id="d2c" style="width:2px;height:2px"></div></div>
+    <div class="s-layer s3"><div class="s-dot" id="d3" style="width:2.5px;height:2.5px"></div><div class="s-dot-c" id="d3c" style="width:2.5px;height:2.5px"></div></div>
+</div>
+
+<!-- Glow -->
+<div class="fixed inset-0 pointer-events-none" style="z-index:1;">
+    <div class="absolute w-[600px] h-[600px] rounded-full blur-[200px]" style="top:0;left:50%;transform:translateX(-50%);background:rgba(137,230,216,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
+</div>
+
+<!-- NAV -->
+<nav class="fixed inset-x-0 top-0 z-50" style="background:rgba(10,10,10,0.7);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-bottom:1px solid rgba(255,255,255,0.03);">
+    <div class="max-w-5xl mx-auto px-6 lg:px-12 flex items-center h-[72px]">
+        <a href="index.html" class="font-display text-sm tracking-[0.15em] text-white/70 hover:text-[#A5F0E0] transition-colors duration-700 uppercase">Silverwind</a>
+    </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="relative z-10 min-h-screen flex items-center justify-center px-6 py-32">
+    <div class="w-full max-w-lg">
+
+        <!-- Форма -->
+        <div id="formState">
+            <p class="enter e1 font-display text-[10px] tracking-[0.25em] uppercase mb-5 text-center" style="color:var(--accent);opacity:0.7;">Следующий поток</p>
+            <h1 class="enter e2 font-display font-bold uppercase text-center mb-4 leading-[1.1]" style="font-size:clamp(1.8rem,6vw,3rem);letter-spacing:0.04em;" >
+                <span class="shiny-text">Оставить заявку</span>
+            </h1>
+            <p class="enter e3 text-center text-[14px] leading-[1.8] mb-12" style="color:#ffffff;">
+                Напишите ваши данные и запрос —<br>я свяжусь, когда откроется набор
+            </p>
+
+            <form id="waitlistForm" class="enter e4 flex flex-col gap-5">
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-display text-[10px] tracking-[0.2em] uppercase" style="color:var(--accent);opacity:0.7;">Ваш Telegram</label>
+                    <input
+                        type="text"
+                        id="tgInput"
+                        class="form-field"
+                        placeholder="@username"
+                        required
+                    >
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-display text-[10px] tracking-[0.2em] uppercase" style="color:var(--accent);opacity:0.7;">Номер телефона</label>
+                    <input
+                        type="tel"
+                        id="phoneInput"
+                        class="form-field"
+                        placeholder="+7 900 000 00 00"
+                        required
+                    >
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="font-display text-[10px] tracking-[0.2em] uppercase" style="color:var(--accent);opacity:0.7;">Ваш запрос</label>
+                    <textarea
+                        id="requestInput"
+                        class="form-field"
+                        placeholder="Напишите, с чем хотите поработать — деньги, отношения, реализация, самооценка..."
+                        rows="5"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Чекбокс согласия -->
+                <label class="consent-row" id="consentRow">
+                    <span class="consent-box">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="text-[13px] leading-[1.7]" style="color:rgba(255,255,255,0.45);">
+                        Я ознакомился(-ась) и согласен(-на) с
+                        <a href="privacy-policy.html" target="_blank" style="color:rgba(137,230,216,0.7);text-decoration:underline;" onclick="event.stopPropagation()">Политикой конфиденциальности</a>
+                        и
+                        <a href="privacy-policy.html" target="_blank" style="color:rgba(137,230,216,0.7);text-decoration:underline;" onclick="event.stopPropagation()">Обработкой персональных данных</a>
+                    </span>
+                </label>
+
+                <p id="errorMsg" class="text-[13px] text-center" style="color:rgba(255,100,100,0.8);display:none;">Пожалуйста, заполните все поля и дайте согласие</p>
+
+                <button type="submit" class="submit-btn mt-2" id="submitBtn">
+                    Отправить заявку
+                </button>
+
+                <a href="https://t.me/silverwind_care" target="_blank"
+                   style="display:inline-flex;align-items:center;justify-content:center;width:100%;padding:18px;border-radius:9999px;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,0.85);border:1px solid rgba(137,230,216,0.4);transition:all .4s cubic-bezier(0.16,1,0.3,1);"
+                   onmouseover="this.style.borderColor='rgba(137,230,216,0.8)';this.style.color='#89E6D8';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.borderColor='rgba(137,230,216,0.4)';this.style.color='rgba(255,255,255,0.85)';this.style.transform=''">
+                    Задать вопрос
+                </a>
+
+            </form>
+        </div>
+
+        <!-- Успешная отправка -->
+        <div id="successState" class="success-state flex-col items-center text-center gap-6">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2" style="background:rgba(137,230,216,0.1);border:1px solid rgba(137,230,216,0.25);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(137,230,216,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <h2 class="font-display font-bold uppercase tracking-wide" style="font-size:clamp(1.4rem,5vw,2rem);color:#fff;">Заявка принята</h2>
+            <p class="text-[15px] leading-[1.8]" style="color:rgba(255,255,255,0.5);">Я свяжусь с вами, когда откроется следующий поток</p>
+            <a href="index.html" class="mt-4 inline-flex items-center gap-2 text-[13px] tracking-wide" style="color:rgba(137,230,216,0.6);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                На главную
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Stars
+    function stars(n,c){var s=[];for(var i=0;i<n;i++)s.push((Math.random()*4000-2000|0)+'px '+(Math.random()*4000-2000|0)+'px '+c);return s.join(',');}
+    var a=stars(700,'rgba(255,255,255,0.5)'),b=stars(250,'rgba(200,240,232,0.4)'),c=stars(80,'rgba(165,240,224,0.35)');
+    document.getElementById('d1').style.boxShadow=a; document.getElementById('d1c').style.boxShadow=a;
+    document.getElementById('d2').style.boxShadow=b; document.getElementById('d2c').style.boxShadow=b;
+    document.getElementById('d3').style.boxShadow=c; document.getElementById('d3c').style.boxShadow=c;
+
+    // Form submit
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS0MCagnUD9x55oWC3et4vQrBuvHAt5wuhwcuDgeJsfWdhd61SfYVZx3E_-l6hXVroFg/exec';
+
+    // Чекбокс
+    var consentRow = document.getElementById('consentRow');
+    consentRow.addEventListener('click', function() {
+        this.classList.toggle('checked');
+    });
+
+    document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var tg = document.getElementById('tgInput').value.trim();
+        var phone = document.getElementById('phoneInput').value.trim();
+        var req = document.getElementById('requestInput').value.trim();
+        var consent = consentRow.classList.contains('checked');
+        var errMsg = document.getElementById('errorMsg');
+
+        if (!tg || !phone || !req || !consent) {
+            errMsg.style.display = 'block';
+            return;
+        }
+        errMsg.style.display = 'none';
+
+        var btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Отправляем...';
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ telegram: tg, phone: phone, request: req })
+        })
+        .then(function() {
+            document.getElementById('formState').style.display = 'none';
+            document.getElementById('successState').classList.add('show');
+        })
+        .catch(function() {
+            btn.disabled = false;
+            btn.textContent = 'Отправить заявку';
+            errMsg.textContent = 'Ошибка отправки. Попробуйте ещё раз.';
+            errMsg.style.display = 'block';
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Результаты Silverwind</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { background: #0a0a0a; margin: 0; padding: 0; width: 1080px; height: fit-content; line-height: 0; }
+body { display: block; }
+
+/* ══ ЗВЁЗДЫ ══ */
+@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-2000px); } }
+.stars-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 36px;
+}
+.s-layer { position: absolute; top: 0; left: 0; width: 100%; height: 200%; }
+.s1 { animation: drift 70s linear infinite; }
+.s2 { animation: drift 140s linear infinite; }
+.s-dot { position: absolute; border-radius: 50%; }
+
+/* ══ МЕТАЛЛИК ТЕКСТ ══ */
+@keyframes shinySlide {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.shiny-heading {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.25) 0%,
+    rgba(255,255,255,0.25) 20%,
+    rgba(255,255,255,0.65) 35%,
+    #ffffff 44%,
+    rgba(230,235,240,1) 50%,
+    #ffffff 56%,
+    rgba(255,255,255,0.65) 65%,
+    rgba(255,255,255,0.25) 80%,
+    rgba(255,255,255,0.25) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shinySlide 10s linear infinite;
+}
+
+/* ══ КАРТОЧКА ══ */
+.card {
+  width: 1080px;
+  background: linear-gradient(155deg, #0b0b0b 0%, #0d0d0d 60%, #0a0a0a 100%);
+  border: 1px solid rgba(137,230,216,0.1);
+  border-radius: 0;
+  padding: 72px 72px 72px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* верхний глоу */
+.card::after {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 200px;
+  background: radial-gradient(ellipse, rgba(137,230,216,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heading {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 52px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* кольцо — маленькое, в правой колонке сверху */
+.photo-wrap.small {
+  /* просто меньше за счёт колонки */
+}
+
+@keyframes border-spin { to { transform: rotate(360deg); } }
+
+.photo-wrap {
+  border-radius: 18px;
+  padding: 2.5px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 20px rgba(137,230,216,0.25),
+    0 0 50px rgba(137,230,216,0.1);
+}
+
+.photo-wrap::before {
+  content: '';
+  position: absolute;
+  top: -100%; left: -100%; right: -100%; bottom: -100%;
+  background: conic-gradient(from 0deg,
+    transparent 0deg, transparent 130deg,
+    rgba(137,230,216,0.7) 168deg,
+    rgba(220,235,230,1) 180deg,
+    rgba(137,230,216,0.7) 192deg,
+    transparent 230deg, transparent 360deg);
+  animation: border-spin 4s linear infinite;
+  z-index: 0;
+}
+
+.photo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 2.5px;
+  background: #0a0a0a;
+  border-radius: 16px;
+  z-index: 1;
+}
+
+.photo-wrap img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  background: #0a0a0a;
+}
+
+/* обрезаем пустой низ у коротких скринов */
+.photo-wrap.crop img {
+  margin-bottom: -35%;
+}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Звёзды -->
+  <div class="stars-bg">
+    <div class="s-layer s1" id="sl1"></div>
+    <div class="s-layer s2" id="sl2"></div>
+  </div>
+
+  <div class="card-content">
+    <div class="heading shiny-heading" style="font-size:56px;">Что говорят<br>те, кто уже попробовал:</div>
+
+    <!-- Три отзыва в ряд -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px;">
+      <div class="photo-wrap"><img src="100tys.jpg" alt=""></div>
+      <div class="photo-wrap"><img src="dva-raza.jpg" alt=""></div>
+      <div class="photo-wrap"><img src="otzyv-muzhchiny-zabota.jpg" alt=""></div>
+    </div>
+    <!-- Предложение замуж — полная ширина -->
+    <div class="photo-wrap"><img src="predlozhenie.png" alt=""></div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  function makeStars(layerId, count, minSize, maxSize, minOpacity, maxOpacity) {
+    var layer = document.getElementById(layerId);
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < count; i++) {
+      var d = document.createElement('div');
+      d.className = 's-dot';
+      var size = minSize + Math.random() * (maxSize - minSize);
+      var opacity = minOpacity + Math.random() * (maxOpacity - minOpacity);
+      d.style.cssText = [
+        'width:' + size + 'px',
+        'height:' + size + 'px',
+        'top:' + (Math.random() * 100) + '%',
+        'left:' + (Math.random() * 100) + '%',
+        'background:rgba(255,255,255,' + opacity + ')',
+        'box-shadow:0 0 ' + (size * 2) + 'px rgba(255,255,255,' + (opacity * 0.5) + ')'
+      ].join(';');
+      frag.appendChild(d);
+    }
+    layer.appendChild(frag);
+  }
+  makeStars('sl1', 120, 0.8, 2,   0.15, 0.55);
+  makeStars('sl2', 60,  1.2, 2.5, 0.08, 0.30);
+})();
+</script>
+</body>
+</html>
