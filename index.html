@@ -245,6 +245,25 @@
 
         /* ══════ SHINY MEDIA BORDER ══════ */
         @keyframes border-spin { to { transform: rotate(360deg); } }
+
+        .tariff-wrap {
+            border-radius: 18px;
+            padding: 1px;
+            position: relative;
+            background: linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 40%, rgba(137,230,216,0.18) 100%);
+        }
+        .tariff-inner {
+            border-radius: 17px;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(145deg, #111314 0%, #0d0f0e 55%, #0b0d0c 100%);
+        }
+        .not-suitable-item:hover {
+            border-color: rgba(137,230,216,0.35) !important;
+            background: rgba(137,230,216,0.04);
+        }
+
         .shiny-media {
             position: relative;
             display: block;
@@ -709,6 +728,33 @@
                 </div>
 
             </div>
+
+            <!-- Кому НЕ подойдёт -->
+            <p class="reveal font-display text-[11px] tracking-[0.2em] uppercase text-center mt-20 mb-12" style="color: var(--accent); opacity: 0.6;">Кому не подойдёт</p>
+
+            <div class="space-y-4">
+
+                <div class="reveal not-suitable-item p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s, background 0.3s;">
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Перекладываете ответственность за свою жизнь на информацию и людей извне.</p>
+                </div>
+
+                <div class="reveal not-suitable-item p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s, background 0.3s;">
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Не осознаёте, что для результата нужна связка: мышление + действия.</p>
+                </div>
+
+                <div class="reveal not-suitable-item p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s, background 0.3s;">
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Не готовы допустить связь между тем, что происходит внутри, и тем, что происходит снаружи в вашей жизни.</p>
+                </div>
+
+                <div class="reveal not-suitable-item p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s, background 0.3s;">
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Ищете быстрый результат без готовности что-либо в себе менять — программа требует честности с собой и реальной работы.</p>
+                </div>
+
+                <div class="reveal not-suitable-item p-7 md:p-8 rounded-2xl" style="border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s, background 0.3s;">
+                    <p class="text-[14px] md:text-[15px] leading-[1.85] text-white">Находитесь в остром кризисе или состоянии, требующем работы с психиатром — это другой инструмент с другой задачей.</p>
+                </div>
+
+            </div>
         </div>
     </section>
 
@@ -734,13 +780,12 @@
                     </button>
                     <div id="b1" style="display:none;padding:0 28px 28px;">
                         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
-                            <p class="lesson-item">Урок 1. Перепрошивка мышления. То, без чего менять реальность невозможно</p>
-                            <p class="lesson-item">Урок 2. Мир — и есть вы. У каждого своя персональная симуляция. Что это значит и как этим управлять</p>
-                            <p class="lesson-item">Урок 3. Как выйти из лимитов и ограничений ума</p>
-                            <p class="lesson-item">Урок 4. Если что-то проявилось в материальном мире, то только потому, что оно имело корень в вашем сознании</p>
-                            <p class="lesson-item">Урок 5. Про природу ума и физическую реальность</p>
-                            <p class="lesson-item">Урок 6. Вы — широкое сознание, а личность является лишь частью вас</p>
-                            <p class="lesson-item">Урок 7. Как менять идентичность, чтобы поменять реальность</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 1</span>Идентичность — кто вы есть на самом деле и почему то, что вы привыкли думать о себе, — не всё что есть.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 2</span>Всё едино — все программы рождены в иллюзии разделения. Осознав что всё едино и никого кроме вас здесь нет, можно начать создавать осознанно.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 3</span>Персональная симуляция — вся эта реальность разворачивается под вас и для вас. Всё здесь существует благодаря вашему вниманию.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 4</span>Реальность нереальна — почему физическая реальность является вторичной и как выйти из порочного круга зависимости от картинки.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 5</span>Все сценарии уже есть — почему вы ничего не создаёте и чтобы проявить — достаточно вашего внимания.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 6</span>Наблюдение и внимание — о том, как именно ваше восприятие и наблюдение создают реальность.</p>
                         </div>
                     </div>
                 </div>
@@ -750,19 +795,19 @@
                     <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b2')">
                         <div>
                             <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 2</p>
-                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Перепрошивка бессознательных программ</h3>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Самоценность</h3>
                         </div>
                         <span id="b2-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
                     </button>
                     <div id="b2" style="display:none;padding:0 28px 28px;">
                         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
-                            <p class="lesson-item">Урок 1. Реальность меняет смена наблюдения, какое место во всем этом занимают программы и работа с ними</p>
-                            <p class="lesson-item">Урок 2. Что такое программы и как они создают вашу реальность</p>
-                            <p class="lesson-item">Урок 3. В мире все правды и все линии сосуществуют, своим вниманием вы просто выбираете</p>
-                            <p class="lesson-item">Урок 4. Как находить программы, которые создают вашу реальность. Конкретные методы 1–2</p>
-                            <p class="lesson-item">Урок 5. Как находить программы, которые создают вашу реальность. Конкретные методы 3–5</p>
-                            <p class="lesson-item">Урок 6. Как трансформировать любую программу. Конкретные шаги</p>
-                            <p class="lesson-item">Урок 7. Программы ума и истинный голос: как отличать?</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 1</span>Самоценность — безусловное состояние. Почему оно не зависит ни от чего извне и всегда базово внутри вас.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 2</span>Тени — как интегрировать в себе все части, став целостным, чтобы позволить себе любой опыт.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 3</span>Семейная система — как перестать жить в зависимости от прошлого опыта и разотождествиться с тем, что вам не служит.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 4</span>Инструмент по перепрошивке бессознательного — как работать с теми программами, которые не поддаются изменению через логику.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 5</span>Неосознанные программы — как они создают вашу самоценность, деньги, реализацию и отношения.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 6</span>Хорошая девочка — как научиться выставлять границы, говорить нет и не быть удобной.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 7</span>Почему вам «нормально» получать меньше, чем вы стоите — Возвращаем базовое право на хорошее без ежедневных заслуг.</p>
                         </div>
                     </div>
                 </div>
@@ -772,19 +817,19 @@
                     <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b3')">
                         <div>
                             <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 3</p>
-                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Отделение от семейной системы</h3>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Отношения</h3>
                         </div>
                         <span id="b3-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
                     </button>
                     <div id="b3" style="display:none;padding:0 28px 28px;">
                         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
-                            <p class="lesson-item">Урок 1. Роль семейной системы и рода</p>
-                            <p class="lesson-item">Урок 2. Через какие три точки формируется восприятие в семейной системе</p>
-                            <p class="lesson-item">Урок 3. Как лояльность к роду не даёт начать жить свою жизнь</p>
-                            <p class="lesson-item">Урок 4. Выявление программ через семейную систему</p>
-                            <p class="lesson-item">Урок 5. Как ваше бессознательное создаёт реальность и события</p>
-                            <p class="lesson-item">Урок 6. Как перепрошить бессознательное</p>
-                            <p class="lesson-item">Урок 7. Суть инструмента перепрошивки бессознательного</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 1</span>Отношения — такой же сценарий. Почему всех людей вы создаёте сами в своих сценариях, а значит можете создать что угодно.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 2</span>Отношения с собой — как отношения с окружающими отражают отношения с собой и как их изменить.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 3</span>Вина vs творец — где та тонкая грань между ответственностью за созданное и виной.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 4</span>Ваша ценность в отношениях — почему она не во внешнем виде, функционале или чём-то ещё.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 5</span>Зеркало — как мужчины, подруги и другие люди отражают вам ваши программы и как научиться этим управлять.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 6</span>Поиск неосознанных программ в отношениях — методы, которые помогут найти программы, управляющие вашими отношениями.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 7</span>Перепрошивка программ в отношениях — как перепрошить найденную программу и создать новую линию жизни в отношениях.</p>
                         </div>
                     </div>
                 </div>
@@ -794,55 +839,90 @@
                     <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b4')">
                         <div>
                             <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 4</p>
-                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Деньги · Отношения · Реализация</h3>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Реализация</h3>
                         </div>
                         <span id="b4-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
                     </button>
                     <div id="b4" style="display:none;padding:0 28px 28px;">
                         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
-                            <p class="lesson-item">Урок 1. Что такое на самом деле реализация?</p>
-                            <p class="lesson-item">Урок 2. Как найти себя и любимое дело?</p>
-                            <p class="lesson-item">Урок 3. Разбор программ, из-за которых вы не реализованы</p>
-                            <p class="lesson-item">Урок 4. Главный закон денег</p>
-                            <p class="lesson-item">Урок 5. Как создать изобилие в своей жизни</p>
-                            <p class="lesson-item">Урок 6. Разбор программ, из-за которых вы живёте в денежном дефиците</p>
-                            <p class="lesson-item">Урок 7. Как создать желаемые отношения</p>
-                            <p class="lesson-item">Урок 8. Любые отношения и партнёры — наше зеркало</p>
-                            <p class="lesson-item">Урок 9. Разбор программ, из-за которых вы не можете создать желаемые отношения</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 1</span>Что такое реализация — почему она должна быть лёгкой, а если это не так — это программы.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 2</span>Частые программы в реализации — то, что встречается у большинства как преграда: страх осуждения, «не получится», «не оценят и не примут» — и что с этим делать.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 3</span>Поиск неосознанных программ в реализации — раскапываем то, что мешает вам действовать и держит на одном уровне.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 4</span>Маркетинг в новом сознании — почему старые методы не работают и как нащупать свои методы в бизнесе, блоге или работе.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 5</span>Важность действий в реализации — почему это такая же равная по ценности часть, как и работа с мышлением, и как не отлетать из материального.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 6</span>Один шаг — вот всё, что нужно знать заранее — Путь выстилается под ногами.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок 5 -->
+                <div class="reveal rounded-2xl overflow-hidden" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b5new')">
+                        <div>
+                            <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent); opacity: 0.55;">Блок 5</p>
+                            <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Деньги</h3>
+                        </div>
+                        <span id="b5new-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
+                    </button>
+                    <div id="b5new" style="display:none;padding:0 28px 28px;">
+                        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 1</span>Деньги — это что? Почему они не связаны с вашим интеллектом, хорошестью или полезностью и как создать изобилие в своей жизни.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 2</span>Вы — источник. Почему все ресурсы создаёте вы сами и как научиться этим управлять.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 3</span>Поиск неосознанных программ в деньгах — то, что мешает создавать, удерживать и пропускать через себя, создавая ещё больше.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 4</span>Методы поиска неосознанных программ в деньгах и их перепрошивка — как узнать, чем вы создаёте деньги в своей жизни, и изменить это.</p>
+                            <p class="lesson-item"><span style="color:var(--accent);font-size:11px;letter-spacing:0.1em;margin-right:8px;">АУДИОУРОК 5</span>Действия для создания ресурса — как новое мышление распаковывать в реальности через конкретные действия.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Бонусы -->
                 <div class="reveal rounded-2xl overflow-hidden" style="background: rgba(168,180,190,0.04); border: 1px solid rgba(168,180,190,0.15);">
-                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('b5')">
+                    <button class="block-toggle w-full text-left p-7 md:p-8 flex items-center justify-between gap-4" onclick="toggleBlock('bbonus')">
                         <div>
                             <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-2" style="color: var(--accent);">Бонусы</p>
                             <h3 class="font-display text-[16px] md:text-[18px] font-semibold tracking-wide uppercase text-white">Бонусные подкасты и практики</h3>
                         </div>
-                        <span id="b5-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
+                        <span id="bbonus-icon" style="color:var(--accent);font-size:22px;flex-shrink:0;transition:transform 0.3s;">+</span>
                     </button>
-                    <div id="b5" style="display:none;padding:0 28px 28px;">
+                    <div id="bbonus" style="display:none;padding:0 28px 28px;">
                         <div style="border-top:1px solid rgba(168,180,190,0.15);padding-top:20px;display:flex;flex-direction:column;gap:10px;">
-                            <p class="lesson-item">Вы как сознание можете создать всё, если осознаванием сужаться в личность — это всегда будет ограниченная версия реальности</p>
-                            <p class="lesson-item">Ключевое, что нужно сделать, чтобы отделиться от семейной системы и позволить себе свою жизнь</p>
-                            <p class="lesson-item">Связь денег и удовольствия, почему она прямая и как этим управлять</p>
-                            <p class="lesson-item">Как менять реальность — метод 1</p>
+                            <p class="lesson-item">Как реагировать на прежнюю реальность в момент перехода</p>
+                            <p class="lesson-item">Как контактировать с реальностью в момент перехода — метод 2</p>
+                            <p class="lesson-item">Почему смена идентичности меняет реальность и здесь нет никакой магии, всё работает логично и просто</p>
+                            <p class="lesson-item">Проявление любого опыта не добавляет вам ценности и не убавляет — это просто игра</p>
+                            <p class="lesson-item">Как менять реальность в таком случае — метод 1: другое видение себя</p>
                             <p class="lesson-item">Как менять реальность — метод 2</p>
-                            <p class="lesson-item">Ключевое в изменениях — не отождествлять себя с картинками, которые наблюдаете; вы в любой момент можете всё изменить</p>
-                            <p class="lesson-item">Почему «как» что-то проявится — это ловушка и вам не нужно об этом задумываться при осознанном проявлении желаемого</p>
-                            <p class="lesson-item">Жизнь из женского начала в отношениях ≠ инфантильность</p>
-                            <p class="lesson-item">Как понять, уходить от мужчины или возвращаться — про расставание и почему это уже поверхность</p>
-                            <p class="lesson-item">Как убрать внутреннего бомжа и выйти из программы дефицита</p>
-                            <p class="lesson-item">Возможный этап перед тем, как вы полностью уберёте бессознательную программу</p>
-                            <p class="lesson-item">Про деньги</p>
-                            <p class="lesson-item">Как перестать быть для всех спасателем</p>
-                            <p class="lesson-item">Большой подкаст про тело: как начать выглядеть так, как вам хочется</p>
-                            <p class="lesson-item">Как понять, почему вызывают сильные эмоции и/или триггерят слабые / богатые / другие люди — почему это всегда про вас и как брать из этого свою силу</p>
-                            <p class="lesson-item">Про экономию и страх потратить — как выйти из этого паттерна</p>
-                            <p class="lesson-item">Как перестать себя со всеми сравнивать</p>
-                            <p class="lesson-item">🎧 Практика — исцеление бессознательного чувства</p>
-                            <p class="lesson-item">🎧 Практика — проживание идеального дня</p>
+                            <p class="lesson-item">Не отождествляйте себя с картинками, которые наблюдаете — вы в любой момент можете переключить</p>
+                            <p class="lesson-item">Новое становится доступным в состоянии игры — состояние серьёзности наоборот блокирует это</p>
+                            <p class="lesson-item">Вытесненный источник наружу = невозможность менять сценарии. Но вы в любой момент можете переключиться в состояние автора и начать менять</p>
+                            <p class="lesson-item">Как удовольствие и проживание момента вглубь влияет на декорации в реальности</p>
+                            <p class="lesson-item">Проживание момента = трансляция в реальность «у меня уже есть, я уже достаточна и моя жизнь тоже» — реальность начинает зеркалить это состояние</p>
+                            <p class="lesson-item">Практика «сойти с ума»</p>
+                            <p class="lesson-item">Рассказываю на своём простом примере про применение практики «сойти с ума»</p>
+                            <p class="lesson-item">У разных версий вас — разные мысли, решения, действия и возможности. Все события, явления, люди просто обслуживают вашу внутреннюю точку сборки</p>
+                            <p class="lesson-item">Кормите новую идентичность действиями — чтобы она жила</p>
+                            <p class="lesson-item">Подтверждайте новую идентичность на опыте</p>
+                            <p class="lesson-item">Как нестандартные для вас физические действия могут менять состояние, а значит → мысли / решения / действия → реальность</p>
+                            <p class="lesson-item">Работа с мышлением НЕ отменяет действия — она рождает их, но сделать их нужно вам. Мышление + действия = результат</p>
+                            <p class="lesson-item">Мышление первично и из него всё рождается, но чтобы «родилось» — нужно и вторичное: действия</p>
+                            <p class="lesson-item">Про переписывание прошлых сценариев, которые мы рождаем из сейчас</p>
+                            <p class="lesson-item">Нет никакого «высшего замысла» — только ваш интерес. Смысл создаёте только вы сами</p>
+                            <p class="lesson-item">Каждый сценарий имеет свои программы</p>
+                            <p class="lesson-item">Мы можем сами накладывать свои фильтры и везде видеть этому подтверждения в силу абсолютности</p>
+                            <p class="lesson-item">Вам доступно всё — но сможете ли вы взять?</p>
+                            <p class="lesson-item">Люди — проекции, воспроизводящие наши внутренние сценарии / программы / убеждения</p>
+                            <p class="lesson-item">Обратить внимание внутрь, исследовать сознание, сделать шифт → поверхность будет другая</p>
+                            <p class="lesson-item">Состояние — это набор убеждений, программ, знаний о мире, которые формируют линзу восприятия и частоту → выборы, решения, действия, реальность. Состояние ≠ вечно хорошее настроение</p>
+                            <p class="lesson-item">Про родителей — почему они тоже зеркалят состояние</p>
+                            <p class="lesson-item">Про страх «я боюсь отката и что всё это временно» после первых результатов — почему он абсурден</p>
+                            <p class="lesson-item">Женщина энергетически мощнее мужчины</p>
+                            <p class="lesson-item">Постоянное проецирование чего-то в реальности, включая X денег или реализацию — всегда про смену идентичности</p>
+                            <p class="lesson-item">То же самое в отношениях</p>
+                            <p class="lesson-item">Источник ценности того, что вы создаёте — не в отзывах, а в вас</p>
+                            <p class="lesson-item">Разбор: программа в реализации или отношениях — и почему она абсурдна</p>
+                            <p class="lesson-item">Как ставя огромные цели в новом для нас опыте мы в итоге бездействуем — и как это перепрошить</p>
+                            <p class="lesson-item">Оры и крики — не проявленная агрессия, как бы так ни казалось (на примере). Контакт с тенью — умение ей управлять</p>
+                            <p class="lesson-item">Как интегрировать тень в опыт: конкретная практика</p>
                         </div>
                     </div>
                 </div>
@@ -881,109 +961,104 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
 
-                <!-- Тариф 1 — Базовый -->
-                <div class="reveal rounded-2xl p-8 md:p-9 flex flex-col" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); position:relative; overflow:hidden;">
-                    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;overflow:hidden;"><div style="position:absolute;width:1px;height:1px;border-radius:50%;"></div></div>
-                    <div style="position:relative;z-index:1;display:contents;">
-                    <div class="flex items-start gap-3 mb-5">
+                <!-- Тариф 1 — Самостоятельный -->
+                <div class="tariff-wrap reveal">
+                <div class="tariff-inner p-8 md:p-9 flex flex-col">
+                    <div class="flex items-center gap-3 mb-5">
                         <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);">1</span>
-                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Базовый</h3>
+                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Сама</h3>
                     </div>
-                    <p class="text-[13px] text-white/30 mb-6"></p>
-                    <ul class="space-y-2 mb-5 flex-grow">
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">25+ аудиоуроков по блокам:</li>
+                    <div class="mb-6">
+                        <span class="font-display text-[32px] font-bold text-white">19 000 ₽</span>
+                    </div>
+                    <ul class="space-y-2 mb-8 flex-grow">
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Перепрошивка программ</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги, отношения, реализация</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
                     </ul>
-                    <div class="mb-7 p-3 rounded-xl" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
-                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +1 месяц после окончания основного срока</p>
-                    </div>
-                    <button disabled style="width:100%;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;color:rgba(255,255,255,0.2);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:default;">Набор закрыт</button>
-                    </div>
+                    <a href="https://t.me/silverwind_care" target="_blank" style="display:block;width:100%;padding:14px;background:transparent;border:1.5px solid var(--accent);border-radius:100px;color:var(--accent);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;transition:background 0.2s;" onmouseover="this.style.background='rgba(137,230,216,0.08)'" onmouseout="this.style.background='transparent'">Приобрести</a>
+                </div>
                 </div>
 
-                <!-- Тариф 2 — Базовый плюс с AI куратором -->
-                <div class="reveal rounded-2xl p-8 md:p-9 flex flex-col relative" style="background: rgba(168,180,190,0.04); border: 1px solid rgba(168,180,190,0.15);">
+                <!-- Тариф 2 — С поддержкой -->
+                <div class="tariff-wrap reveal">
+                <div class="tariff-inner p-8 md:p-9 flex flex-col relative" style="background: rgba(168,180,190,0.05);">
                     <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] tracking-[0.15em] uppercase font-semibold" style="background: var(--accent); color: #0A0A0A;">Популярный</div>
-                    <div class="flex items-start gap-3 mb-5">
+                    <div class="flex items-center gap-3 mb-5">
                         <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);">2</span>
-                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Базовый +</h3>
+                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">С ИИ куратором</h3>
                     </div>
-                    <p class="text-[13px] text-white/30 mb-6"></p>
+                    <div class="mb-6">
+                        <span class="font-display text-[32px] font-bold text-white">25 000 ₽</span>
+                    </div>
                     <ul class="space-y-2 mb-4 flex-grow">
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">25+ аудиоуроков по блокам:</li>
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Перепрошивка программ</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги, отношения, реализация</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
 
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">20 бонусных подкастов по темам:</li>
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">Бонусные подкасты:</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про расставание и как понять уходить или нет</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать себя сравнивать с другими</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать быть для всех спасателем</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про деньги, триггеры, изменения и другие темы</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> И другие темы</li>
 
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">2 нейропрактики</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Исцеление бессознательного чувства</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Проживание идеального дня</li>
-
-                        <li class="flex items-start gap-3 text-[14px] text-white mt-3"><span style="color: var(--accent);">✓</span> Сопровождение моего клона — AI куратора на протяжении месяца 24/7</li>
-                        <li class="flex items-start gap-3 text-[14px] text-white"><span style="color: var(--accent);">✓</span> 2-часовая личная консультация со мной</li>
+                        <li class="flex items-start gap-3 text-[13px] text-white mt-4"><span style="color: var(--accent); flex-shrink:0;">✓</span> ИИ куратор на протяжении месяца</li>
                     </ul>
                     <div class="mb-7 p-3 rounded-xl" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
-                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +2 месяца после окончания основного срока</p>
+                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +1 месяц после окончания</p>
                     </div>
-                    <button disabled style="width:100%;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;color:rgba(255,255,255,0.2);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:default;">Набор закрыт</button>
+                    <a href="https://t.me/silverwind_care" target="_blank" style="display:block;width:100%;padding:14px;background:var(--accent);border:none;border-radius:100px;color:#0A0A0A;font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Приобрести</a>
+                </div>
                 </div>
 
-                <!-- Тариф 3 — Личное сопровождение -->
-                <div class="reveal rounded-2xl p-8 md:p-9 flex flex-col" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);">
-                    <div class="flex items-start gap-3 mb-5">
+                <!-- Тариф 3 — Личный -->
+                <div class="tariff-wrap reveal">
+                <div class="tariff-inner p-8 md:p-9 flex flex-col" style="background: rgba(255,255,255,0.03);">
+                    <div class="flex items-center gap-3 mb-5">
                         <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);margin-top:2px;">3</span>
-                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Личное сопровождение</h3>
+                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Личный с сопровождением</h3>
                     </div>
+                    <div class="mb-6"></div>
                     <ul class="space-y-2 mb-4 flex-grow">
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">25+ аудиоуроков по блокам:</li>
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Перепрошивка программ</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги, отношения, реализация</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
 
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">20 бонусных подкастов по темам:</li>
+                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">Бонусные подкасты:</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про расставание и как понять уходить или нет</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отделение от семейной системы</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
                         <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать себя сравнивать с другими</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как перестать быть для всех спасателем</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про деньги, триггеры, изменения и другие темы</li>
+                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> И другие темы</li>
 
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">2 нейропрактики</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Исцеление бессознательного чувства</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> 🎧 Проживание идеального дня</li>
-
-                        <li class="flex items-start gap-3 text-[14px] text-white mt-3"><span style="color: var(--accent);">✓</span> Сопровождение моего клона — AI куратора на протяжении месяца 24/7</li>
-                        <li class="flex items-start gap-3 text-[14px] text-white"><span style="color: var(--accent);">✓</span> Личный чат со мной на протяжении месяца</li>
-                        <li class="flex items-start gap-3 text-[14px] text-white"><span style="color: var(--accent);">✓</span> 5 двухчасовых созвонов 1 на 1</li>
+                        <li class="flex items-start gap-3 text-[13px] text-white mt-4"><span style="color: var(--accent); flex-shrink:0;">✓</span> ИИ куратор на протяжении месяца</li>
                     </ul>
-                    <div class="mb-7 p-3 rounded-xl space-y-2" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
-                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +6 месяцев после окончания основного срока</p>
-                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к закрытому клубу в подарок</p>
+                    <div class="mb-4 p-4 rounded-xl" style="background: rgba(168,180,190,0.1); border: 1px solid rgba(168,180,190,0.25);">
+                        <p class="text-[11px] font-semibold uppercase tracking-wider mb-2" style="color:var(--accent);">Личное сопровождение</p>
+                        <ul class="space-y-1">
+                            <li class="flex items-start gap-2 text-[13px] text-white/90"><span style="color:var(--accent);flex-shrink:0;">✓</span> Личное сопровождение на протяжении месяца</li>
+                            <li class="flex items-start gap-2 text-[13px] text-white/90"><span style="color:var(--accent);flex-shrink:0;">✓</span> 4 консультации по 1–1,5 часа</li>
+                        </ul>
                     </div>
-                    <button disabled style="width:100%;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:100px;color:rgba(255,255,255,0.2);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:default;">Набор закрыт</button>
+                    <div class="mb-7 p-3 rounded-xl" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
+                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +3 месяца после окончания</p>
+                    </div>
+                    <a href="https://t.me/silverwind_care" target="_blank" style="display:block;width:100%;padding:14px;background:transparent;border:1.5px solid var(--accent);border-radius:100px;color:var(--accent);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;transition:background 0.2s;" onmouseover="this.style.background='rgba(137,230,216,0.08)'" onmouseout="this.style.background='transparent'">Приобрести</a>
+                </div>
                 </div>
 
             </div>
