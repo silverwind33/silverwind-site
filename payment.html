@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оплата — Silverwind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #0A0A0A; --accent: #A8B4BE; --accent-soft: #C8D2DC; --mint: #89E6D8; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg); color: #fff;
+  min-height: 100vh; overflow-x: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 56px 20px 80px; position: relative;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.03;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px;
+}
+@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-2000px); } }
+.stars-global { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.s-layer { position: absolute; top: 0; left: 0; width: 100%; height: 2000px; }
+.s1 { animation: drift 70s linear infinite; }
+.s2 { animation: drift 140s linear infinite; }
+.s-dot { position: absolute; background: transparent; border-radius: 50%; }
+@keyframes shinySlide { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+.shiny-text {
+  background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.7) 37%, #ffffff 44%, rgba(230,235,240,1) 50%, #ffffff 56%, rgba(255,255,255,0.7) 63%, rgba(255,255,255,0.3) 75%, rgba(255,255,255,0.3) 100%);
+  background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shinySlide 12s linear infinite;
+}
+.tariff-wrap {
+  border-radius: 18px; padding: 1px; position: relative;
+  background: linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 40%, rgba(137,230,216,0.18) 100%);
+  width: 100%; max-width: 480px; z-index: 2;
+}
+.tariff-inner {
+  border-radius: 17px; position: relative; z-index: 1;
+  background: linear-gradient(145deg, #111314 0%, #0d0f0e 55%, #0b0d0c 100%);
+  padding: 40px 36px; display: flex; flex-direction: column; gap: 28px;
+}
+@media (max-width: 480px) { .tariff-inner { padding: 28px 20px; } }
+.logo { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.22em; color: var(--accent); text-transform: uppercase; margin-bottom: 44px; opacity: 0.65; position: relative; z-index: 2; }
+.t-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.t-price { font-family: 'Unbounded', sans-serif; font-size: 44px; font-weight: 800; letter-spacing: -0.02em; margin-top: 8px; }
+.t-price small { font-size: 22px; font-weight: 600; opacity: 0.5; margin-left: 4px; }
+.divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); }
+.features { display: flex; flex-direction: column; gap: 9px; }
+.f-group-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+.f-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+.f-dot { flex-shrink: 0; width: 4px; height: 4px; border-radius: 50%; background: rgba(168,180,190,0.5); margin-top: 7px; }
+.f-check { flex-shrink: 0; color: var(--accent); font-size: 13px; margin-top: 1px; }
+.hl-box { background: linear-gradient(135deg, rgba(168,180,190,0.12) 0%, rgba(168,180,190,0.04) 100%); border: 1px solid rgba(168,180,190,0.28); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.hl-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.agreements { display: flex; flex-direction: column; gap: 14px; }
+.agree-row { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+.agree-row input[type="checkbox"] { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 20px; height: 20px; border: 1.5px solid rgba(168,180,190,0.3); border-radius: 6px; margin-top: 1px; cursor: pointer; transition: border-color 0.2s, background 0.2s; position: relative; background: rgba(168,180,190,0.05); }
+.agree-row input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+.agree-row input[type="checkbox"]:checked::after { content: ''; position: absolute; top: 4px; left: 7px; width: 5px; height: 9px; border: 2px solid #0A0A0A; border-top: none; border-left: none; transform: rotate(45deg); }
+.agree-text { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+.agree-text a { color: var(--accent); text-underline-offset: 3px; }
+@keyframes starBtnLight { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
+.star-btn { position: relative; z-index: 3; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; border-radius: 9999px; font-family: 'Inter', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 17px 24px; width: 100%; border: none; text-decoration: none; cursor: pointer; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
+.star-btn:hover { transform: translateY(-3px) scale(1.02); }
+.star-btn.disabled { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
+.star-btn .star-light { position: absolute; aspect-ratio: 1; inset: 0; width: 110px; background: radial-gradient(ellipse at center, rgba(250,250,250,0.9), transparent, transparent); animation: starBtnLight 3s linear infinite; }
+.star-btn .star-bg { position: absolute; inset: 0; z-index: 4; overflow: hidden; border-radius: inherit; border: 2px solid rgba(255,255,255,0.15); }
+.star-btn .star-bg svg { width: 100%; height: 100%; }
+.star-btn .star-text { position: relative; z-index: 10; background: linear-gradient(to top, #ffffff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.status-msg { display: none; text-align: center; font-size: 13px; color: var(--mint); padding: 10px; border-radius: 10px; background: rgba(137,230,216,0.06); border: 1px solid rgba(137,230,216,0.18); }
+.notice { text-align: center; font-size: 11px; color: rgba(255,255,255,0.28); line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<div class="stars-global">
+  <div class="s-layer s1" id="sl1"></div>
+  <div class="s-layer s2" id="sl2"></div>
+</div>
+
+<p class="logo">Silverwind</p>
+
+<div class="tariff-wrap">
+  <div class="tariff-inner">
+    <div>
+      <p class="t-label">Онлайн-программа</p>
+      <p class="t-price">25 000<small>₽</small></p>
+    </div>
+    <div class="divider"></div>
+    <div class="features">
+      <p class="f-group-label">29+ аудиоуроков по блокам:</p>
+      <div class="f-row"><span class="f-dot"></span><span>Мироустройство</span></div>
+      <div class="f-row"><span class="f-dot"></span><span>Самоценность</span></div>
+      <div class="f-row"><span class="f-dot"></span><span>Отношения</span></div>
+      <div class="f-row"><span class="f-dot"></span><span>Реализация</span></div>
+      <div class="f-row"><span class="f-dot"></span><span>Деньги</span></div>
+      <p class="f-group-label" style="margin-top:6px;">Также включено:</p>
+      <div class="f-row"><span class="f-check">✓</span><span>Бонусные подкасты (37 тем)</span></div>
+      <div class="f-row"><span class="f-check">✓</span><span>ИИ куратор на протяжении месяца</span></div>
+      <div class="f-row"><span class="f-check">✓</span><span>1 консультация</span></div>
+    </div>
+    <div class="hl-box">
+      <p class="hl-label">✦ Доступ</p>
+      <div class="f-row"><span class="f-check">✓</span><span>+1 месяц доступа к материалам после окончания</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="agreements">
+      <label class="agree-row">
+        <input type="checkbox" id="ch-oferta">
+        <span class="agree-text">Я ознакомилась и согласна с <a href="oferta.html" target="_blank">договором-офертой</a></span>
+      </label>
+      <label class="agree-row">
+        <input type="checkbox" id="ch-policy">
+        <span class="agree-text">Я ознакомилась и согласна с <a href="politika.html" target="_blank">политикой конфиденциальности</a></span>
+      </label>
+    </div>
+    <div id="status" class="status-msg"></div>
+    <a id="pay-btn" class="star-btn disabled" href="#" data-star-btn>
+      <div class="star-light"></div>
+      <div class="star-bg">
+        <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#sc-pay)">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M56.1 3.96C56.4645 3.96 56.76 4.25519 56.76 4.62C56.76 4.98481 56.4645 5.28 56.1 5.28C55.7355 5.28 55.44 4.98481 55.44 4.62C55.44 4.25519 55.7355 3.96 56.1 3.96ZM40.26 17.16C40.6245 17.16 40.92 17.4552 40.92 17.82C40.92 18.1848 40.6245 18.48 40.26 18.48C39.8955 18.48 39.6 18.1848 39.6 17.82C39.6 17.4552 39.8955 17.16 40.26 17.16ZM74.58 5.28C74.9445 5.28 75.24 5.57519 75.24 5.94C75.24 6.30481 74.9445 6.6 74.58 6.6C74.2156 6.6 73.92 6.30481 73.92 5.94C73.92 5.57519 74.2156 5.28 74.58 5.28ZM138.6 0H0V46.2H138.6V0Z" fill="#0A0A0A"/>
+          </g>
+          <defs><clipPath id="sc-pay"><rect width="100" height="40" fill="white"/></clipPath></defs>
+        </svg>
+      </div>
+      <span class="star-text">Перейти к оплате</span>
+    </a>
+    <p class="notice">Безопасная оплата через Т-Банк</p>
+  </div>
+</div>
+
+<script>
+const PAYMENT_URL = 'https://www.tbank.ru/rm/r_PSiAWxBdie.QtApGDmtXe/W7Vg610965';
+const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbzUpveGVAlaJyPr3KsGX2WLe885CoX7W7YajsgLoF4faoxpMjUlxoFY93yRP3Lz5ZY/exec';
+
+const chOferta = document.getElementById('ch-oferta');
+const chPolicy = document.getElementById('ch-policy');
+const btn      = document.getElementById('pay-btn');
+const statusEl = document.getElementById('status');
+
+(function() {
+  function setPath() {
+    var w = btn.offsetWidth, h = btn.offsetHeight, light = btn.querySelector('.star-light');
+    if (light && w && h) light.style.offsetPath = "path('M 0 0 H " + w + " V " + h + " H 0 V 0')";
+  }
+  setPath(); window.addEventListener('resize', setPath);
+})();
+
+(function() {
+  function makeStars(id, count, minS, maxS, minO, maxO) {
+    var l = document.getElementById(id), f = document.createDocumentFragment();
+    for (var i = 0; i < count; i++) {
+      var d = document.createElement('div'); d.className = 's-dot';
+      var s = minS + Math.random() * (maxS - minS), o = minO + Math.random() * (maxO - minO);
+      d.style.cssText = 'width:'+s+'px;height:'+s+'px;top:'+(Math.random()*100)+'%;left:'+(Math.random()*100)+'%;background:rgba(255,255,255,'+o+');box-shadow:0 0 '+(s*2)+'px rgba(255,255,255,'+(o*0.5)+')';
+      f.appendChild(d);
+    }
+    l.appendChild(f);
+  }
+  makeStars('sl1', 120, 0.6, 1.8, 0.1, 0.45);
+  makeStars('sl2', 60,  1.0, 2.2, 0.06, 0.25);
+})();
+
+function updateBtn() {
+  const ok = chOferta.checked && chPolicy.checked;
+  if (ok) { btn.classList.remove('disabled'); btn.onclick = handlePay; }
+  else    { btn.classList.add('disabled');    btn.onclick = null; }
+}
+chOferta.addEventListener('change', updateBtn);
+chPolicy.addEventListener('change', updateBtn);
+
+async function handlePay(e) {
+  e.preventDefault();
+  const record = {
+    tariff: 'С ИИ куратором', price: 25000,
+    agreed_oferta: true, agreed_policy: true,
+    agreed_at: new Date().toISOString()
+  };
+  try {
+    await fetch(SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(record) });
+  } catch(err) {}
+  statusEl.textContent = 'Перенаправляем на страницу оплаты…';
+  statusEl.style.display = 'block';
+  setTimeout(() => window.open(PAYMENT_URL, '_blank'), 400);
+  return false;
+}
+</script>
+</body>
+</html>
