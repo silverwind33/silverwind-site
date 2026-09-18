@@ -66,7 +66,7 @@
 
 <div class="card">
     <div class="logo">Silverwind</div>
-    <div class="title">С ИИ куратором</div>
+    <div class="title">Без сопровождения</div>
     <div class="price">25 000 ₽</div>
 
     <div class="form-field">
@@ -172,13 +172,13 @@ document.getElementById('payBtn').addEventListener('click', function(e) {
     fetch('https://api.ipify.org?format=json').then(function(r){return r.json();}).then(function(d){
         return fetch(SHEETS_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
             name: name, email: email,
-            product: 'С ИИ куратором · 25 000₽',
+            product: 'Без сопровождения · 25 000₽',
             offer: true, privacy: true, ip: d.ip
         })});
     }).catch(function(){
         fetch(SHEETS_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
             name: name, email: email,
-            product: 'С ИИ куратором · 25 000₽',
+            product: 'Без сопровождения · 25 000₽',
             offer: true, privacy: true, ip: ''
         })});
     });
