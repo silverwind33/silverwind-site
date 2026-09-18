@@ -1,196 +1,189 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Оплата — Silverwind</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root { --bg: #0A0A0A; --accent: #A8B4BE; --accent-soft: #C8D2DC; --mint: #89E6D8; }
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { -webkit-font-smoothing: antialiased; }
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: var(--bg); color: #fff;
-  min-height: 100vh; overflow-x: hidden;
-  display: flex; flex-direction: column; align-items: center;
-  padding: 56px 20px 80px; position: relative;
-}
-body::before {
-  content: ''; position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.03;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px;
-}
-@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-2000px); } }
-.stars-global { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-.s-layer { position: absolute; top: 0; left: 0; width: 100%; height: 2000px; }
-.s1 { animation: drift 70s linear infinite; }
-.s2 { animation: drift 140s linear infinite; }
-.s-dot { position: absolute; background: transparent; border-radius: 50%; }
-@keyframes shinySlide { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
-.shiny-text {
-  background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.7) 37%, #ffffff 44%, rgba(230,235,240,1) 50%, #ffffff 56%, rgba(255,255,255,0.7) 63%, rgba(255,255,255,0.3) 75%, rgba(255,255,255,0.3) 100%);
-  background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shinySlide 12s linear infinite;
-}
-.tariff-wrap {
-  border-radius: 18px; padding: 1px; position: relative;
-  background: linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 40%, rgba(137,230,216,0.18) 100%);
-  width: 100%; max-width: 480px; z-index: 2;
-}
-.tariff-inner {
-  border-radius: 17px; position: relative; z-index: 1;
-  background: linear-gradient(145deg, #111314 0%, #0d0f0e 55%, #0b0d0c 100%);
-  padding: 40px 36px; display: flex; flex-direction: column; gap: 28px;
-}
-@media (max-width: 480px) { .tariff-inner { padding: 28px 20px; } }
-.logo { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.22em; color: var(--accent); text-transform: uppercase; margin-bottom: 44px; opacity: 0.65; position: relative; z-index: 2; }
-.t-label { font-family: 'Unbounded', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
-.t-price { font-family: 'Unbounded', sans-serif; font-size: 44px; font-weight: 800; letter-spacing: -0.02em; margin-top: 8px; }
-.t-price small { font-size: 22px; font-weight: 600; opacity: 0.5; margin-left: 4px; }
-.divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); }
-.features { display: flex; flex-direction: column; gap: 9px; }
-.f-group-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
-.f-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
-.f-dot { flex-shrink: 0; width: 4px; height: 4px; border-radius: 50%; background: rgba(168,180,190,0.5); margin-top: 7px; }
-.f-check { flex-shrink: 0; color: var(--accent); font-size: 13px; margin-top: 1px; }
-.hl-box { background: linear-gradient(135deg, rgba(168,180,190,0.12) 0%, rgba(168,180,190,0.04) 100%); border: 1px solid rgba(168,180,190,0.28); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
-.hl-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
-.agreements { display: flex; flex-direction: column; gap: 14px; }
-.agree-row { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
-.agree-row input[type="checkbox"] { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 20px; height: 20px; border: 1.5px solid rgba(168,180,190,0.3); border-radius: 6px; margin-top: 1px; cursor: pointer; transition: border-color 0.2s, background 0.2s; position: relative; background: rgba(168,180,190,0.05); }
-.agree-row input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
-.agree-row input[type="checkbox"]:checked::after { content: ''; position: absolute; top: 4px; left: 7px; width: 5px; height: 9px; border: 2px solid #0A0A0A; border-top: none; border-left: none; transform: rotate(45deg); }
-.agree-text { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
-.agree-text a { color: var(--accent); text-underline-offset: 3px; }
-@keyframes starBtnLight { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
-.star-btn { position: relative; z-index: 3; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; border-radius: 9999px; font-family: 'Inter', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 17px 24px; width: 100%; border: none; text-decoration: none; cursor: pointer; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); isolation: isolate; }
-.star-btn:hover { transform: translateY(-3px) scale(1.02); }
-.star-btn.disabled { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
-.star-btn .star-light { position: absolute; aspect-ratio: 1; inset: 0; width: 110px; background: radial-gradient(ellipse at center, rgba(250,250,250,0.9), transparent, transparent); animation: starBtnLight 3s linear infinite; }
-.star-btn .star-bg { position: absolute; inset: 0; z-index: 4; overflow: hidden; border-radius: inherit; border: 2px solid rgba(255,255,255,0.15); }
-.star-btn .star-bg svg { width: 100%; height: 100%; }
-.star-btn .star-text { position: relative; z-index: 10; background: linear-gradient(to top, #ffffff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.status-msg { display: none; text-align: center; font-size: 13px; color: var(--mint); padding: 10px; border-radius: 10px; background: rgba(137,230,216,0.06); border: 1px solid rgba(137,230,216,0.18); }
-.notice { text-align: center; font-size: 11px; color: rgba(255,255,255,0.28); line-height: 1.7; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silverwind — С ИИ куратором</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0A0A0A; --accent: #A8B4BE; --mint: #89E6D8; }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+
+        .card { max-width:460px; width:100%; border-radius:24px; padding:40px 32px;
+            border:1px solid rgba(192,192,192,0.35);
+            background:linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(192,192,192,0.03) 50%, rgba(255,255,255,0.02) 100%);
+            box-shadow: 0 0 40px rgba(192,192,192,0.08), inset 0 1px 0 rgba(255,255,255,0.12); }
+        .logo { font-family:'Unbounded',sans-serif; font-size:12px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:28px;
+            background:linear-gradient(135deg,#c0c0c0 0%,#fff 40%,#a8a8a8 60%,#f0f0f0 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; cursor:default; }
+        .title { font-family:'Unbounded',sans-serif; font-size:clamp(1.1rem,4vw,1.4rem); font-weight:600; margin-bottom:4px;
+            background:linear-gradient(135deg,#c0c0c0 0%,#fff 30%,#e8e8e8 50%,#a8a8a8 70%,#f0f0f0 100%);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+        .price { font-family:'Unbounded',sans-serif; font-size:20px; font-weight:500; color:#fff; margin-bottom:24px; }
+
+        .form-field { margin-bottom:14px; }
+        .form-field input { width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:#fff; font-family:'Inter',sans-serif; font-size:14px; outline:none; transition:border-color .2s; }
+        .form-field input::placeholder { color:rgba(255,255,255,0.25); }
+        .form-field input:focus { border-color:rgba(137,230,216,0.4); }
+
+        .checkbox-row { display:flex; align-items:flex-start; gap:10px; cursor:pointer; margin-bottom:20px; -webkit-user-select:none; user-select:none; }
+        .checkbox-box { width:20px; height:20px; border-radius:6px; border:1.5px solid rgba(255,255,255,0.2); flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+        .checkbox-box svg { opacity:0; transition:opacity .2s; }
+        .checkbox-row.checked .checkbox-box { border-color:var(--accent); background:rgba(168,180,190,0.12); }
+        .checkbox-row.checked .checkbox-box svg { opacity:1; }
+        .checkbox-text { font-size:13px; line-height:1.6; color:rgba(255,255,255,0.5); }
+        .checkbox-text a { color:#c0ccd4; text-decoration:underline; text-underline-offset:3px; }
+
+        .pay-btn {
+            display:block; width:100%; padding:16px; border-radius:9999px; font-family:'Unbounded',sans-serif;
+            font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+            text-decoration:none; text-align:center; border:none; transition:all .3s;
+            background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.15); cursor:default; pointer-events:none;
+        }
+        .pay-btn.enabled {
+            background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);
+            color:#0e1318; cursor:pointer; pointer-events:auto;
+        }
+        .pay-btn.enabled:hover { opacity:0.85; }
+
+        .offer-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; padding:20px; }
+        .offer-modal.active { display:flex; }
+        .offer-box { max-width:600px; width:100%; max-height:80vh; background:#111; border-radius:20px; border:1px solid rgba(255,255,255,0.1); overflow:hidden; display:flex; flex-direction:column; }
+        .offer-head { padding:20px 24px; border-bottom:1px solid rgba(255,255,255,0.06); font-family:'Unbounded',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); flex-shrink:0; display:flex; justify-content:space-between; align-items:center; }
+        .offer-close { background:none; border:none; color:rgba(255,255,255,0.3); font-size:20px; cursor:pointer; }
+        .offer-body { padding:20px 24px; overflow-y:auto; flex:1; font-size:13px; line-height:1.9; color:rgba(255,255,255,0.5); }
+        .offer-body h3 { color:rgba(255,255,255,0.75); font-size:13px; margin:16px 0 6px; font-weight:600; }
+        .offer-body h3:first-child { margin-top:0; }
+        .offer-body p { margin-bottom:8px; }
+        .offer-body ul { padding-left:18px; margin-bottom:8px; }
+        .offer-body ul li { margin-bottom:4px; }
+    </style>
 </head>
 <body>
 
-<div class="stars-global">
-  <div class="s-layer s1" id="sl1"></div>
-  <div class="s-layer s2" id="sl2"></div>
+<div class="card">
+    <div class="logo">Silverwind</div>
+    <div class="title">С ИИ куратором</div>
+    <div class="price">25 000 ₽</div>
+
+    <div class="form-field">
+        <input type="text" id="nameField" placeholder="Имя" required>
+    </div>
+    <div class="form-field">
+        <input type="email" id="emailField" placeholder="Email" required>
+    </div>
+
+    <label class="checkbox-row" id="checkRow" onclick="toggle()">
+        <span class="checkbox-box">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#A8B4BE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="checkbox-text">
+            Я согласен(-на) с <a href="#" onclick="event.preventDefault();event.stopPropagation();openOffer()">договором оферты</a> и <a href="/privacy-policy" onclick="event.stopPropagation()" target="_blank">политикой конфиденциальности</a>
+        </span>
+    </label>
+
+    <a id="payBtn" class="pay-btn" href="https://www.tbank.ru/rm/r_PSiAWxBdie.QtApGDmtXe/W7Vg610965" target="_blank">Оплатить</a>
 </div>
 
-<p class="logo">Silverwind</p>
+<!-- Оферта -->
+<div class="offer-modal" id="offerModal">
+    <div class="offer-box">
+        <div class="offer-head">Договор оферты <button class="offer-close" onclick="closeOffer()">✕</button></div>
+        <div class="offer-body">
+            <h3>Публичная оферта на оказание услуг онлайн-программы</h3>
+            <p>г. Москва | Утверждена 06.08.2026</p>
+            <p>Оплата услуг Исполнителя означает Ваше полное согласие со всеми условиями Оферты и надлежащее заключение Договора в порядке, предусмотренном в ст. 435 и п. 2 ст. 437 Гражданского кодекса РФ.</p>
+            <p>Силаева Алина Николаевна (далее — Исполнитель) предлагает любому заинтересованному лицу заключить Договор на оказание услуг онлайн-программы (далее — Договор) на изложенных ниже условиях.</p>
 
-<div class="tariff-wrap">
-  <div class="tariff-inner">
-    <div>
-      <p class="t-label">Онлайн-программа</p>
-      <p class="t-price">25 000<small>₽</small></p>
+            <h3>1. Термины и определения</h3>
+            <p><strong>Исполнитель</strong> — Силаева Алина Николаевна, автор методики Silverwind.</p>
+            <p><strong>Заказчик</strong> — физическое лицо, оформившее и оплатившее Услугу.</p>
+            <p><strong>Услуга</strong> — онлайн-программа продолжительностью 1 (один) месяц, включающая доступ к аудио-урокам, ИИ куратора и 1 (одну) консультацию.</p>
+            <p><strong>Акцепт оферты</strong> — полное и безоговорочное принятие условий оферты путём оплаты Услуги.</p>
+
+            <h3>2. Предмет договора</h3>
+            <p>2.1. Исполнитель обязуется оказать Заказчику услуги в составе:</p>
+            <ul>
+                <li>29+ аудио-уроков по блокам: Мироустройство, Самоценность, Отношения, Реализация, Деньги;</li>
+                <li>Бонусные подкасты (37 тем);</li>
+                <li>ИИ куратор на протяжении месяца;</li>
+                <li>1 (одна) консультация;</li>
+                <li>Доступ к материалам +1 месяц после окончания.</li>
+            </ul>
+            <p>2.2. Услуги носят исключительно информационный и образовательный характер и <strong>не являются</strong> медицинской, психологической, психотерапевтической, юридической или финансовой помощью.</p>
+            <p>2.3. Исполнитель не даёт гарантий достижения конкретных результатов.</p>
+
+            <h3>3. Порядок оказания услуг</h3>
+            <p>3.1. Программа длится 1 (один) месяц с момента поступления оплаты.</p>
+            <p>3.2. Формат, расписание и содержание программы определяются Исполнителем.</p>
+            <p>3.3. Доступ к материалам предоставляется дистанционно (онлайн).</p>
+
+            <h3>4. Стоимость услуг и порядок оплаты</h3>
+            <p>4.1. Стоимость программы составляет 25 000 (двадцать пять тысяч) рублей.</p>
+            <p>4.2. Оплата производится через Т-Банк. Допускается оплата частями по согласованию с Исполнителем.</p>
+
+            <h3>5. Возврат</h3>
+            <p>5.1. Заказчик вправе отказаться от услуг в любой момент. Возврат производится за вычетом фактически понесённых расходов.</p>
+            <p>5.2. Неудовлетворённость результатами не является основанием для возврата.</p>
+
+            <h3>6. Ответственность</h3>
+            <p>6.1. Заказчик принимает на себя полную ответственность за все решения, совершённые на основании информации программы.</p>
+            <p>6.2. Исполнитель не гарантирует конкретных результатов.</p>
+
+            <h3>7. Персональные данные</h3>
+            <p>7.1. Данные обрабатываются в соответствии с ФЗ № 152-ФЗ и <a href="/privacy-policy" target="_blank">Политикой конфиденциальности</a>.</p>
+
+            <h3>Реквизиты</h3>
+            <p>Силаева Алина Николаевна · silver.wind@list.ru</p>
+            <p>Дата обновления: 06 августа 2026 г.</p>
+        </div>
     </div>
-    <div class="divider"></div>
-    <div class="features">
-      <p class="f-group-label">29+ аудиоуроков по блокам:</p>
-      <div class="f-row"><span class="f-dot"></span><span>Мироустройство</span></div>
-      <div class="f-row"><span class="f-dot"></span><span>Самоценность</span></div>
-      <div class="f-row"><span class="f-dot"></span><span>Отношения</span></div>
-      <div class="f-row"><span class="f-dot"></span><span>Реализация</span></div>
-      <div class="f-row"><span class="f-dot"></span><span>Деньги</span></div>
-      <p class="f-group-label" style="margin-top:6px;">Также включено:</p>
-      <div class="f-row"><span class="f-check">✓</span><span>Бонусные подкасты (37 тем)</span></div>
-      <div class="f-row"><span class="f-check">✓</span><span>ИИ куратор на протяжении месяца</span></div>
-      <div class="f-row"><span class="f-check">✓</span><span>1 консультация</span></div>
-    </div>
-    <div class="hl-box">
-      <p class="hl-label">✦ Доступ</p>
-      <div class="f-row"><span class="f-check">✓</span><span>+1 месяц доступа к материалам после окончания</span></div>
-    </div>
-    <div class="divider"></div>
-    <div class="agreements">
-      <label class="agree-row">
-        <input type="checkbox" id="ch-oferta">
-        <span class="agree-text">Я ознакомилась и согласна с <a href="oferta.html" target="_blank">договором-офертой</a></span>
-      </label>
-      <label class="agree-row">
-        <input type="checkbox" id="ch-policy">
-        <span class="agree-text">Я ознакомилась и согласна с <a href="politika.html" target="_blank">политикой конфиденциальности</a></span>
-      </label>
-    </div>
-    <div id="status" class="status-msg"></div>
-    <a id="pay-btn" class="star-btn disabled" href="#" data-star-btn>
-      <div class="star-light"></div>
-      <div class="star-bg">
-        <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#sc-pay)">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M56.1 3.96C56.4645 3.96 56.76 4.25519 56.76 4.62C56.76 4.98481 56.4645 5.28 56.1 5.28C55.7355 5.28 55.44 4.98481 55.44 4.62C55.44 4.25519 55.7355 3.96 56.1 3.96ZM40.26 17.16C40.6245 17.16 40.92 17.4552 40.92 17.82C40.92 18.1848 40.6245 18.48 40.26 18.48C39.8955 18.48 39.6 18.1848 39.6 17.82C39.6 17.4552 39.8955 17.16 40.26 17.16ZM74.58 5.28C74.9445 5.28 75.24 5.57519 75.24 5.94C75.24 6.30481 74.9445 6.6 74.58 6.6C74.2156 6.6 73.92 6.30481 73.92 5.94C73.92 5.57519 74.2156 5.28 74.58 5.28ZM138.6 0H0V46.2H138.6V0Z" fill="#0A0A0A"/>
-          </g>
-          <defs><clipPath id="sc-pay"><rect width="100" height="40" fill="white"/></clipPath></defs>
-        </svg>
-      </div>
-      <span class="star-text">Перейти к оплате</span>
-    </a>
-    <p class="notice">Безопасная оплата через Т-Банк</p>
-  </div>
 </div>
 
 <script>
-const PAYMENT_URL = 'https://www.tbank.ru/rm/r_PSiAWxBdie.QtApGDmtXe/W7Vg610965';
-const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbzUpveGVAlaJyPr3KsGX2WLe885CoX7W7YajsgLoF4faoxpMjUlxoFY93yRP3Lz5ZY/exec';
-
-const chOferta = document.getElementById('ch-oferta');
-const chPolicy = document.getElementById('ch-policy');
-const btn      = document.getElementById('pay-btn');
-const statusEl = document.getElementById('status');
-
-(function() {
-  function setPath() {
-    var w = btn.offsetWidth, h = btn.offsetHeight, light = btn.querySelector('.star-light');
-    if (light && w && h) light.style.offsetPath = "path('M 0 0 H " + w + " V " + h + " H 0 V 0')";
-  }
-  setPath(); window.addEventListener('resize', setPath);
-})();
-
-(function() {
-  function makeStars(id, count, minS, maxS, minO, maxO) {
-    var l = document.getElementById(id), f = document.createDocumentFragment();
-    for (var i = 0; i < count; i++) {
-      var d = document.createElement('div'); d.className = 's-dot';
-      var s = minS + Math.random() * (maxS - minS), o = minO + Math.random() * (maxO - minO);
-      d.style.cssText = 'width:'+s+'px;height:'+s+'px;top:'+(Math.random()*100)+'%;left:'+(Math.random()*100)+'%;background:rgba(255,255,255,'+o+');box-shadow:0 0 '+(s*2)+'px rgba(255,255,255,'+(o*0.5)+')';
-      f.appendChild(d);
-    }
-    l.appendChild(f);
-  }
-  makeStars('sl1', 120, 0.6, 1.8, 0.1, 0.45);
-  makeStars('sl2', 60,  1.0, 2.2, 0.06, 0.25);
-})();
+var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzUpveGVAlaJyPr3KsGX2WLe885CoX7W7YajsgLoF4faoxpMjUlxoFY93yRP3Lz5ZY/exec';
+var checked = false;
 
 function updateBtn() {
-  const ok = chOferta.checked && chPolicy.checked;
-  if (ok) { btn.classList.remove('disabled'); btn.onclick = handlePay; }
-  else    { btn.classList.add('disabled');    btn.onclick = null; }
+    var name = document.getElementById('nameField').value.trim();
+    var email = document.getElementById('emailField').value.trim();
+    var btn = document.getElementById('payBtn');
+    if (checked && name && email) { btn.classList.add('enabled'); } else { btn.classList.remove('enabled'); }
 }
-chOferta.addEventListener('change', updateBtn);
-chPolicy.addEventListener('change', updateBtn);
+function toggle() {
+    checked = !checked;
+    document.getElementById('checkRow').classList.toggle('checked', checked);
+    updateBtn();
+}
+document.getElementById('nameField').addEventListener('input', updateBtn);
+document.getElementById('emailField').addEventListener('input', updateBtn);
 
-async function handlePay(e) {
-  e.preventDefault();
-  const record = {
-    tariff: 'С ИИ куратором', price: 25000,
-    agreed_oferta: true, agreed_policy: true,
-    agreed_at: new Date().toISOString()
-  };
-  try {
-    await fetch(SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(record) });
-  } catch(err) {}
-  statusEl.textContent = 'Перенаправляем на страницу оплаты…';
-  statusEl.style.display = 'block';
-  setTimeout(() => window.open(PAYMENT_URL, '_blank'), 400);
-  return false;
-}
+function openOffer() { document.getElementById('offerModal').classList.add('active'); }
+function closeOffer() { document.getElementById('offerModal').classList.remove('active'); }
+document.getElementById('offerModal').addEventListener('click', function(e) { if (e.target === this) closeOffer(); });
+
+document.getElementById('payBtn').addEventListener('click', function(e) {
+    var name = document.getElementById('nameField').value.trim();
+    var email = document.getElementById('emailField').value.trim();
+    if (!checked || !name || !email) { e.preventDefault(); return; }
+    fetch('https://api.ipify.org?format=json').then(function(r){return r.json();}).then(function(d){
+        return fetch(SHEETS_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
+            name: name, email: email,
+            product: 'С ИИ куратором · 25 000₽',
+            offer: true, privacy: true, ip: d.ip
+        })});
+    }).catch(function(){
+        fetch(SHEETS_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
+            name: name, email: email,
+            product: 'С ИИ куратором · 25 000₽',
+            offer: true, privacy: true, ip: ''
+        })});
+    });
+});
 </script>
+
 </body>
 </html>
