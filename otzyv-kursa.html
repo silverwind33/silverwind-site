@@ -109,15 +109,21 @@
     <div class="w-full max-w-xl">
 
         <div id="formState">
-            <p class="enter e1 metal-text text-[11px] tracking-[0.25em] uppercase mb-5 text-center" style="font-family:'Unbounded',sans-serif;">Анонимно · без имени и почты</p>
             <h1 class="enter e2 font-bold uppercase text-center mb-4 leading-[1.15]" style="font-family:'Unbounded',sans-serif;font-size:clamp(1.6rem,5.5vw,2.6rem);letter-spacing:0.02em;">
                 <span class="shiny-text">Отзыв о курсе</span>
             </h1>
+            <p class="enter e1 text-[11px] tracking-[0.25em] uppercase mb-5 text-center" style="font-family:'Unbounded',sans-serif;font-weight:300;color:#89E6D8;">Анонимно без имени и почты</p>
             <p class="enter e3 text-center text-[14px] leading-[1.8] mb-14" style="color:rgba(255,255,255,0.55);">
                 Ваши ответы никак не подписаны и помогут сделать курс лучше.<br>Отвечайте честно — можно пропускать вопросы.
             </p>
 
             <form id="surveyForm" class="enter e3 flex flex-col">
+
+                <div class="q">
+                    <p class="q-label">Насколько вероятно, что вы порекомендуете курс подруге?</p>
+                    <div class="pills" data-group="q2" data-max="10" data-min="0"></div>
+                    <div class="scale-caps"><span>0 — точно нет</span><span>10 — точно да</span></div>
+                </div>
 
                 <div class="q">
                     <p class="q-label">С каким запросом вы пришли на курс?</p>
@@ -129,13 +135,7 @@
                         <label class="choice-row" data-value="Самоценность"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Самоценность</span></label>
                         <label class="choice-row" data-value="Родители"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Родители</span></label>
                     </div>
-                    <textarea class="form-field mt-3" data-field="q0other" rows="2" placeholder="Как бы вы сами его сформулировали?"></textarea>
-                </div>
-
-                <div class="q">
-                    <p class="q-label">Насколько вероятно, что вы порекомендуете курс подруге?</p>
-                    <div class="pills" data-group="q2" data-max="10" data-min="0"></div>
-                    <div class="scale-caps"><span>0 — точно нет</span><span>10 — точно да</span></div>
+                    <textarea class="form-field mt-3" data-field="q0other" rows="3" placeholder="Как бы вы сформулировали свой запрос? Что не нравилось и что хотелось поменять? О чём вы мечтаете?"></textarea>
                 </div>
 
                 <div class="q">
