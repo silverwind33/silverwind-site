@@ -120,9 +120,16 @@
             <form id="surveyForm" class="enter e3 flex flex-col">
 
                 <div class="q">
-                    <p class="q-label">Насколько вы довольны курсом в целом?</p>
-                    <div class="pills" data-group="q1"></div>
-                    <div class="scale-caps"><span>1 — совсем нет</span><span>10 — в восторге</span></div>
+                    <p class="q-label">С каким запросом вы пришли на курс?</p>
+                    <span class="q-hint">можно выбрать несколько</span>
+                    <div id="q0group">
+                        <label class="choice-row" data-value="Деньги"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Деньги</span></label>
+                        <label class="choice-row" data-value="Реализация"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Реализация</span></label>
+                        <label class="choice-row" data-value="Отношения"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Отношения</span></label>
+                        <label class="choice-row" data-value="Самоценность"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Самоценность</span></label>
+                        <label class="choice-row" data-value="Родители"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Родители</span></label>
+                    </div>
+                    <textarea class="form-field mt-3" data-field="q0other" rows="2" placeholder="Как бы вы сами его сформулировали?"></textarea>
                 </div>
 
                 <div class="q">
@@ -151,41 +158,12 @@
                 </div>
 
                 <div class="q">
-                    <p class="q-label">Каким инструментом или практикой из курса вы пользуетесь чаще всего?</p>
-                    <span class="q-hint">можно выбрать несколько</span>
-                    <div id="q6group">
-                        <label class="choice-row" data-value="Перепрошивка программ"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Перепрошивка программ</span></label>
-                        <label class="choice-row" data-value="Работа с внутренним критиком"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Работа с внутренним критиком</span></label>
-                        <label class="choice-row" data-value="Доведение до абсурда"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Доведение до абсурда</span></label>
-                        <label class="choice-row" data-value="Поиск неосознанных программ"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Поиск неосознанных программ</span></label>
-                        <label class="choice-row" data-value="Практика прозрачности"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Практика прозрачности</span></label>
-                        <label class="choice-row" data-value="Поиск первого шага"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Поиск первого шага</span></label>
-                    </div>
-                    <textarea class="form-field mt-3" data-field="q6other" rows="2" placeholder="Своё (необязательно)"></textarea>
-                </div>
-
-                <div class="q">
                     <p class="q-label">Удобен ли был формат аудио + конспект? Чего не хватало?</p>
                     <textarea class="form-field" data-field="q8" rows="4" placeholder="Ваш ответ..."></textarea>
                 </div>
 
                 <div class="q">
-                    <p class="q-label">Было ли достаточно практических заданий, чтобы внедрить материал в жизнь?</p>
-                    <div id="q9group">
-                        <label class="choice-row radio" data-value="Да, вполне достаточно"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Да, вполне достаточно</span></label>
-                        <label class="choice-row radio" data-value="Скорее да"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Скорее да</span></label>
-                        <label class="choice-row radio" data-value="Скорее нет, хотелось бы больше"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Скорее нет, хотелось бы больше</span></label>
-                        <label class="choice-row radio" data-value="Нет, было мало практики"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Нет, было мало практики</span></label>
-                    </div>
-                </div>
-
-                <div class="q">
-                    <p class="q-label">Была ли тема, которая вызвала сложность или сопротивление? Какая?</p>
-                    <textarea class="form-field" data-field="q10" rows="4" placeholder="Ваш ответ..."></textarea>
-                </div>
-
-                <div class="q">
-                    <p class="q-label">Что, по вашему личному мнению, в первую очередь нужно улучшить в курсе?</p>
+                    <p class="q-label">Что нужно улучшить в курсе в первую очередь, по вашему личному мнению?</p>
                     <textarea class="form-field" data-field="q12" rows="4" placeholder="Ваш ответ..."></textarea>
                 </div>
 
@@ -246,7 +224,7 @@
     });
 
     // Мультивыбор (чекбоксы)
-    document.querySelectorAll('#q3group .choice-row, #q6group .choice-row').forEach(function(row){
+    document.querySelectorAll('#q3group .choice-row, #q0group .choice-row').forEach(function(row){
         row.addEventListener('click', function(){ row.classList.toggle('checked'); });
     });
 
@@ -271,9 +249,9 @@
         document.querySelectorAll('#q3group .choice-row.checked').forEach(function(r){ q3.push(r.dataset.value); });
         data.q3 = q3.join(', ');
 
-        var q6 = [];
-        document.querySelectorAll('#q6group .choice-row.checked').forEach(function(r){ q6.push(r.dataset.value); });
-        data.q6 = q6.join(', ');
+        var q0 = [];
+        document.querySelectorAll('#q0group .choice-row.checked').forEach(function(r){ q0.push(r.dataset.value); });
+        data.q0 = q0.join(', ');
 
         document.querySelectorAll('textarea[data-field]').forEach(function(t){
             data[t.dataset.field] = t.value.trim();
