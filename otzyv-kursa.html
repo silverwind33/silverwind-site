@@ -147,23 +147,21 @@
                     <p class="q-label">Насколько качественно записаны уроки и приятно ли их было слушать?</p>
                     <div class="pills" data-group="q4"></div>
                     <div class="scale-caps"><span>1 — совсем некомфортно</span><span>10 — очень приятно</span></div>
-                </div>
-
-                <div class="q">
-                    <p class="q-label">Какую программу или установку вы смогли перепрошить, которая раньше мешала больше всего?</p>
-                    <textarea class="form-field" data-field="q5" rows="4" placeholder="Например: «деньги достаются только тяжёлым трудом»..."></textarea>
+                    <textarea class="form-field mt-4" data-field="q4comment" rows="3" placeholder="Комментарий (необязательно)"></textarea>
                 </div>
 
                 <div class="q">
                     <p class="q-label">Каким инструментом или практикой из курса вы пользуетесь чаще всего?</p>
-                    <span class="q-hint">например: перепрошивка, работа с внутренним критиком, доведение до абсурда, поиск программ, практика прозрачности</span>
-                    <textarea class="form-field" data-field="q6" rows="3" placeholder="Ваш ответ..."></textarea>
-                </div>
-
-                <div class="q">
-                    <p class="q-label">Насколько понятно было объяснено содержание уроков?</p>
-                    <div class="pills" data-group="q7"></div>
-                    <div class="scale-caps"><span>1 — совсем непонятно</span><span>10 — предельно ясно</span></div>
+                    <span class="q-hint">можно выбрать несколько</span>
+                    <div id="q6group">
+                        <label class="choice-row" data-value="Перепрошивка программ"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Перепрошивка программ</span></label>
+                        <label class="choice-row" data-value="Работа с внутренним критиком"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Работа с внутренним критиком</span></label>
+                        <label class="choice-row" data-value="Доведение до абсурда"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Доведение до абсурда</span></label>
+                        <label class="choice-row" data-value="Поиск неосознанных программ"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Поиск неосознанных программ</span></label>
+                        <label class="choice-row" data-value="Практика прозрачности"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Практика прозрачности</span></label>
+                        <label class="choice-row" data-value="Поиск первого шага"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Поиск первого шага</span></label>
+                    </div>
+                    <textarea class="form-field mt-3" data-field="q6other" rows="2" placeholder="Своё (необязательно)"></textarea>
                 </div>
 
                 <div class="q">
@@ -248,7 +246,7 @@
     });
 
     // Мультивыбор (чекбоксы)
-    document.querySelectorAll('#q3group .choice-row').forEach(function(row){
+    document.querySelectorAll('#q3group .choice-row, #q6group .choice-row').forEach(function(row){
         row.addEventListener('click', function(){ row.classList.toggle('checked'); });
     });
 
@@ -272,6 +270,10 @@
         var q3 = [];
         document.querySelectorAll('#q3group .choice-row.checked').forEach(function(r){ q3.push(r.dataset.value); });
         data.q3 = q3.join(', ');
+
+        var q6 = [];
+        document.querySelectorAll('#q6group .choice-row.checked').forEach(function(r){ q6.push(r.dataset.value); });
+        data.q6 = q6.join(', ');
 
         document.querySelectorAll('textarea[data-field]').forEach(function(t){
             data[t.dataset.field] = t.value.trim();
