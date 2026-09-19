@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silverwind — Анонимный отзыв о курсе</title>
+    <meta name="description" content="Анонимная анкета обратной связи для выпускниц курса Silverwind.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0A0A0A; --accent: #89E6D8; --accent2: #A8B4BE; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: #fff; overflow-x: hidden; min-height: 100vh; }
+
+        .noise::before {
+            content: ''; position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.03;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px;
+        }
+
+        @keyframes shinySlide { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+        .shiny-text {
+            background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.7) 37%, #fff 44%, rgba(230,235,240,1) 50%, #fff 56%, rgba(255,255,255,0.7) 63%, rgba(255,255,255,0.3) 75%, rgba(255,255,255,0.3) 100%);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: shinySlide 12s linear infinite;
+        }
+
+        .metal-text {
+            font-weight: 300;
+            background: linear-gradient(120deg, #ffffff 0%, #ffffff 12%, #7c8288 30%, #eef1f2 45%, #ffffff 55%, #5f6469 72%, #ffffff 88%, #d5d9db 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-2000px); } }
+        .stars-global { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .s-layer { position: absolute; top: 0; left: 0; width: 100%; height: 2000px; }
+        .s1 { animation: drift 70s linear infinite; }
+        .s2 { animation: drift 140s linear infinite; }
+        .s3 { animation: drift 200s linear infinite; }
+        .s-dot, .s-dot-c { position: absolute; background: transparent; border-radius: 50%; }
+        .s-dot-c { top: 2000px; }
+
+        @keyframes enter { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+        .enter { opacity: 0; animation: enter 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .e1 { animation-delay: 0s; } .e2 { animation-delay: .1s; } .e3 { animation-delay: .18s; }
+
+        .q { padding: 34px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .q:last-of-type { border-bottom: none; }
+        .q-label { font-size: 16px; line-height: 1.55; color: #fff; margin-bottom: 6px; }
+        .q-hint { font-family:'Unbounded',sans-serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent2); opacity: .65; margin-bottom: 14px; display:block; }
+
+        .form-field {
+            width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+            padding: 15px 18px; font-family: 'Inter', sans-serif; font-size: 14.5px; color: #fff; outline: none;
+            transition: border-color .3s ease, background .3s ease; resize: none;
+        }
+        .form-field::placeholder { color: rgba(255,255,255,0.22); }
+        .form-field:focus { border-color: rgba(137,230,216,0.4); background: rgba(137,230,216,0.04); }
+
+        .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .pill {
+            width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.65); font-family:'Inter',sans-serif; font-size: 14px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s ease; flex-shrink: 0;
+        }
+        .pill:hover { border-color: rgba(137,230,216,0.4); }
+        .pill.active { background: linear-gradient(135deg, #89E6D8 0%, #a8c8c0 60%, #89E6D8 100%); color: #0a1a18; border-color: transparent; font-weight: 600; }
+        .scale-caps { display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,0.32); margin-top:8px; }
+
+        .choice-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; cursor: pointer; margin-bottom: 8px; transition: all .2s ease; }
+        .choice-row:hover { border-color: rgba(137,230,216,0.3); }
+        .choice-mark { flex-shrink:0; width:18px; height:18px; border:1.5px solid rgba(255,255,255,0.25); border-radius: 5px; display:flex; align-items:center; justify-content:center; transition: all .2s ease; }
+        .choice-row.radio .choice-mark { border-radius: 50%; }
+        .choice-mark svg { opacity: 0; transition: opacity .15s; }
+        .choice-row.checked { border-color: rgba(137,230,216,0.45); background: rgba(137,230,216,0.05); }
+        .choice-row.checked .choice-mark { border-color: var(--accent); background: rgba(137,230,216,0.15); }
+        .choice-row.checked .choice-mark svg { opacity: 1; }
+        .choice-text { font-size: 14.5px; color: rgba(255,255,255,0.85); }
+
+        .submit-btn {
+            width: 100%; padding: 18px; border-radius: 9999px; font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 600;
+            letter-spacing: 0.08em; text-transform: uppercase; border: none; cursor: pointer; transition: all .4s cubic-bezier(0.16,1,0.3,1);
+            background: linear-gradient(135deg, #89E6D8 0%, #a8c8c0 40%, #c8d8d4 60%, #89E6D8 100%); color: #0a1a18;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(137,230,216,0.3); }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .success-state { display: none; }
+        .success-state.show { display: flex; }
+        @keyframes pulse1 { 0%,100%{opacity:.06;transform:scale(1)} 50%{opacity:.14;transform:scale(1.1)} }
+    </style>
+</head>
+<body class="noise">
+
+<div class="stars-global" id="starBox">
+    <div class="s-layer s1"><div class="s-dot" id="d1" style="width:1px;height:1px"></div><div class="s-dot-c" id="d1c" style="width:1px;height:1px"></div></div>
+    <div class="s-layer s2"><div class="s-dot" id="d2" style="width:2px;height:2px"></div><div class="s-dot-c" id="d2c" style="width:2px;height:2px"></div></div>
+    <div class="s-layer s3"><div class="s-dot" id="d3" style="width:2.5px;height:2.5px"></div><div class="s-dot-c" id="d3c" style="width:2.5px;height:2.5px"></div></div>
+</div>
+
+<div class="fixed inset-0 pointer-events-none" style="z-index:1;">
+    <div class="absolute w-[600px] h-[600px] rounded-full blur-[200px]" style="top:0;left:50%;transform:translateX(-50%);background:rgba(137,230,216,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
+</div>
+
+<div class="relative z-10 min-h-screen flex items-start justify-center px-6 pt-24 pb-32">
+    <div class="w-full max-w-xl">
+
+        <div id="formState">
+            <p class="enter e1 metal-text text-[11px] tracking-[0.25em] uppercase mb-5 text-center" style="font-family:'Unbounded',sans-serif;">Анонимно · без имени и почты</p>
+            <h1 class="enter e2 font-bold uppercase text-center mb-4 leading-[1.15]" style="font-family:'Unbounded',sans-serif;font-size:clamp(1.6rem,5.5vw,2.6rem);letter-spacing:0.02em;">
+                <span class="shiny-text">Отзыв о курсе</span>
+            </h1>
+            <p class="enter e3 text-center text-[14px] leading-[1.8] mb-14" style="color:rgba(255,255,255,0.55);">
+                Ваши ответы никак не подписаны и помогут сделать курс лучше.<br>Отвечайте честно — можно пропускать вопросы.
+            </p>
+
+            <form id="surveyForm" class="enter e3 flex flex-col">
+
+                <div class="q">
+                    <p class="q-label">Насколько вы довольны курсом в целом?</p>
+                    <div class="pills" data-group="q1"></div>
+                    <div class="scale-caps"><span>1 — совсем нет</span><span>10 — в восторге</span></div>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Насколько вероятно, что вы порекомендуете курс подруге?</p>
+                    <div class="pills" data-group="q2" data-max="10" data-min="0"></div>
+                    <div class="scale-caps"><span>0 — точно нет</span><span>10 — точно да</span></div>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Какой блок дал вам больше всего пользы?</p>
+                    <span class="q-hint">можно выбрать несколько</span>
+                    <div id="q3group">
+                        <label class="choice-row" data-value="Мироустройство"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Мироустройство</span></label>
+                        <label class="choice-row" data-value="Работа с программами"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Работа с программами</span></label>
+                        <label class="choice-row" data-value="Отношения"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Отношения</span></label>
+                        <label class="choice-row" data-value="Реализация"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Реализация</span></label>
+                        <label class="choice-row" data-value="Деньги"><span class="choice-mark"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#89E6D8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="choice-text">Деньги</span></label>
+                    </div>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Насколько качественно записаны уроки и приятно ли их было слушать?</p>
+                    <div class="pills" data-group="q4"></div>
+                    <div class="scale-caps"><span>1 — совсем некомфортно</span><span>10 — очень приятно</span></div>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Какую программу или установку вы смогли перепрошить, которая раньше мешала больше всего?</p>
+                    <textarea class="form-field" data-field="q5" rows="4" placeholder="Например: «деньги достаются только тяжёлым трудом»..."></textarea>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Каким инструментом или практикой из курса вы пользуетесь чаще всего?</p>
+                    <span class="q-hint">например: перепрошивка, работа с внутренним критиком, доведение до абсурда, поиск программ, практика прозрачности</span>
+                    <textarea class="form-field" data-field="q6" rows="3" placeholder="Ваш ответ..."></textarea>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Насколько понятно было объяснено содержание уроков?</p>
+                    <div class="pills" data-group="q7"></div>
+                    <div class="scale-caps"><span>1 — совсем непонятно</span><span>10 — предельно ясно</span></div>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Удобен ли был формат аудио + конспект? Чего не хватало?</p>
+                    <textarea class="form-field" data-field="q8" rows="4" placeholder="Ваш ответ..."></textarea>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Было ли достаточно практических заданий, чтобы внедрить материал в жизнь?</p>
+                    <div id="q9group">
+                        <label class="choice-row radio" data-value="Да, вполне достаточно"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Да, вполне достаточно</span></label>
+                        <label class="choice-row radio" data-value="Скорее да"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Скорее да</span></label>
+                        <label class="choice-row radio" data-value="Скорее нет, хотелось бы больше"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Скорее нет, хотелось бы больше</span></label>
+                        <label class="choice-row radio" data-value="Нет, было мало практики"><span class="choice-mark"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" fill="#89E6D8"/></svg></span><span class="choice-text">Нет, было мало практики</span></label>
+                    </div>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Была ли тема, которая вызвала сложность или сопротивление? Какая?</p>
+                    <textarea class="form-field" data-field="q10" rows="4" placeholder="Ваш ответ..."></textarea>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Что, по вашему личному мнению, в первую очередь нужно улучшить в курсе?</p>
+                    <textarea class="form-field" data-field="q12" rows="4" placeholder="Ваш ответ..."></textarea>
+                </div>
+
+                <div class="q">
+                    <p class="q-label">Свободный комментарий</p>
+                    <span class="q-hint">необязательно — можно написать что угодно</span>
+                    <textarea class="form-field" data-field="q13" rows="4" placeholder="Ваш ответ..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn mt-6" id="submitBtn">Отправить анонимно</button>
+            </form>
+        </div>
+
+        <div id="successState" class="success-state flex-col items-center text-center gap-6">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2" style="background:rgba(137,230,216,0.1);border:1px solid rgba(137,230,216,0.25);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(137,230,216,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h2 class="font-bold uppercase tracking-wide" style="font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,4.5vw,1.8rem);color:#fff;">Спасибо за ответ</h2>
+            <p class="text-[15px] leading-[1.8]" style="color:rgba(255,255,255,0.5);">Ваш отзыв сохранён анонимно и поможет сделать курс лучше</p>
+            <a href="index.html" class="mt-4 inline-flex items-center gap-2 text-[13px] tracking-wide" style="color:rgba(137,230,216,0.6);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                На главную
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Stars
+    function stars(n,c){var s=[];for(var i=0;i<n;i++)s.push((Math.random()*4000-2000|0)+'px '+(Math.random()*4000-2000|0)+'px '+c);return s.join(',');}
+    var a=stars(700,'rgba(255,255,255,0.5)'),b=stars(250,'rgba(200,240,232,0.4)'),c=stars(80,'rgba(165,240,224,0.35)');
+    document.getElementById('d1').style.boxShadow=a; document.getElementById('d1c').style.boxShadow=a;
+    document.getElementById('d2').style.boxShadow=b; document.getElementById('d2c').style.boxShadow=b;
+    document.getElementById('d3').style.boxShadow=c; document.getElementById('d3c').style.boxShadow=c;
+
+    // ⚠️ Вставьте сюда URL вашего Apps Script после деплоя (см. инструкцию)
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqxAmUO0FAGrJUUF51hlNjCyYfQAJbWSvXZuJ4WzSNq-4EgVpB_ovFNUqRO9dpfxn1rw/exec';
+
+    // Строим шкалы 1–10 и 0–10
+    document.querySelectorAll('.pills').forEach(function(group){
+        var min = parseInt(group.dataset.min || '1', 10);
+        var max = parseInt(group.dataset.max || '10', 10);
+        var selected = null;
+        for (var i = min; i <= max; i++) {
+            (function(val){
+                var b = document.createElement('div');
+                b.className = 'pill';
+                b.textContent = val;
+                b.addEventListener('click', function(){
+                    group.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+                    b.classList.add('active');
+                    group.dataset.value = val;
+                });
+                group.appendChild(b);
+            })(i);
+        }
+    });
+
+    // Мультивыбор (чекбоксы)
+    document.querySelectorAll('#q3group .choice-row').forEach(function(row){
+        row.addEventListener('click', function(){ row.classList.toggle('checked'); });
+    });
+
+    // Одиночный выбор (радио)
+    document.querySelectorAll('#q9group .choice-row').forEach(function(row){
+        row.addEventListener('click', function(){
+            document.querySelectorAll('#q9group .choice-row').forEach(function(r){ r.classList.remove('checked'); });
+            row.classList.add('checked');
+        });
+    });
+
+    document.getElementById('surveyForm').addEventListener('submit', function(e){
+        e.preventDefault();
+
+        var data = { timestamp: new Date().toISOString() };
+
+        document.querySelectorAll('.pills').forEach(function(group){
+            data[group.dataset.group] = group.dataset.value || '';
+        });
+
+        var q3 = [];
+        document.querySelectorAll('#q3group .choice-row.checked').forEach(function(r){ q3.push(r.dataset.value); });
+        data.q3 = q3.join(', ');
+
+        document.querySelectorAll('textarea[data-field]').forEach(function(t){
+            data[t.dataset.field] = t.value.trim();
+        });
+
+        var q9 = document.querySelector('#q9group .choice-row.checked');
+        data.q9 = q9 ? q9.dataset.value : '';
+
+        var btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Отправляем...';
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(function(){
+            document.getElementById('formState').style.display = 'none';
+            document.getElementById('successState').classList.add('show');
+        })
+        .catch(function(){
+            btn.disabled = false;
+            btn.textContent = 'Отправить анонимно';
+        });
+    });
+</script>
+</body>
+</html>
