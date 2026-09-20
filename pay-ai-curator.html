@@ -60,6 +60,8 @@
         .offer-body p { margin-bottom:8px; }
         .offer-body ul { padding-left:18px; margin-bottom:8px; }
         .offer-body ul li { margin-bottom:4px; }
+
+        .review-hint { max-width:460px; width:100%; margin-top:20px; font-family:'Inter',sans-serif; font-size:13px; font-weight:200; line-height:1.8; color:#7ab8c8; letter-spacing:0.01em; text-align:center; }
     </style>
 </head>
 <body>
@@ -68,13 +70,6 @@
     <div class="logo">Silverwind</div>
     <div class="title">Курс. Тариф самостоятельный</div>
     <div class="price">25 000 ₽</div>
-
-    <div class="form-field">
-        <input type="text" id="nameField" placeholder="Имя" required>
-    </div>
-    <div class="form-field">
-        <input type="email" id="emailField" placeholder="Email" required>
-    </div>
 
     <label class="checkbox-row" id="checkRow" onclick="toggle()">
         <span class="checkbox-box">
@@ -85,8 +80,10 @@
         </span>
     </label>
 
-    <a id="payBtn" class="pay-btn" href="https://www.tbank.ru/rm/r_PSiAWxBdie.QtApGDmtXe/W7Vg610965" target="_blank">Оплатить</a>
+    <a id="payBtn" class="pay-btn enabled" href="https://www.tbank.ru/rm/r_PSiAWxBdie.QtApGDmtXe/W7Vg610965" target="_blank">Оплатить</a>
 </div>
+
+<p class="review-hint">Как вы сформулировали бы свой запрос? Что не нравилось и что хотелось поменять? О чём вы мечтаете? Порекомендуете ли подруге</p>
 
 <!-- Оферта -->
 <div class="offer-modal" id="offerModal">
@@ -147,39 +144,34 @@
 var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzUpveGVAlaJyPr3KsGX2WLe885CoX7W7YajsgLoF4faoxpMjUlxoFY93yRP3Lz5ZY/exec';
 var checked = false;
 
-function updateBtn() {
-    var name = document.getElementById('nameField').value.trim();
-    var email = document.getElementById('emailField').value.trim();
-    var btn = document.getElementById('payBtn');
-    if (checked && name && email) { btn.classList.add('enabled'); } else { btn.classList.remove('enabled'); }
-}
 function toggle() {
     checked = !checked;
     document.getElementById('checkRow').classList.toggle('checked', checked);
-    updateBtn();
+    var btn = document.getElementById('payBtn');
+    if (checked) { btn.classList.add('enabled'); } else { btn.classList.remove('enabled'); }
 }
-document.getElementById('nameField').addEventListener('input', updateBtn);
-document.getElementById('emailField').addEventListener('input', updateBtn);
 
 function openOffer() { document.getElementById('offerModal').classList.add('active'); }
 function closeOffer() { document.getElementById('offerModal').classList.remove('active'); }
 document.getElementById('offerModal').addEventListener('click', function(e) { if (e.target === this) closeOffer(); });
 
 document.getElementById('payBtn').addEventListener('click', function(e) {
-    var name = document.getElementById('nameField').value.trim();
-    var email = document.getElementById('emailField').value.trim();
-    if (!checked || !name || !email) { e.preventDefault(); return; }
+    if (!checked) { e.preventDefault(); return; }
     fetch('https://api.ipify.org?format=json').then(function(r){return r.json();}).then(function(d){
         return fetch(SHEETS_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
-            name: name, email: email,
             product: 'Курс. Тариф самостоятельный · 25 000₽',
-            offer: true, privacy: true, ip: d.ip
+            offer: true, privacy: true, ip: d.ip,
+            agreed_at: new Date().toISOString(),
+            tariff: 'Курс. Тариф самостоятельный · 25 000₽',
+            price: 25000, agreed_oferta: true, agreed_policy: true
         })});
     }).catch(function(){
         fetch(SHEETS_URL, {method:'POST', mode:'no-cors', body: JSON.stringify({
-            name: name, email: email,
             product: 'Курс. Тариф самостоятельный · 25 000₽',
-            offer: true, privacy: true, ip: ''
+            offer: true, privacy: true, ip: '',
+            agreed_at: new Date().toISOString(),
+            tariff: 'Курс. Тариф самостоятельный · 25 000₽',
+            price: 25000, agreed_oferta: true, agreed_policy: true
         })});
     });
 });
