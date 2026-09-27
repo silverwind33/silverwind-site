@@ -118,76 +118,6 @@
                             allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
                 </div>
 
-                <!-- Audio player card — below video -->
-                <div class="res-card-wrap"><div class="res-card" style="gap:10px">
-                    <div class="flex items-center gap-3">
-                        <div style="width:36px;height:36px;border-radius:8px;border:1px solid rgba(168,180,190,0.35);background:rgba(168,180,190,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(168,180,190,0.9)" stroke-width="1.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
-                        </div>
-                        <div>
-                            <p class="font-display font-light text-[10px] tracking-[0.18em] uppercase mb-0.5" style="color:rgba(168,180,190,0.6)">Аудио</p>
-                            <p class="font-display font-light text-[11px] tracking-[0.06em]" style="color:rgba(255,255,255,0.9)">Урок 1 — слушать</p>
-                        </div>
-                    </div>
-                    <audio id="lessonAudio" src="lesson.mp3" preload="metadata" style="display:none"></audio>
-                    <div class="flex flex-col gap-2">
-                        <!-- Play + time -->
-                        <div class="flex items-center gap-3">
-                            <button id="audioPlayBtn" onclick="toggleAudio()" style="width:32px;height:32px;border-radius:50%;border:1px solid rgba(168,180,190,0.3);background:rgba(168,180,190,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer">
-                                <svg id="iconPlay" width="12" height="12" viewBox="0 0 24 24" fill="rgba(168,180,190,0.8)" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                                <svg id="iconPause" width="12" height="12" viewBox="0 0 24 24" fill="rgba(168,180,190,0.8)" stroke="none" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                            </button>
-                            <div style="flex:1;height:3px;border-radius:2px;background:rgba(168,180,190,0.12);cursor:pointer;position:relative" onclick="seekAudio(event,this)" id="audioBar">
-                                <div id="audioProgress" style="height:100%;border-radius:2px;background:linear-gradient(90deg,#A8B4BE,#C8D2DC);width:0%;transition:width 0.25s linear"></div>
-                            </div>
-                            <span id="audioTime" class="font-body" style="font-size:10px;color:rgba(168,180,190,0.45);white-space:nowrap;min-width:34px">0:00</span>
-                        </div>
-                        <!-- Speed buttons -->
-                        <div class="flex items-center gap-1.5">
-                            <span class="font-display font-light" style="font-size:9px;letter-spacing:0.1em;color:rgba(168,180,190,0.3);text-transform:uppercase">скорость</span>
-                            <div class="flex gap-1 ml-1">
-                                <button onclick="setSpeed(0.75)" data-speed="0.75" class="speed-btn font-display" style="font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.4);cursor:pointer;letter-spacing:0.04em">0.75</button>
-                                <button onclick="setSpeed(1)"    data-speed="1"    class="speed-btn font-display" style="font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid rgba(168,180,190,0.35);background:rgba(168,180,190,0.08);color:rgba(168,180,190,0.8);cursor:pointer;letter-spacing:0.04em">1×</button>
-                                <button onclick="setSpeed(1.25)" data-speed="1.25" class="speed-btn font-display" style="font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.4);cursor:pointer;letter-spacing:0.04em">1.25</button>
-                                <button onclick="setSpeed(1.5)"  data-speed="1.5"  class="speed-btn font-display" style="font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.4);cursor:pointer;letter-spacing:0.04em">1.5</button>
-                                <button onclick="setSpeed(2)"    data-speed="2"    class="speed-btn font-display" style="font-size:9px;padding:2px 6px;border-radius:4px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.4);cursor:pointer;letter-spacing:0.04em">2×</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                (function(){
-                    var aud=document.getElementById('lessonAudio');
-                    var bar=document.getElementById('audioProgress');
-                    var time=document.getElementById('audioTime');
-                    var iconPlay=document.getElementById('iconPlay');
-                    var iconPause=document.getElementById('iconPause');
-                    function fmt(s){var m=Math.floor(s/60);return m+':'+(('0'+Math.floor(s%60)).slice(-2));}
-                    aud.addEventListener('timeupdate',function(){
-                        if(aud.duration){bar.style.width=(aud.currentTime/aud.duration*100)+'%';time.textContent=fmt(aud.currentTime);}
-                    });
-                    aud.addEventListener('ended',function(){iconPlay.style.display='';iconPause.style.display='none';});
-                    window.toggleAudio=function(){
-                        if(aud.paused){aud.play();iconPlay.style.display='none';iconPause.style.display='';}
-                        else{aud.pause();iconPlay.style.display='';iconPause.style.display='none';}
-                    };
-                    window.seekAudio=function(e,el){
-                        var rect=el.getBoundingClientRect();
-                        var pct=(e.clientX-rect.left)/rect.width;
-                        if(aud.duration)aud.currentTime=pct*aud.duration;
-                    };
-                    window.setSpeed=function(s){
-                        aud.playbackRate=s;
-                        document.querySelectorAll('.speed-btn').forEach(function(b){
-                            var active=parseFloat(b.dataset.speed)===s;
-                            b.style.borderColor=active?'rgba(168,180,190,0.35)':'rgba(168,180,190,0.15)';
-                            b.style.background=active?'rgba(168,180,190,0.08)':'transparent';
-                            b.style.color=active?'rgba(168,180,190,0.8)':'rgba(168,180,190,0.4)';
-                        });
-                    };
-                })();
-                </script>
-                </div><!-- /audio res-card-wrap -->
             </div>
 
             <!-- RESOURCES (right) -->
@@ -205,9 +135,9 @@
                         </div>
                     </div>
                     <p class="font-body leading-relaxed" style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.55)">Структура урока, ключевые идеи и схемы — в одном файле.</p>
-                    <a href="/urok1-konspekt.pdf" target="_blank" class="font-display font-light text-[10px] tracking-[0.18em] uppercase text-[var(--accent)] hover:text-white/80 transition-colors" style="margin-top:4px">
-                        Скачать →
-                    </a>
+                    <button onclick="openKonspekt()" class="font-display font-light text-[10px] tracking-[0.18em] uppercase text-[var(--accent)] hover:text-white/80 transition-colors" style="margin-top:4px;background:none;border:none;padding:0;cursor:pointer;text-align:left">
+                        Открыть конспект →
+                    </button>
                 </div></div><!-- /pdf res-card-wrap -->
 
                 <!-- Practice card -->
@@ -319,6 +249,20 @@
     </div>
 </footer>
 
+<!-- Konspekt modal -->
+<div id="konspektModal" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.92);overflow-y:auto" onclick="closeKonspektOnBg(event)">
+    <div style="max-width:820px;margin:0 auto;padding:20px 16px 48px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;position:sticky;top:0;background:rgba(10,10,10,0.95);padding:16px 0;z-index:1;backdrop-filter:blur(8px)">
+            <p class="font-display font-light" style="font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(168,180,190,0.6)">Конспект урока 1</p>
+            <button onclick="closeKonspekt()" style="background:none;border:1px solid rgba(168,180,190,0.2);color:rgba(168,180,190,0.6);border-radius:6px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:11px;letter-spacing:0.1em">✕ закрыть</button>
+        </div>
+        <div id="konspektSlides" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div style="margin-top:24px;text-align:center">
+            <a href="/urok1-konspekt.pdf" target="_blank" class="font-display font-light" style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(168,180,190,0.4);text-decoration:none">Скачать PDF →</a>
+        </div>
+    </div>
+</div>
+
 <script>
     const sg = document.getElementById('starsGlobal');
     [[200,'s1'],[120,'s2'],[60,'s3']].forEach(([count,cls]) => {
@@ -326,6 +270,32 @@
         for(let j=0;j<count;j++){const d=document.createElement('div');d.className='s-dot';const sz=Math.random()<.15?2:1;d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:rgba(255,255,255,${.07+Math.random()*.3})`;l.appendChild(d)}
         sg.appendChild(l);
     });
+
+    var _konspektBuilt = false;
+    function openKonspekt() {
+        if (!_konspektBuilt) {
+            var container = document.getElementById('konspektSlides');
+            for (var i = 1; i <= 15; i++) {
+                var img = document.createElement('img');
+                img.src = '/urok1-lesson/deck/slide' + i + '.png';
+                img.loading = 'lazy';
+                img.style.cssText = 'width:100%;border-radius:8px;display:block;background:rgba(168,180,190,0.04)';
+                img.alt = 'Слайд ' + i;
+                container.appendChild(img);
+            }
+            _konspektBuilt = true;
+        }
+        document.getElementById('konspektModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeKonspekt() {
+        document.getElementById('konspektModal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    function closeKonspektOnBg(e) {
+        if (e.target === document.getElementById('konspektModal')) closeKonspekt();
+    }
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeKonspekt(); });
 </script>
 </body>
 </html>
