@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Silverwind — Анонимный отзыв о курсе</title>
     <meta name="description" content="Анонимная анкета обратной связи для выпускниц курса Silverwind.">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet"></noscript>
     <style>
         :root { --bg: #0A0A0A; --accent: #89E6D8; --accent2: #A8B4BE; }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -89,7 +89,7 @@
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .success-state { display: none; }
-        .success-state.show { display: flex; }
+        .success-state.show { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 20px; min-height: 60vh; }
         @keyframes pulse1 { 0%,100%{opacity:.06;transform:scale(1)} 50%{opacity:.14;transform:scale(1.1)} }
     </style>
 </head>
@@ -101,20 +101,20 @@
     <div class="s-layer s3"><div class="s-dot" id="d3" style="width:2.5px;height:2.5px"></div><div class="s-dot-c" id="d3c" style="width:2.5px;height:2.5px"></div></div>
 </div>
 
-<div class="fixed inset-0 pointer-events-none" style="z-index:1;">
-    <div class="absolute w-[600px] h-[600px] rounded-full blur-[200px]" style="top:0;left:50%;transform:translateX(-50%);background:rgba(137,230,216,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
+<div style="position:fixed;inset:0;pointer-events:none;z-index:1;">
+    <div style="position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(200px);top:0;left:50%;transform:translateX(-50%);background:rgba(137,230,216,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
 </div>
 
-<div class="relative z-10 min-h-screen flex items-start justify-center px-6 pt-24 pb-32">
-    <div class="w-full max-w-xl">
+<div style="position:relative;z-index:10;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:96px 24px 128px;">
+    <div style="width:100%;max-width:580px;">
 
         <div id="formState">
-            <h1 class="enter e2 font-bold uppercase text-center mb-4 leading-[1.15]" style="font-family:'Unbounded',sans-serif;font-size:clamp(1.6rem,5.5vw,2.6rem);letter-spacing:0.02em;">
+            <h1 class="enter e2" style="font-family:'Unbounded',sans-serif;font-size:clamp(1.6rem,5.5vw,2.6rem);letter-spacing:0.02em;font-weight:700;text-transform:uppercase;text-align:center;margin-bottom:16px;line-height:1.15;">
                 <span class="shiny-text">Отзыв о курсе</span>
             </h1>
-            <p class="enter e1 metal-text text-[11px] tracking-[0.25em] uppercase mb-5 text-center" style="font-family:'Unbounded',sans-serif;">Анонимно без имени и почты</p>
-            <p class="enter e2 text-center text-[10px] tracking-[0.08em] uppercase mb-4" style="color:rgba(137,230,216,0.35);font-family:'Unbounded',sans-serif;">9 вопросов · 3–4 минуты</p>
-            <p class="enter e3 text-center text-[14px] leading-[1.8] mb-14" style="color:rgba(255,255,255,0.55);">
+            <p class="enter e1 metal-text" style="font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:20px;text-align:center;">Анонимно без имени и почты</p>
+            <p class="enter e2" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;text-align:center;color:rgba(137,230,216,0.35);font-family:'Unbounded',sans-serif;">9 вопросов · 3–4 минуты</p>
+            <p class="enter e3" style="text-align:center;font-size:14px;line-height:1.8;margin-bottom:56px;color:rgba(255,255,255,0.55);">
                 Отвечайте честно — можно пропускать вопросы.
             </p>
 
@@ -190,13 +190,13 @@
             </form>
         </div>
 
-        <div id="successState" class="success-state flex-col items-center text-center gap-6">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2" style="background:rgba(137,230,216,0.1);border:1px solid rgba(137,230,216,0.25);">
+        <div id="successState" class="success-state">
+            <div style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(137,230,216,0.1);border:1px solid rgba(137,230,216,0.25);">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(137,230,216,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <h2 class="font-bold uppercase tracking-wide" style="font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,4.5vw,1.8rem);color:#fff;">Спасибо за ответ</h2>
-            <p class="text-[15px] leading-[1.8]" style="color:rgba(255,255,255,0.5);">Ваш отзыв сохранён</p>
-            <a href="index.html" class="mt-4 inline-flex items-center gap-2 text-[13px] tracking-wide" style="color:rgba(137,230,216,0.6);">
+            <h2 style="font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,4.5vw,1.8rem);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;">Спасибо за ответ</h2>
+            <p style="font-size:15px;line-height:1.8;color:rgba(255,255,255,0.5);">Ваш отзыв сохранён</p>
+            <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:0.05em;color:rgba(137,230,216,0.6);text-decoration:none;margin-top:8px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 На главную
             </a>
@@ -273,23 +273,14 @@
         var q9 = document.querySelector('#q9group .choice-row.checked');
         data.q9 = q9 ? q9.dataset.value : '';
 
-        var btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.textContent = 'Отправляем...';
+        document.getElementById('formState').style.display = 'none';
+        document.getElementById('successState').classList.add('show');
 
         fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             body: JSON.stringify(data)
-        })
-        .then(function(){
-            document.getElementById('formState').style.display = 'none';
-            document.getElementById('successState').classList.add('show');
-        })
-        .catch(function(){
-            btn.disabled = false;
-            btn.textContent = 'Отправить анонимно';
-        });
+        }).catch(function(){});
     });
 </script>
 </body>

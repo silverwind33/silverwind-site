@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Silverwind — Трансформация реальности</title>
     <meta name="description" content="Онлайн-тренинг Silverwind — трансформация реальности через работу с внутренними программами.">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/tailwind.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Unbounded:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        display: ['Unbounded', 'sans-serif'],
-                        serif: ['Playfair Display', 'Georgia', 'serif'],
-                        body: ['Inter', 'system-ui', 'sans-serif'],
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            display: ['Unbounded', 'sans-serif'],
+                            serif: ['Playfair Display', 'Georgia', 'serif'],
+                            body: ['Inter', 'system-ui', 'sans-serif'],
+                        },
                     },
                 },
-            },
+            }
         }
     </script>
     <style>
@@ -556,27 +558,38 @@
         <div class="s-layer s3"><div class="s-dot" id="d3" style="width:2.5px;height:2.5px"></div><div class="s-dot-c" id="d3c" style="width:2.5px;height:2.5px"></div></div>
     </div>
 
+    <!-- disclaimer -->
+    <div style="background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 8px 16px; text-align: center;">
+        <p style="color:rgba(255,255,255,0.35); font-size:11px; letter-spacing:0.04em; line-height:1.6; margin:0;">Каждый сам ответственен за свою реальность и создаёт её в каждый момент. Информация на этом сайте носит образовательный характер. Результаты индивидуальны.</p>
+    </div>
+
     <!-- ══════════════ NAV ══════════════ -->
     <nav class="fixed inset-x-0 top-0 z-50" style="background: rgba(10,10,10,0.7); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-bottom: 1px solid rgba(255,255,255,0.03);">
         <div class="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-[72px]">
             <a href="#" class="font-display text-sm tracking-[0.15em] text-white/70 hover:text-[#C8D2DC] transition-colors duration-700 uppercase">Silverwind</a>
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#how" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Как это работает</a>
-                <a href="#program" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Программа</a>
-                <a href="#tariffs" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Тарифы</a>
-                <a href="https://t.me/silverwind_care" target="_blank" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Задать вопрос</a>
-                <a href="https://t.me/+Hs6HMf698N1iZDM6" target="_blank" class="text-[11px] tracking-[0.1em] uppercase ml-2 px-7 py-2.5 rounded-full font-medium transition-all duration-500 hover:shadow-[0_0_20px_rgba(168,180,190,0.25)]" style="background: linear-gradient(135deg, #A8B4BE 0%, #b0bcc6 40%, #d0d8de 60%, #A8B4BE 100%); color: #0e1318; border: 1px solid rgba(168,180,190,0.4); text-shadow: none;">Занять место</a>
+            <div class="hidden md:flex items-center gap-4">
+                <a href="about.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">Кто я?</a>
+                <a href="urok.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">Урок</a>
+                <a href="index.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-[var(--accent)] whitespace-nowrap">Курс</a>
+                <a href="club.html"    class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">Клуб</a>
+                <a href="bot.html" class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">AI Бот</a>
+                <a href="reviews.html" class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">Отзывы</a>
+                <a href="course/login.html" class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/40 border border-white/12 hover:border-white/30 hover:text-white/70 transition-all duration-300 whitespace-nowrap px-4 py-1.5 rounded-full">Войти</a>
+                <a href="index.html#tariffs" class="font-display font-light text-[10px] tracking-[0.1em] uppercase ml-2 px-6 py-2.5 rounded-full transition-all duration-500 hover:shadow-[0_0_20px_rgba(168,180,190,0.25)]" style="background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4)">Занять место</a>
             </div>
             <button id="menuBtn" class="md:hidden text-white/40 p-2" aria-label="Меню">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 17h16"/></svg>
             </button>
         </div>
         <div id="mobileMenu" class="md:hidden hidden px-6 pb-6 pt-2 flex flex-col gap-4" style="border-top: 1px solid rgba(255,255,255,0.03);">
-            <a href="#how" class="text-sm tracking-wide text-white/35">Как это работает</a>
-            <a href="#program" class="text-sm tracking-wide text-white/35">Программа</a>
-            <a href="#tariffs" class="text-[11px] tracking-[0.15em] uppercase text-white/25 hover:text-white/70 transition-colors duration-500">Тарифы</a>
-            <a href="https://t.me/silverwind_care" target="_blank" class="text-sm tracking-wide text-white/35">Задать вопрос</a>
-            <a href="https://t.me/+Hs6HMf698N1iZDM6" target="_blank" class="mt-1 text-center text-sm px-6 py-3 rounded-full font-medium" style="background: linear-gradient(135deg, #A8B4BE 0%, #b0bcc6 40%, #d0d8de 60%, #A8B4BE 100%); color: #0e1318; border: 1px solid rgba(168,180,190,0.4);">Занять место</a>
+            <a href="about.html"   class="font-display font-light text-[11px] tracking-[0.15em] uppercase text-white/35">Кто я?</a>
+                <a href="urok.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">Урок</a>
+            <a href="index.html"   class="font-display font-light text-[11px] tracking-[0.15em] uppercase text-[var(--accent)]">Курс</a>
+            <a href="club.html"    class="font-display font-light text-[11px] tracking-[0.15em] uppercase text-white/35">Клуб</a>
+            <a href="bot.html" class="font-display font-light text-[11px] tracking-[0.15em] uppercase text-white/35">AI Бот</a>
+            <a href="reviews.html" class="font-display font-light text-[11px] tracking-[0.15em] uppercase text-white/35">Отзывы</a>
+            <a href="course/login.html" class="font-display font-light text-[11px] tracking-[0.15em] uppercase text-white/35">Войти</a>
+            <a href="index.html#tariffs" class="mt-1 text-center text-sm px-6 py-3 rounded-full font-medium" style="background:linear-gradient(135deg,#A8B4BE 0%,#b0bcc6 40%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4)">Занять место</a>
         </div>
     </nav>
 
@@ -604,14 +617,7 @@
             </p>
             <p class="enter e3 font-display text-[11px] tracking-[0.22em] uppercase mb-14 md:mb-18" style="color:var(--accent);">Онлайн-программа · 1 месяц</p>
             <div class="enter e4 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-16">
-                <a href="#tariffs" class="star-btn w-full sm:w-auto px-12 py-5 md:px-16 md:py-6 text-[13px] md:text-[14px] tracking-[0.08em] uppercase font-body" data-star-btn>
-                    <div class="star-light"></div>
-                    <div class="star-bg">
-                        <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#sc1)"><path d="M32.34 26.68C32.34 26.3152 32.0445 26.02 31.68 26.02C31.3155 26.02 31.02 26.3152 31.02 26.68C31.02 27.0448 31.3155 27.34 31.68 27.34C32.0445 27.34 32.34 27.0448 32.34 26.68Z" fill="#0A0A0A"/><path fill-rule="evenodd" clip-rule="evenodd" d="M56.1 3.96C56.4645 3.96 56.76 4.25519 56.76 4.62C56.76 4.98481 56.4645 5.28 56.1 5.28C55.9131 5.28 55.7443 5.20201 55.624 5.07762C55.5632 5.01446 55.5147 4.93904 55.4829 4.8559C55.4552 4.78243 55.44 4.70315 55.44 4.62C55.44 4.5549 55.4494 4.49174 55.4668 4.43244C55.4906 4.35188 55.5292 4.27775 55.5795 4.21329C55.7004 4.05926 55.8885 3.96 56.1 3.96ZM40.26 17.16C40.6245 17.16 40.92 17.4552 40.92 17.82C40.92 18.1848 40.6245 18.48 40.26 18.48C39.8955 18.48 39.6 18.1848 39.6 17.82C39.6 17.4552 39.8955 17.16 40.26 17.16ZM74.58 5.28C74.7701 5.28 74.9413 5.36057 75.0618 5.48882C75.073 5.50043 75.0837 5.51268 75.094 5.52557C75.1088 5.54426 75.1231 5.56359 75.1359 5.58357L75.1479 5.60291L75.1595 5.62353C75.1711 5.64481 75.1814 5.66672 75.1906 5.68928C75.2226 5.76662 75.24 5.85106 75.24 5.94C75.24 6.1585 75.1336 6.3525 74.9699 6.47238C74.9158 6.51234 74.8555 6.54393 74.7908 6.56584C74.7247 6.58775 74.6538 6.6 74.58 6.6C74.2156 6.6 73.92 6.30481 73.92 5.94C73.92 5.87684 73.929 5.8156 73.9455 5.7576C73.9596 5.70862 73.979 5.66221 74.0032 5.61903C74.0657 5.50688 74.1595 5.41471 74.2728 5.35541C74.3647 5.30707 74.4691 5.28 74.58 5.28ZM21.66 33.52C22.0245 33.52 22.32 33.8152 22.32 34.18C22.32 34.5448 22.0245 34.84 21.66 34.84C21.2955 34.84 21 34.5448 21 34.18C21 33.8152 21.2955 33.52 21.66 33.52ZM8.16 32.86C8.16 32.4952 7.8645 32.2 7.5 32.2C7.1355 32.2 6.84 32.4952 6.84 32.86C6.84 33.2248 7.1355 33.52 7.5 33.52C7.8645 33.52 8.16 33.2248 8.16 32.86ZM7.5 23.68C7.8645 23.68 8.16 23.9752 8.16 24.34C8.16 24.7048 7.8645 25 7.5 25C7.1355 25 6.84 24.7048 6.84 24.34C6.84 23.9752 7.1355 23.68 7.5 23.68ZM19.32 18.48C19.32 18.1152 19.0245 17.82 18.66 17.82C18.2955 17.82 18 18.1152 18 18.48C18 18.8448 18.2955 19.14 18.66 19.14C19.0245 19.14 19.32 18.8448 19.32 18.48ZM5.66 11.84C6.0245 11.84 6.32001 12.1352 6.32001 12.5C6.32001 12.8648 6.0245 13.16 5.66 13.16C5.2955 13.16 5 12.8648 5 12.5C5 12.1352 5.2955 11.84 5.66 11.84ZM35.16 35.5C35.16 35.1352 34.8645 34.84 34.5 34.84C34.1355 34.84 33.84 35.1352 33.84 35.5C33.84 35.8648 34.1355 36.16 34.5 36.16C34.8645 36.16 35.16 35.8648 35.16 35.5ZM53.5 36.18C53.8645 36.18 54.16 36.4752 54.16 36.84C54.16 37.2048 53.8645 37.5 53.5 37.5C53.1355 37.5 52.84 37.2048 52.84 36.84C52.84 36.4752 53.1355 36.18 53.5 36.18ZM48.5 28.66C48.5 28.2952 48.2045 28 47.84 28C47.4755 28 47.18 28.2952 47.18 28.66C47.18 29.0248 47.4755 29.32 47.84 29.32C48.2045 29.32 48.5 29.0248 48.5 28.66ZM60.34 27.34C60.7045 27.34 61 27.6352 61 28C61 28.3648 60.7045 28.66 60.34 28.66C59.9755 28.66 59.68 28.3648 59.68 28C59.68 27.6352 59.9755 27.34 60.34 27.34ZM56.284 16.5C56.284 16.1352 55.9885 15.84 55.624 15.84C55.2595 15.84 54.964 16.1352 54.964 16.5C54.964 16.8648 55.2595 17.16 55.624 17.16C55.9885 17.16 56.284 16.8648 56.284 16.5ZM46.2 7.26C46.2 6.89519 45.9045 6.6 45.54 6.6C45.1755 6.6 44.88 6.89519 44.88 7.26C44.88 7.62481 45.1755 7.92 45.54 7.92C45.9045 7.92 46.2 7.62481 46.2 7.26ZM33 9.34C33 8.9752 32.7045 8.68 32.34 8.68C31.9755 8.68 31.68 8.9752 31.68 9.34C31.68 9.7048 31.9755 10 32.34 10C32.7045 10 33 9.7048 33 9.34ZM16 4.8559C16.3645 4.8559 16.66 5.1511 16.66 5.5159C16.66 5.8807 16.3645 6.1759 16 6.1759C15.6355 6.1759 15.34 5.8807 15.34 5.5159C15.34 5.1511 15.6355 4.8559 16 4.8559ZM69.66 21.16C69.66 20.7952 69.3645 20.5 69 20.5C68.6355 20.5 68.34 20.7952 68.34 21.16C68.34 21.5248 68.6355 21.82 69 21.82C69.3645 21.82 69.66 21.5248 69.66 21.16ZM80.52 15.18C80.52 14.8152 80.2245 14.52 79.86 14.52C79.4956 14.52 79.2 14.8152 79.2 15.18C79.2 15.5448 79.4956 15.84 79.86 15.84C80.2245 15.84 80.52 15.5448 80.52 15.18ZM85.66 24.34C86.0245 24.34 86.32 24.6352 86.32 25C86.32 25.3648 86.0245 25.66 85.66 25.66C85.2955 25.66 85 25.3648 85 25C85 24.6352 85.2955 24.34 85.66 24.34ZM91.32 10C91.32 9.6352 91.0245 9.34 90.66 9.34C90.2955 9.34 90 9.6352 90 10C90 10.3648 90.2955 10.66 90.66 10.66C91.0245 10.66 91.32 10.3648 91.32 10Z" fill="#0A0A0A"/></g><defs><clipPath id="sc1"><rect width="100" height="40" fill="white"/></clipPath></defs></svg>
-                    </div>
-                    <span class="star-text">Присоединиться к программе</span>
-                    <svg class="w-4 h-4 relative z-10" style="color: #ccc;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                </a>
+                <a href="#tariffs" class="font-display font-bold uppercase text-center px-12 py-5 rounded-full" style="font-size:13px;letter-spacing:0.10em;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4)">Присоединиться к программе</a>
                 <a href="#results" class="cta-ghost w-full sm:w-auto inline-flex items-center justify-center px-12 py-5 md:px-16 md:py-6 rounded-full text-[13px] md:text-[14px] tracking-[0.04em] font-body font-light">
                     Посмотреть результаты
                 </a>
@@ -959,105 +965,155 @@
                 Тарифы
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 items-start max-w-5xl mx-auto">
 
-                <!-- Тариф 1 — Самостоятельный -->
+                <!-- Тариф 1 -->
                 <div class="tariff-wrap reveal">
                 <div class="tariff-inner p-8 md:p-9 flex flex-col">
                     <div class="flex items-center gap-3 mb-5">
                         <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);">1</span>
-                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Сама</h3>
-                    </div>
-                    <div class="mb-6">
-                        <span class="font-display text-[32px] font-bold text-white">19 000 ₽</span>
-                    </div>
-                    <ul class="space-y-2 mb-8 flex-grow">
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
-                    </ul>
-                    <a href="https://t.me/silverwind_care" target="_blank" style="display:block;width:100%;padding:14px;background:transparent;border:1.5px solid var(--accent);border-radius:100px;color:var(--accent);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;transition:background 0.2s;" onmouseover="this.style.background='rgba(137,230,216,0.08)'" onmouseout="this.style.background='transparent'">Приобрести</a>
-                </div>
-                </div>
-
-                <!-- Тариф 2 — С поддержкой -->
-                <div class="tariff-wrap reveal">
-                <div class="tariff-inner p-8 md:p-9 flex flex-col relative" style="background: rgba(168,180,190,0.05);">
-                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] tracking-[0.15em] uppercase font-semibold" style="background: var(--accent); color: #0A0A0A;">Популярный</div>
-                    <div class="flex items-center gap-3 mb-5">
-                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);">2</span>
-                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">С ИИ куратором</h3>
+                        <h3 class="font-display text-[17px] md:text-[20px] font-semibold uppercase tracking-wide text-white">Самостоятельный</h3>
                     </div>
                     <div class="mb-6">
                         <span class="font-display text-[32px] font-bold text-white">25 000 ₽</span>
                     </div>
                     <ul class="space-y-2 mb-4 flex-grow">
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
+                        <li class="text-[14px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
 
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">Бонусные подкасты:</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> И другие темы</li>
-
-                        <li class="flex items-start gap-3 text-[13px] text-white mt-4"><span style="color: var(--accent); flex-shrink:0;">✓</span> ИИ куратор на протяжении месяца</li>
+                        <li class="text-[14px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">Бонусные подкасты:</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> И другие темы</li>
                     </ul>
-                    <div class="mb-7 p-3 rounded-xl" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
-                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +1 месяц после окончания</p>
+                    <div class="mb-7">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] mb-3 text-white/40">✦ Включено</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="flex flex-col items-center text-center py-4 px-2 rounded-xl" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.25);">
+                                <span class="text-[11px] text-white/60 mb-1 leading-snug">1 консуль-<br>тация</span>
+                                <span class="text-[12px] font-semibold" style="color:var(--accent);">1–1,5 ч</span>
+                            </div>
+                            <div class="flex flex-col items-center text-center py-4 px-2 rounded-xl" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.25);">
+                                <span class="text-[11px] text-white/60 mb-1 leading-snug">Поддержка<br>после</span>
+                                <span class="text-[12px] font-semibold" style="color:var(--accent);">1–2 дня</span>
+                            </div>
+                            <div class="flex flex-col items-center text-center py-4 px-2 rounded-xl" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.25);">
+                                <span class="text-[11px] text-white/60 mb-1 leading-snug">Клуб<br>бонус</span>
+                                <span class="text-[12px] font-semibold" style="color:var(--accent);">1 месяц</span>
+                            </div>
+                        </div>
                     </div>
-                    <a href="https://t.me/silverwind_care" target="_blank" style="display:block;width:100%;padding:14px;background:var(--accent);border:none;border-radius:100px;color:#0A0A0A;font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Приобрести</a>
+                    <!-- Ценность по отдельности -->
+                    <div class="mb-7 rounded-2xl overflow-hidden" style="border: 1px solid rgba(255,255,255,0.08);">
+                        <div class="px-5 py-3" style="background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06);">
+                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Если покупать по отдельности</p>
+                        </div>
+                        <div class="px-5 py-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13px] text-white/50">Курс · 5 блоков</span>
+                                <span class="text-[13px] text-white/30 font-medium" style="text-decoration: line-through;">50 000 ₽</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13px] text-white/50">1 консультация</span>
+                                <span class="text-[13px] text-white/30 font-medium" style="text-decoration: line-through;">10 000 ₽</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13px] text-white/50">Клуб · 1 месяц</span>
+                                <span class="text-[13px] text-white/30 font-medium" style="text-decoration: line-through;">5 000 ₽</span>
+                            </div>
+                        </div>
+                        <div class="px-5 py-4 flex items-center justify-between" style="background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.06);">
+                            <span class="text-[12px] text-white/40 uppercase tracking-wide font-semibold">Итого</span>
+                            <span class="text-[13px] text-white/30 font-semibold" style="text-decoration: line-through;">65 000 ₽</span>
+                        </div>
+                        <div class="px-5 py-4 flex items-center justify-between" style="background: rgba(168,180,190,0.07); border-top: 1px solid rgba(168,180,190,0.2);">
+                            <span class="text-[13px] font-semibold text-white/70">Ваша цена</span>
+                            <span class="text-[20px] font-bold" style="color:var(--accent);">25 000 ₽</span>
+                        </div>
+                    </div>
+                    <a href="https://t.me/silverwind_care" target="_blank" class="font-display font-bold uppercase text-center w-full py-4 rounded-full" style="font-size:13px;letter-spacing:0.10em;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4);min-height:56px;display:flex;align-items:center;justify-content:center">Приобрести</a>
                 </div>
                 </div>
 
-                <!-- Тариф 3 — Личный -->
+                <!-- Тариф 2 -->
                 <div class="tariff-wrap reveal">
-                <div class="tariff-inner p-8 md:p-9 flex flex-col" style="background: rgba(255,255,255,0.03);">
+                <div class="tariff-inner p-8 md:p-9 flex flex-col relative" style="background: rgba(168,180,190,0.05);">
                     <div class="flex items-center gap-3 mb-5">
-                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);margin-top:2px;">3</span>
-                        <h3 class="font-display text-[15px] md:text-[17px] font-semibold uppercase tracking-wide text-white">Личный с сопровождением</h3>
+                        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold" style="border:1.5px solid var(--accent);color:var(--accent);">2</span>
+                        <h3 class="font-display text-[17px] md:text-[20px] font-semibold uppercase tracking-wide text-white">Личный с сопровождением</h3>
                     </div>
                     <div class="mb-6"></div>
                     <ul class="space-y-2 mb-4 flex-grow">
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
+                        <li class="text-[14px] text-white font-semibold uppercase tracking-wide mb-1">29+ аудиоуроков по блокам:</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Мироустройство</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Самоценность</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Отношения</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Реализация</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Деньги</li>
 
-                        <li class="text-[13px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">Бонусные подкасты:</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
-                        <li class="flex items-start gap-2 text-[13px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> И другие темы</li>
-
-                        <li class="flex items-start gap-3 text-[13px] text-white mt-4"><span style="color: var(--accent); flex-shrink:0;">✓</span> ИИ куратор на протяжении месяца</li>
+                        <li class="text-[14px] text-white font-semibold uppercase tracking-wide mt-4 mb-1">Бонусные подкасты:</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как менять реальность — метод 1 и 2</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Связь денег и удовольствия</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Как убрать внутреннего бомжа и выйти из дефицита</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Жизнь из женского начала в отношениях</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Большой подкаст про тело и внешность</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> Про экономию и страх потратить</li>
+                        <li class="flex items-start gap-2 text-[14px] text-white/80 pl-2"><span style="color: var(--accent); flex-shrink:0;">·</span> И другие темы</li>
                     </ul>
-                    <div class="mb-4 p-4 rounded-xl" style="background: rgba(168,180,190,0.1); border: 1px solid rgba(168,180,190,0.25);">
-                        <p class="text-[11px] font-semibold uppercase tracking-wider mb-2" style="color:var(--accent);">Личное сопровождение</p>
-                        <ul class="space-y-1">
-                            <li class="flex items-start gap-2 text-[13px] text-white/90"><span style="color:var(--accent);flex-shrink:0;">✓</span> Личное сопровождение на протяжении месяца</li>
-                            <li class="flex items-start gap-2 text-[13px] text-white/90"><span style="color:var(--accent);flex-shrink:0;">✓</span> 4 консультации по 1–1,5 часа</li>
-                        </ul>
+                    <div class="mb-7">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] mb-3 text-white/40">✦ Включено</p>
+                        <div class="grid grid-cols-4 gap-2">
+                            <div class="flex flex-col items-center text-center py-4 px-2 rounded-xl" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.25);">
+                                <span class="text-[11px] text-white/60 mb-1 leading-snug">Сопро-<br>вождение</span>
+                                <span class="text-[12px] font-semibold" style="color:var(--accent);">5 недель</span>
+                            </div>
+                            <div class="flex flex-col items-center text-center py-4 px-2 rounded-xl" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.25);">
+                                <span class="text-[11px] text-white/60 mb-1 leading-snug">Консуль-<br>тации</span>
+                                <span class="text-[12px] font-semibold" style="color:var(--accent);">× 4</span>
+                            </div>
+                            <div class="flex flex-col items-center text-center py-4 px-2 rounded-xl" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.25);">
+                                <span class="text-[11px] text-white/60 mb-1 leading-snug">Программа<br>под вас</span>
+                                <span class="text-[12px] font-semibold" style="color:var(--accent);">личная</span>
+                            </div>
+                            <div class="flex flex-col items-center text-center py-4 px-2 rounded-xl" style="background: rgba(168,180,190,0.08); border: 1px solid rgba(168,180,190,0.25);">
+                                <span class="text-[11px] text-white/60 mb-1 leading-snug">Клуб<br>бонус</span>
+                                <span class="text-[12px] font-semibold" style="color:var(--accent);">3 месяца</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-7 p-3 rounded-xl" style="background: rgba(168,180,190,0.06); border: 1px solid rgba(168,180,190,0.2);">
-                        <p class="text-[13px] leading-relaxed text-white">✦ Доступ к материалам +3 месяца после окончания</p>
+                    <!-- Ценность по отдельности -->
+                    <div class="mb-7 rounded-2xl overflow-hidden" style="border: 1px solid rgba(255,255,255,0.08);">
+                        <div class="px-5 py-3" style="background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06);">
+                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">Если покупать по отдельности</p>
+                        </div>
+                        <div class="px-5 py-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13px] text-white/50">Курс · 5 блоков</span>
+                                <span class="text-[13px] text-white/30 font-medium" style="text-decoration: line-through;">50 000 ₽</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13px] text-white/50">4 консультации</span>
+                                <span class="text-[13px] text-white/30 font-medium" style="text-decoration: line-through;">40 000 ₽</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[13px] text-white/50">Клуб · 3 месяца</span>
+                                <span class="text-[13px] text-white/30 font-medium" style="text-decoration: line-through;">15 000 ₽</span>
+                            </div>
+                        </div>
+                        <div class="px-5 py-4 flex items-center justify-between" style="background: rgba(255,255,255,0.03); border-top: 1px solid rgba(255,255,255,0.06);">
+                            <span class="text-[12px] text-white/40 uppercase tracking-wide font-semibold">Итого</span>
+                            <span class="text-[13px] text-white/30 font-semibold" style="text-decoration: line-through;">105 000 ₽</span>
+                        </div>
                     </div>
-                    <a href="https://t.me/silverwind_care" target="_blank" style="display:block;width:100%;padding:14px;background:transparent;border:1.5px solid var(--accent);border-radius:100px;color:var(--accent);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;transition:background 0.2s;" onmouseover="this.style.background='rgba(137,230,216,0.08)'" onmouseout="this.style.background='transparent'">Приобрести</a>
+                    <div class="w-full flex items-center justify-center rounded-full text-[14px] tracking-[0.1em] uppercase font-body" style="min-height:56px; border: 1.5px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.3); cursor:default; letter-spacing:0.1em;">Мест нет</div>
                 </div>
                 </div>
 
@@ -1347,14 +1403,7 @@
             <p class="reveal text-[15px] md:text-[16px] leading-[1.8] text-white/40 mb-12">
                 Начните трансформацию прямо сейчас
             </p>
-            <a href="#tariffs" class="reveal star-btn px-14 py-6 text-[14px] tracking-[0.08em] uppercase font-body" data-star-btn>
-                <div class="star-light"></div>
-                <div class="star-bg">
-                    <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#sc4)"><path fill-rule="evenodd" clip-rule="evenodd" d="M56.1 3.96C56.4645 3.96 56.76 4.25519 56.76 4.62C56.76 4.98481 56.4645 5.28 56.1 5.28C55.7355 5.28 55.44 4.98481 55.44 4.62C55.44 4.25519 55.7355 3.96 56.1 3.96ZM40.26 17.16C40.6245 17.16 40.92 17.4552 40.92 17.82C40.92 18.1848 40.6245 18.48 40.26 18.48C39.8955 18.48 39.6 18.1848 39.6 17.82C39.6 17.4552 39.8955 17.16 40.26 17.16ZM74.58 5.28C74.9445 5.28 75.24 5.57519 75.24 5.94C75.24 6.30481 74.9445 6.6 74.58 6.6C74.2156 6.6 73.92 6.30481 73.92 5.94C73.92 5.57519 74.2156 5.28 74.58 5.28ZM21.66 33.52C22.0245 33.52 22.32 33.8152 22.32 34.18C22.32 34.5448 22.0245 34.84 21.66 34.84C21.2955 34.84 21 34.5448 21 34.18C21 33.8152 21.2955 33.52 21.66 33.52ZM85.66 24.34C86.0245 24.34 86.32 24.6352 86.32 25C86.32 25.3648 86.0245 25.66 85.66 25.66C85.2955 25.66 85 25.3648 85 25C85 24.6352 85.2955 24.34 85.66 24.34ZM91.32 10C91.32 9.6352 91.0245 9.34 90.66 9.34C90.2955 9.34 90 9.6352 90 10C90 10.3648 90.2955 10.66 90.66 10.66C91.0245 10.66 91.32 10.3648 91.32 10ZM138.6 0H0V46.2H138.6V0Z" fill="#0A0A0A"/></g><defs><clipPath id="sc4"><rect width="100" height="40" fill="white"/></clipPath></defs></svg>
-                </div>
-                <span class="star-text">Выбрать тариф</span>
-                <svg class="w-4 h-4 relative z-10" style="color: #ccc;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-            </a>
+            <a href="#tariffs" class="reveal font-display font-bold uppercase text-center px-14 py-6 rounded-full" style="font-size:14px;letter-spacing:0.08em;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4)">Выбрать тариф</a>
         </div>
     </section>
 
@@ -1421,8 +1470,10 @@
                 <a href="#" class="font-display text-sm tracking-[0.15em] uppercase shiny-text">Silverwind</a>
                 <div class="flex flex-wrap justify-center gap-6 text-[12px] text-white/25">
                     <a href="https://t.me/silverwind37" target="_blank" class="hover:text-white/60 transition-colors">Тг канал</a>
-                    <a href="oferta.html" target="_blank" class="hover:text-white/60 transition-colors">Договор оферты</a>
-                    <a href="privacy-policy.html" target="_blank" class="hover:text-white/60 transition-colors">Политика конфиденциальности</a>
+                    <a href="oferta.html" target="_blank" class="hover:text-white/60 transition-colors">Оферта</a>
+                    <a href="terms.html" target="_blank" class="hover:text-white/60 transition-colors">Соглашение</a>
+                    <a href="privacy-policy.html" target="_blank" class="hover:text-white/60 transition-colors">Конфиденциальность</a>
+                    <a href="cookie-policy.html" target="_blank" class="hover:text-white/60 transition-colors">Cookie</a>
                     <a href="https://t.me/silverwind_care" target="_blank" class="hover:text-white/60 transition-colors">Задать вопрос</a>
                 </div>
             </div>
