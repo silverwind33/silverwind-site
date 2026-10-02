@@ -70,8 +70,8 @@
         }
         .form-field::placeholder { color: rgba(255,255,255,0.2); }
         .form-field:focus {
-            border-color: rgba(137,230,216,0.4);
-            background: rgba(137,230,216,0.04);
+            border-color: rgba(168,180,190,0.4);
+            background: rgba(168,180,190,0.04);
         }
 
         /* Кнопка отправки */
@@ -90,7 +90,7 @@
             background: linear-gradient(135deg, #89E6D8 0%, #a8c8c0 40%, #c8d8d4 60%, #89E6D8 100%);
             color: #0a1a18;
         }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(137,230,216,0.3); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(168,180,190,0.3); }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         /* Чекбокс согласия */
@@ -105,7 +105,7 @@
             transition: border-color 0.2s, background 0.2s;
         }
         .consent-box svg { opacity: 0; transition: opacity 0.2s; }
-        .consent-row.checked .consent-box { border-color: var(--accent); background: rgba(137,230,216,0.12); }
+        .consent-row.checked .consent-box { border-color: var(--accent); background: rgba(168,180,190,0.12); }
         .consent-row.checked .consent-box svg { opacity: 1; }
 
         /* Успех */
@@ -126,7 +126,7 @@
 
 <!-- Glow -->
 <div class="fixed inset-0 pointer-events-none" style="z-index:1;">
-    <div class="absolute w-[600px] h-[600px] rounded-full blur-[200px]" style="top:0;left:50%;transform:translateX(-50%);background:rgba(137,230,216,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
+    <div class="absolute w-[600px] h-[600px] rounded-full blur-[200px]" style="top:0;left:50%;transform:translateX(-50%);background:rgba(168,180,190,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
 </div>
 
 <!-- NAV -->
@@ -194,9 +194,9 @@
                     </span>
                     <span class="text-[13px] leading-[1.7]" style="color:rgba(255,255,255,0.45);">
                         Я ознакомился(-ась) и согласен(-на) с
-                        <a href="privacy-policy.html" target="_blank" style="color:rgba(137,230,216,0.7);text-decoration:underline;" onclick="event.stopPropagation()">Политикой конфиденциальности</a>
+                        <a href="privacy-policy.html" target="_blank" style="color:rgba(168,180,190,0.7);text-decoration:underline;" onclick="event.stopPropagation()">Политикой конфиденциальности</a>
                         и
-                        <a href="privacy-policy.html" target="_blank" style="color:rgba(137,230,216,0.7);text-decoration:underline;" onclick="event.stopPropagation()">Обработкой персональных данных</a>
+                        <a href="privacy-policy.html" target="_blank" style="color:rgba(168,180,190,0.7);text-decoration:underline;" onclick="event.stopPropagation()">Обработкой персональных данных</a>
                     </span>
                 </label>
 
@@ -207,9 +207,9 @@
                 </button>
 
                 <a href="https://t.me/silverwind_care" target="_blank"
-                   style="display:inline-flex;align-items:center;justify-content:center;width:100%;padding:18px;border-radius:9999px;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,0.85);border:1px solid rgba(137,230,216,0.4);transition:all .4s cubic-bezier(0.16,1,0.3,1);"
-                   onmouseover="this.style.borderColor='rgba(137,230,216,0.8)';this.style.color='#89E6D8';this.style.transform='translateY(-2px)'"
-                   onmouseout="this.style.borderColor='rgba(137,230,216,0.4)';this.style.color='rgba(255,255,255,0.85)';this.style.transform=''">
+                   style="display:inline-flex;align-items:center;justify-content:center;width:100%;padding:18px;border-radius:9999px;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,0.85);border:1px solid rgba(168,180,190,0.4);transition:all .4s cubic-bezier(0.16,1,0.3,1);"
+                   onmouseover="this.style.borderColor='rgba(168,180,190,0.8)';this.style.color='#89E6D8';this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.borderColor='rgba(168,180,190,0.4)';this.style.color='rgba(255,255,255,0.85)';this.style.transform=''">
                     Задать вопрос
                 </a>
 
@@ -218,14 +218,14 @@
 
         <!-- Успешная отправка -->
         <div id="successState" class="success-state flex-col items-center text-center gap-6">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2" style="background:rgba(137,230,216,0.1);border:1px solid rgba(137,230,216,0.25);">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(137,230,216,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mb-2" style="background:rgba(168,180,190,0.1);border:1px solid rgba(168,180,190,0.25);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(168,180,190,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"/>
                 </svg>
             </div>
             <h2 class="font-display font-bold uppercase tracking-wide" style="font-size:clamp(1.4rem,5vw,2rem);color:#fff;">Заявка принята</h2>
             <p class="text-[15px] leading-[1.8]" style="color:rgba(255,255,255,0.5);">Я свяжусь с вами, когда откроется следующий поток</p>
-            <a href="index.html" class="mt-4 inline-flex items-center gap-2 text-[13px] tracking-wide" style="color:rgba(137,230,216,0.6);">
+            <a href="index.html" class="mt-4 inline-flex items-center gap-2 text-[13px] tracking-wide" style="color:rgba(168,180,190,0.6);">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 На главную
             </a>
@@ -237,7 +237,7 @@
 <script>
     // Stars
     function stars(n,c){var s=[];for(var i=0;i<n;i++)s.push((Math.random()*4000-2000|0)+'px '+(Math.random()*4000-2000|0)+'px '+c);return s.join(',');}
-    var a=stars(700,'rgba(255,255,255,0.5)'),b=stars(250,'rgba(200,240,232,0.4)'),c=stars(80,'rgba(165,240,224,0.35)');
+    var a=stars(700,'rgba(255,255,255,0.5)'),b=stars(250,'rgba(200,210,220,0.4)'),c=stars(80,'rgba(168,180,190,0.35)');
     document.getElementById('d1').style.boxShadow=a; document.getElementById('d1c').style.boxShadow=a;
     document.getElementById('d2').style.boxShadow=b; document.getElementById('d2c').style.boxShadow=b;
     document.getElementById('d3').style.boxShadow=c; document.getElementById('d3c').style.boxShadow=c;

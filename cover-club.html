@@ -35,12 +35,12 @@ body {
   width: 800px; height: 800px;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  background: radial-gradient(circle, rgba(137,230,216,0.10) 0%, rgba(137,230,216,0.04) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(168,180,190,0.10) 0%, rgba(168,180,190,0.04) 40%, transparent 70%);
   pointer-events: none;
 }
 
 /* рамка */
-.corner { position:absolute; width:18px; height:18px; border-color:rgba(137,230,216,0.4); border-style:solid; }
+.corner { position:absolute; width:18px; height:18px; border-color:rgba(168,180,190,0.4); border-style:solid; }
 .tl { top:52px; left:52px; border-width:1px 0 0 1px; }
 .tr { top:52px; right:52px; border-width:1px 1px 0 0; }
 .bl { bottom:52px; left:52px; border-width:0 0 1px 1px; }
@@ -48,7 +48,7 @@ body {
 
 .line-h {
   position: absolute; left:0; right:0; height:1px;
-  background: linear-gradient(90deg, transparent, rgba(137,230,216,0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(168,180,190,0.12), transparent);
 }
 .line-h.top { top: 60px; }
 .line-h.bottom { bottom: 60px; }
@@ -69,7 +69,7 @@ body {
   font-size: 10px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: rgba(137,230,216,0.6);
+  color: rgba(168,180,190,0.6);
   margin-bottom: 20px;
 }
 
@@ -85,7 +85,7 @@ body {
     rgba(160,160,160,0.7) 0%,
     rgba(255,255,255,1) 18%,
     rgba(220,235,232,1) 32%,
-    rgba(137,230,216,0.95) 50%,
+    rgba(168,180,190,0.95) 50%,
     rgba(220,235,232,1) 68%,
     rgba(255,255,255,1) 82%,
     rgba(160,160,160,0.7) 100%
@@ -94,7 +94,7 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 10px;
-  filter: drop-shadow(0 0 40px rgba(137,230,216,0.12));
+  filter: drop-shadow(0 0 40px rgba(168,180,190,0.12));
 }
 
 .subtitle {
@@ -110,7 +110,7 @@ body {
 /* разделитель */
 .divider {
   width: 48px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(137,230,216,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(168,180,190,0.5), transparent);
   margin-bottom: 44px;
 }
 
@@ -131,15 +131,15 @@ body {
   text-align: left;
   padding: 18px 24px;
   border-radius: 14px;
-  background: rgba(137,230,216,0.04);
-  border: 1px solid rgba(137,230,216,0.1);
+  background: rgba(168,180,190,0.04);
+  border: 1px solid rgba(168,180,190,0.1);
 }
 
 .item-num {
   font-family: 'Unbounded', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(137,230,216,0.6);
+  color: rgba(168,180,190,0.6);
   flex-shrink: 0;
   width: 22px;
   padding-top: 1px;
@@ -178,7 +178,7 @@ body {
   font-size: 9px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(137,230,216,0.5);
+  color: rgba(168,180,190,0.5);
 }
 
 .price-val {
@@ -199,7 +199,7 @@ body {
 
 .price-arrow {
   font-size: 18px;
-  color: rgba(137,230,216,0.3);
+  color: rgba(168,180,190,0.3);
 }
 
 /* кнопка */
@@ -227,7 +227,7 @@ body {
   text-transform: uppercase;
   color: rgba(255,255,255,0.18);
 }
-.author span { color: rgba(137,230,216,0.4); }
+.author span { color: rgba(168,180,190,0.4); }
 </style>
 </head>
 <body>
@@ -304,7 +304,7 @@ for (let i = 0; i < 12; i++) {
   const y = Math.random() * 1080;
   ctx.beginPath();
   ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-  ctx.fillStyle = `rgba(137,230,216,${Math.random()*0.4+0.2})`;
+  ctx.fillStyle = `rgba(168,180,190,${Math.random()*0.4+0.2})`;
   ctx.fill();
 }
 </script>

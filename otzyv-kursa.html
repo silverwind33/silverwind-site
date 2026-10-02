@@ -58,7 +58,7 @@
             transition: border-color .3s ease, background .3s ease; resize: none;
         }
         .form-field::placeholder { color: rgba(255,255,255,0.22); }
-        .form-field:focus { border-color: rgba(137,230,216,0.4); background: rgba(137,230,216,0.04); }
+        .form-field:focus { border-color: rgba(168,180,190,0.4); background: rgba(168,180,190,0.04); }
 
         .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .pill {
@@ -66,17 +66,17 @@
             background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.65); font-family:'Inter',sans-serif; font-size: 14px;
             display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s ease; flex-shrink: 0;
         }
-        .pill:hover { border-color: rgba(137,230,216,0.4); }
+        .pill:hover { border-color: rgba(168,180,190,0.4); }
         .pill.active { background: linear-gradient(135deg, #89E6D8 0%, #a8c8c0 60%, #89E6D8 100%); color: #0a1a18; border-color: transparent; font-weight: 600; }
         .scale-caps { display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,0.32); margin-top:8px; }
 
         .choice-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; cursor: pointer; margin-bottom: 8px; transition: all .2s ease; }
-        .choice-row:hover { border-color: rgba(137,230,216,0.3); }
+        .choice-row:hover { border-color: rgba(168,180,190,0.3); }
         .choice-mark { flex-shrink:0; width:18px; height:18px; border:1.5px solid rgba(255,255,255,0.25); border-radius: 5px; display:flex; align-items:center; justify-content:center; transition: all .2s ease; }
         .choice-row.radio .choice-mark { border-radius: 50%; }
         .choice-mark svg { opacity: 0; transition: opacity .15s; }
-        .choice-row.checked { border-color: rgba(137,230,216,0.45); background: rgba(137,230,216,0.05); }
-        .choice-row.checked .choice-mark { border-color: var(--accent); background: rgba(137,230,216,0.15); }
+        .choice-row.checked { border-color: rgba(168,180,190,0.45); background: rgba(168,180,190,0.05); }
+        .choice-row.checked .choice-mark { border-color: var(--accent); background: rgba(168,180,190,0.15); }
         .choice-row.checked .choice-mark svg { opacity: 1; }
         .choice-text { font-size: 14.5px; color: rgba(255,255,255,0.85); }
 
@@ -85,7 +85,7 @@
             letter-spacing: 0.08em; text-transform: uppercase; border: none; cursor: pointer; transition: all .4s cubic-bezier(0.16,1,0.3,1);
             background: linear-gradient(135deg, #89E6D8 0%, #a8c8c0 40%, #c8d8d4 60%, #89E6D8 100%); color: #0a1a18;
         }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(137,230,216,0.3); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(168,180,190,0.3); }
         .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .success-state { display: none; }
@@ -102,7 +102,7 @@
 </div>
 
 <div style="position:fixed;inset:0;pointer-events:none;z-index:1;">
-    <div style="position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(200px);top:0;left:50%;transform:translateX(-50%);background:rgba(137,230,216,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(200px);top:0;left:50%;transform:translateX(-50%);background:rgba(168,180,190,0.04);animation:pulse1 14s ease-in-out infinite;"></div>
 </div>
 
 <div style="position:relative;z-index:10;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:96px 24px 128px;">
@@ -113,7 +113,7 @@
                 <span class="shiny-text">Отзыв о курсе</span>
             </h1>
             <p class="enter e1 metal-text" style="font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:20px;text-align:center;">Анонимно без имени и почты</p>
-            <p class="enter e2" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;text-align:center;color:rgba(137,230,216,0.35);font-family:'Unbounded',sans-serif;">9 вопросов · 3–4 минуты</p>
+            <p class="enter e2" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;text-align:center;color:rgba(168,180,190,0.35);font-family:'Unbounded',sans-serif;">9 вопросов · 3–4 минуты</p>
             <p class="enter e3" style="text-align:center;font-size:14px;line-height:1.8;margin-bottom:56px;color:rgba(255,255,255,0.55);">
                 Отвечайте честно — можно пропускать вопросы.
             </p>
@@ -191,12 +191,12 @@
         </div>
 
         <div id="successState" class="success-state">
-            <div style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(137,230,216,0.1);border:1px solid rgba(137,230,216,0.25);">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(137,230,216,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(168,180,190,0.1);border:1px solid rgba(168,180,190,0.25);">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(168,180,190,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <h2 style="font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,4.5vw,1.8rem);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;">Спасибо за ответ</h2>
             <p style="font-size:15px;line-height:1.8;color:rgba(255,255,255,0.5);">Ваш отзыв сохранён</p>
-            <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:0.05em;color:rgba(137,230,216,0.6);text-decoration:none;margin-top:8px;">
+            <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:0.05em;color:rgba(168,180,190,0.6);text-decoration:none;margin-top:8px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 На главную
             </a>
@@ -208,7 +208,7 @@
 <script>
     // Stars
     function stars(n,c){var s=[];for(var i=0;i<n;i++)s.push((Math.random()*4000-2000|0)+'px '+(Math.random()*4000-2000|0)+'px '+c);return s.join(',');}
-    var a=stars(700,'rgba(255,255,255,0.5)'),b=stars(250,'rgba(200,240,232,0.4)'),c=stars(80,'rgba(165,240,224,0.35)');
+    var a=stars(700,'rgba(255,255,255,0.5)'),b=stars(250,'rgba(200,210,220,0.4)'),c=stars(80,'rgba(168,180,190,0.35)');
     document.getElementById('d1').style.boxShadow=a; document.getElementById('d1c').style.boxShadow=a;
     document.getElementById('d2').style.boxShadow=b; document.getElementById('d2c').style.boxShadow=b;
     document.getElementById('d3').style.boxShadow=c; document.getElementById('d3c').style.boxShadow=c;

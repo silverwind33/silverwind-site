@@ -15,7 +15,7 @@
     </script>
     <style>
         :root { --bg:#0A0A0A; --accent:#A8B4BE; --accent-soft:#C8D2DC; }
-        .tariff-wrap{border-radius:18px;padding:1px;background:linear-gradient(145deg,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.06) 40%,rgba(137,230,216,0.18) 100%)}
+        .tariff-wrap{border-radius:18px;padding:1px;background:linear-gradient(145deg,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.06) 40%,rgba(168,180,190,0.18) 100%)}
         .tariff-inner{border-radius:17px;height:100%;position:relative;z-index:1;background:linear-gradient(145deg,#111314 0%,#0d0f0e 55%,#0b0d0c 100%)}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
@@ -43,6 +43,10 @@
         .section-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)}
 
         @keyframes border-spin{to{transform:rotate(360deg)}}
+        @keyframes conic-spin{to{transform:rotate(360deg)}}
+        .card-conic-border{position:relative;border-radius:18px;padding:2px;overflow:hidden;box-shadow:0 2px 24px rgba(0,0,0,0.5)}
+        .card-conic-border::before{content:'';position:absolute;inset:-60%;background:conic-gradient(from 0deg,#4a5a68,#8a9aa6,#c8d4da,#eef2f5,#ffffff,#d0d8de,#a8b4be,#6b7c8a,#4a5a68);animation:conic-spin 5s linear infinite;z-index:0}
+        .card-conic-border>*{position:relative;z-index:1}
         .shiny-media{position:relative;display:block;border-radius:18px;padding:2px;overflow:hidden}
         .shiny-media::before{content:'';position:absolute;top:-100%;left:-100%;right:-100%;bottom:-100%;
             background:conic-gradient(from 0deg,transparent 0deg,transparent 110deg,rgba(180,180,190,0.4) 148deg,rgba(255,255,255,0.9) 180deg,rgba(220,220,230,0.7) 195deg,rgba(180,180,190,0.4) 212deg,transparent 250deg,transparent 360deg);
@@ -157,22 +161,8 @@
             Мой подход — про внутренние программы, убеждения и мышление как основу того, как человек действует, выбирает и в итоге создаёт свою реальность.
         </p>
 
-        <!-- Card + зигзаг справа -->
+        <!-- Зигзаг слева + Card справа -->
         <div class="flex flex-col md:flex-row gap-10 items-center" style="max-width:100%">
-
-            <!-- Card -->
-            <div style="flex-shrink:0;width:100%;max-width:520px;border-radius:18px;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 40%,#eef2f5 60%,#A8B4BE 100%);padding:2px;box-shadow:0 2px 24px rgba(0,0,0,0.5)">
-                <div style="padding:24px 28px;border-radius:16px;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 40%,#eef2f5 60%,#c8d4da 100%);display:flex;flex-direction:row;gap:24px;align-items:flex-start">
-                    <div style="width:1px;flex-shrink:0;align-self:stretch;background:rgba(14,19,24,0.2)"></div>
-                    <p class="font-body" style="font-size:14px;font-weight:400;line-height:1.8;color:rgba(14,19,24,0.75);flex:1">
-                        Управление реальностью — это не обещание магически контролировать внешний мир.
-                    </p>
-                    <div style="width:1px;flex-shrink:0;align-self:stretch;background:rgba(14,19,24,0.15)"></div>
-                    <p class="font-body" style="font-size:14px;font-weight:700;line-height:1.8;color:#0e1318;flex:1">
-                        Это про то, что каждый сам несёт ответственность за свою жизнь, а значит может её поменять.
-                    </p>
-                </div>
-            </div>
 
             <!-- Вертикальный список фраз -->
             <div style="flex:1;display:flex;flex-direction:column;gap:0;min-width:0">
@@ -204,6 +194,19 @@
                 <span class="font-body" style="font-size:16px;font-weight:300;color:rgba(255,255,255,0.45)">и какую жизнь из этого создаю</span>
 
             </div>
+
+            <!-- Card -->
+            <div class="card-conic-border" style="flex-shrink:0;width:100%;max-width:520px">
+                <div style="padding:24px 28px;border-radius:16px;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 40%,#eef2f5 60%,#c8d4da 100%)">
+                    <p class="font-body" style="font-size:14px;font-weight:400;line-height:1.8;color:rgba(14,19,24,0.75)">
+                        Управление реальностью — это не обещание магически контролировать внешний мир.
+                    </p>
+                    <p class="font-body" style="font-size:14px;font-weight:700;line-height:1.8;color:#0e1318;margin-top:12px">
+                        Это про то, что каждый сам несёт ответственность за свою жизнь, а значит может её поменять.
+                    </p>
+                </div>
+            </div>
+
         </div>
 
     </section>
