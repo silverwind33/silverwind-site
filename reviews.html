@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы — Silverwind</title>
+    <script src="/tailwind.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;500;700;800&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <script>
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = { theme: { extend: { fontFamily: { display:['Unbounded','sans-serif'], body:['Inter','system-ui','sans-serif'] } } } }
+        }
+    </script>
+    <style>
+        :root{--bg:#0A0A0A;--accent:#A8B4BE;--accent-soft:#C8D2DC}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#fff;overflow-x:hidden}
+        .noise::before{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;opacity:0.03;
+            background:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+        @keyframes drift{from{transform:translateY(0)}to{transform:translateY(-2000px)}}
+        .stars-global{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+        .s-layer{position:absolute;top:0;left:0;width:100%;height:2000px}
+        .s1{animation:drift 70s linear infinite}.s2{animation:drift 140s linear infinite}.s3{animation:drift 200s linear infinite}
+        .s-dot{position:absolute;border-radius:50%}
+        @keyframes shinySlide{0%{background-position:200% center}100%{background-position:-200% center}}
+        .shiny-text{background:linear-gradient(90deg,#8899a8 0%,#a8b8c4 15%,#c8d4dc 28%,#e8eef2 36%,#fff 44%,#f0f4f6 50%,#fff 56%,#dde6ec 64%,#b0bec8 75%,#8899a8 85%,#a8b8c4 100%);
+            background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shinySlide 12s linear infinite}
+        @keyframes enter{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+        .enter{opacity:0;animation:enter 1.1s cubic-bezier(0.16,1,0.3,1) forwards}
+        .e1{animation-delay:.05s}.e2{animation-delay:.18s}.e3{animation-delay:.3s}.e4{animation-delay:.44s}
+        .section-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)}
+        #mobileMenu{display:none}#mobileMenu.open{display:flex}
+        @keyframes starBtnLight{0%{offset-distance:0%}100%{offset-distance:100%}}
+        .star-btn{position:relative;z-index:3;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;border-radius:9999px;font-weight:600;transition:all .5s cubic-bezier(0.16,1,0.3,1);isolation:isolate;cursor:pointer;border:none;text-decoration:none}
+        .star-btn:hover{transform:translateY(-3px) scale(1.02)}
+        .star-btn .star-light{position:absolute;aspect-ratio:1;inset:0;width:110px;background:radial-gradient(ellipse at center,rgba(250,250,250,0.9),transparent,transparent);animation:starBtnLight 3s linear infinite;offset-path:rect(0px auto auto 0px round 9999px)}
+        .star-btn .star-bg{position:absolute;inset:0;z-index:4;overflow:hidden;border-radius:inherit;border:2px solid rgba(255,255,255,0.15)}
+        .star-btn .star-text{position:relative;z-index:10;background:linear-gradient(to top,#ffffff,#a0a0a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .reveal{opacity:0;transform:translateY(40px);transition:all 1s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:none}
+        @keyframes border-spin{to{transform:rotate(360deg)}}
+        .shiny-media{position:relative;display:block;border-radius:18px;padding:2.5px;overflow:hidden}
+        .shiny-media::before{content:'';position:absolute;top:-100%;left:-100%;right:-100%;bottom:-100%;
+            background:conic-gradient(from 0deg,transparent 0deg,transparent 130deg,rgba(168,180,190,0.5) 168deg,rgba(220,230,235,0.9) 180deg,rgba(168,180,190,0.5) 192deg,transparent 230deg,transparent 360deg);
+            animation:border-spin 4s linear infinite;z-index:0}
+        .shiny-media::after{content:'';position:absolute;inset:2.5px;background:#0A0A0A;border-radius:16px;z-index:1}
+        .shiny-media>*{position:relative;z-index:2;display:block;width:100%;border-radius:15px;background:#0A0A0A}
+        .shiny-media.shiny-screen{border-radius:14px}
+        .shiny-media.shiny-screen::after{border-radius:12px}
+        .shiny-media.shiny-screen>*{border-radius:11px}
+    </style>
+</head>
+<body class="noise">
+<div class="stars-global" id="starsGlobal"></div>
+
+<header class="sticky top-0 z-50 h-[62px]" style="background:rgba(10,10,10,0.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(168,180,190,0.07)">
+    <div class="max-w-6xl mx-auto px-6 md:px-10 h-full grid items-center" style="grid-template-columns:1fr auto 1fr">
+        <a href="index.html" class="font-display font-light text-[11px] tracking-[0.22em] uppercase text-[var(--accent)] justify-self-start">Silverwind</a>
+        <nav class="hidden md:flex items-center gap-4">
+            <a href="about.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/28 hover:text-white/70 transition-colors whitespace-nowrap">Кто я?</a>
+                <a href="urok.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">Урок</a>
+            <a href="index.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/28 hover:text-white/70 transition-colors whitespace-nowrap">Курс</a>
+            <a href="club.html"    class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/28 hover:text-white/70 transition-colors whitespace-nowrap">Клуб</a>
+            <a href="bot.html" class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/28 hover:text-white/70 transition-colors whitespace-nowrap">AI Бот</a>
+            <a href="reviews.html" class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-[var(--accent)] whitespace-nowrap">Отзывы</a>
+        </nav>
+        <div class="hidden md:flex items-center gap-4 justify-self-end">
+            <a href="course/login.html" class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/28 hover:text-white/60 transition-colors">Войти</a>
+            <a href="index.html#tariffs" class="font-display font-light text-[10px] tracking-[0.12em] uppercase px-6 py-2.5 rounded-full" style="background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4)">Занять место</a>
+        </div>
+        <button class="md:hidden justify-self-end flex flex-col gap-[5px] p-2" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+            <span class="w-5 h-px bg-white/40"></span><span class="w-5 h-px bg-white/40"></span><span class="w-5 h-px bg-white/40"></span>
+        </button>
+    </div>
+</header>
+<div id="mobileMenu" class="flex-col md:hidden sticky top-[62px] z-40 px-6 py-4 gap-4" style="background:rgba(10,10,10,0.97);border-bottom:1px solid rgba(168,180,190,0.07)">
+    <a href="about.html"   class="font-display text-[11px] tracking-[0.15em] uppercase text-white/30">Кто я?</a>
+                <a href="urok.html"   class="font-display font-light text-[10px] tracking-[0.14em] uppercase text-white/25 hover:text-white/70 transition-colors duration-300 whitespace-nowrap">Урок</a>
+    <a href="index.html"   class="font-display text-[11px] tracking-[0.15em] uppercase text-white/30">Курс</a>
+    <a href="club.html"    class="font-display text-[11px] tracking-[0.15em] uppercase text-white/30">Клуб</a>
+    <a href="bot.html" class="font-display text-[11px] tracking-[0.15em] uppercase text-white/30">AI Бот</a>
+    <a href="reviews.html" class="font-display text-[11px] tracking-[0.15em] uppercase text-[var(--accent)]">Отзывы</a>
+    <a href="course/login.html" class="font-display text-[11px] tracking-[0.15em] uppercase text-white/30">Войти</a>
+</div>
+
+<main class="relative z-10 max-w-6xl mx-auto px-6 md:px-10">
+
+    <!-- HERO -->
+    <section class="pt-16 md:pt-24 pb-14">
+        <p class="font-display font-light text-[10px] tracking-[0.28em] uppercase mb-4 enter e1" style="color:var(--accent)">Результаты</p>
+        <h1 class="font-display font-bold uppercase enter e2"
+            style="font-size:clamp(2.8rem,7vw,5.5rem);letter-spacing:0.03em;line-height:0.95;margin-bottom:16px;background:linear-gradient(90deg,#8899a8 0%,#a8b8c4 15%,#c8d4dc 28%,#e8eef2 36%,#fff 44%,#f0f4f6 50%,#fff 56%,#dde6ec 64%,#b0bec8 75%,#8899a8 85%,#a8b8c4 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shinySlide 4s linear infinite">
+            Отзывы и результаты
+        </h1>
+        <a href="https://t.me/silverwind_recall" target="_blank" class="enter e3 inline-flex items-center gap-2 font-display font-light text-[10px] tracking-[0.18em] uppercase transition-colors" style="color:rgba(168,180,190,0.55);text-decoration:none" onmouseover="this.style.color='rgba(168,180,190,0.9)'" onmouseout="this.style.color='rgba(168,180,190,0.55)'">
+            Читать и смотреть все отзывы
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+        </a>
+    </section>
+
+    <div class="section-line"></div>
+
+    <!-- RESULTS -->
+    <section class="py-14">
+        <p class="font-display font-light text-[10px] tracking-[0.28em] uppercase mb-12" style="color:var(--accent)">Результаты участниц</p>
+
+        <style>
+            .result-card{border-radius:20px;border:1px solid rgba(168,180,190,0.18);box-shadow:0 0 20px rgba(168,180,190,0.08),inset 0 0 20px rgba(168,180,190,0.03);transition:box-shadow .4s,border-color .4s;overflow:hidden}
+            .result-card:hover{border-color:rgba(168,180,190,0.35);box-shadow:0 0 32px rgba(168,180,190,0.15),inset 0 0 24px rgba(168,180,190,0.06)}
+            .result-inner{padding:24px;background:rgba(255,255,255,0.025);display:flex;flex-direction:column;gap:18px}
+            .tag{display:inline-block;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;padding:4px 12px;border-radius:999px;border:1px solid rgba(168,180,190,0.25);color:var(--accent)}
+            .result-headline{font-family:'Unbounded',sans-serif;font-size:15px;font-weight:600;line-height:1.4;color:#fff;letter-spacing:0.01em}
+            .before-after{display:flex;flex-direction:column;gap:8px;border-top:1px solid rgba(168,180,190,0.08);padding-top:14px;margin-top:4px}
+            .ba-row{display:flex;gap:8px;align-items:baseline}
+            .ba-label{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(168,180,190,0.5);flex-shrink:0;padding-top:2px}
+            .ba-text{font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.7}
+            /* Expand toggle */
+            .expand-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-top:1px solid rgba(168,180,190,0.08);padding:12px 0 0;cursor:pointer;margin-top:4px}
+            .expand-btn span{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(168,180,190,0.5);transition:color .2s}
+            .expand-btn svg{flex-shrink:0;transition:transform .4s cubic-bezier(0.16,1,0.3,1);color:rgba(168,180,190,0.4)}
+            .expand-btn:hover span,.expand-btn:hover svg{color:rgba(168,180,190,0.85) !important}
+            .result-card.expanded .expand-btn svg{transform:rotate(180deg)}
+            .result-card.expanded .expand-btn span{color:rgba(168,180,190,0.7)}
+            /* Accordion photo */
+            .photo-drawer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(0.16,1,0.3,1)}
+            .photo-drawer.open{grid-template-rows:1fr}
+            .photo-drawer-inner{overflow:hidden}
+            .photo-drawer-inner img{display:block;width:100%;border-radius:0;margin-top:0;transition:opacity .4s}
+            .photo-drawer.open .photo-drawer-inner img{opacity:1}
+            .photo-drawer:not(.open) .photo-drawer-inner img{opacity:0}
+        </style>
+
+        <style>
+            .video-circle{width:min(200px,80%);aspect-ratio:1;border-radius:50%;overflow:hidden;margin:0 auto;border:2px solid rgba(168,180,190,0.25);box-shadow:0 0 24px rgba(168,180,190,0.1)}
+            .video-circle video{width:100%;height:100%;object-fit:cover;display:block}
+            .video-card{border-radius:20px;border:1px solid rgba(168,180,190,0.18);overflow:hidden;background:rgba(255,255,255,0.015);box-shadow:0 0 20px rgba(168,180,190,0.08)}
+            .video-card video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000}
+            .video-card-body{padding:16px 20px}
+        </style>
+
+        <!-- ИСТОРИЯ: САША -->
+        <div class="reveal mb-10" style="border-radius:28px;overflow:hidden;background:linear-gradient(145deg,rgba(168,180,190,0.08) 0%,rgba(168,180,190,0.03) 100%);border:1px solid rgba(168,180,190,0.28);box-shadow:0 0 60px rgba(168,180,190,0.08),inset 0 1px 0 rgba(255,255,255,0.06)">
+            <!-- Верхняя полоса-акцент -->
+            <div style="height:2px;background:linear-gradient(90deg,transparent 0%,rgba(168,180,190,0.5) 30%,rgba(200,215,225,0.8) 50%,rgba(168,180,190,0.5) 70%,transparent 100%)"></div>
+            <div style="padding:32px 32px 0">
+                <!-- Лейбл -->
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+                    <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(168,180,190,0.7);background:rgba(168,180,190,0.12);border:1px solid rgba(168,180,190,0.25);border-radius:20px;padding:4px 12px">История участницы</span>
+                    <span style="font-family:'Inter',sans-serif;font-size:10px;color:rgba(168,180,190,0.45);letter-spacing:0.1em">Отношения · Деньги · Исполнение мечты</span>
+                </div>
+                <!-- Главный заголовок -->
+                <p style="font-family:'Unbounded',sans-serif;font-size:clamp(1.15rem,3vw,1.6rem);font-weight:800;line-height:1.25;letter-spacing:-0.02em;color:#fff;margin-bottom:10px">За пару месяцев — из дефицита и нелюбимого маленького города в реальность мечты за границей</p>
+                <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;line-height:1.7;color:rgba(255,255,255,0.55);margin-bottom:28px">где из дел на день — попить джус и поплавать в бассейне</p>
+            </div>
+
+            <!-- Кружки -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 32px 28px">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+                    <div style="width:100%;max-width:160px;aspect-ratio:1;border-radius:50%;overflow:hidden;border:2px solid rgba(168,180,190,0.35);box-shadow:0 0 30px rgba(168,180,190,0.15)">
+                        <video src="kruzhok-muzhchiny.mp4" controls preload="none" playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video>
+                    </div>
+                    <div style="text-align:center">
+                        <p style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);line-height:1.4;margin-bottom:3px">Достойные мужчины — впервые в жизни</p>
+                        <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.1em;color:rgba(168,180,190,0.5);text-transform:uppercase">Апрель</p>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+                    <div style="width:100%;max-width:160px;aspect-ratio:1;border-radius:50%;overflow:hidden;border:2px solid rgba(168,180,190,0.35);box-shadow:0 0 30px rgba(168,180,190,0.15)">
+                        <video src="второй.mp4" controls preload="none" playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video>
+                    </div>
+                    <div style="text-align:center">
+                        <p style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);line-height:1.4;margin-bottom:3px">Красивое проявление в блоге</p>
+                        <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.1em;color:rgba(168,180,190,0.5);text-transform:uppercase">Май</p>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+                    <div style="width:100%;max-width:160px;aspect-ratio:1;border-radius:50%;overflow:hidden;border:2px solid rgba(168,180,190,0.35);box-shadow:0 0 30px rgba(168,180,190,0.15)">
+                        <video src="третий.mp4" controls preload="none" playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video>
+                    </div>
+                    <div style="text-align:center">
+                        <p style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);line-height:1.4;margin-bottom:3px">Переезд за границу + реальность мечты</p>
+                        <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.1em;color:rgba(168,180,190,0.5);text-transform:uppercase">Июнь</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Цитата -->
+            <div style="margin:0 20px 20px;padding:20px 24px;border-radius:16px;background:rgba(0,0,0,0.25);border:1px solid rgba(168,180,190,0.15);position:relative">
+                <span style="position:absolute;top:-1px;left:20px;font-size:40px;line-height:1;color:rgba(168,180,190,0.25);font-family:Georgia,serif">"</span>
+                <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.7;font-style:italic;padding-top:12px">Алина, мне стало скучно, все слишком хорошо, ни в чём не нуждаюсь — теперь хочу реализоваться</p>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(168,180,190,0.5);margin-top:8px;letter-spacing:0.06em">— Александра, после пары месяцев работы</p>
+            </div>
+        </div>
+
+        <!-- Видео-отзывы — вверху -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="reveal video-card">
+                <video src="video-pohudenie.mp4" controls preload="none" playsinline poster="pohudenie.jpg"></video>
+                <div class="video-card-body">
+                    <span class="tag" style="margin-bottom:10px;display:inline-block">Тело</span>
+                    <p class="result-headline" style="font-size:13px">Похудела, проявляется свободно</p>
+                </div>
+            </div>
+            <div class="reveal video-card">
+                <video src="video-45000.mp4" controls preload="none" playsinline></video>
+                <div class="video-card-body">
+                    <span class="tag" style="margin-bottom:10px;display:inline-block">Деньги · Реализация</span>
+                    <p class="result-headline" style="font-size:13px">+45 000₽ с блога с нуля</p>
+                </div>
+            </div>
+            <div class="reveal video-card">
+                <video src="video-70000.mp4" controls preload="none" playsinline></video>
+                <div class="video-card-body">
+                    <span class="tag" style="margin-bottom:10px;display:inline-block">Деньги · Реализация</span>
+                    <p class="result-headline" style="font-size:13px">+70 000₽ с блога с нуля</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" style="align-items:start">
+
+            <!-- Достойные мужчины + КРУЖОК (первая строка) -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Отношения</span>
+                    <p class="result-headline">Достойные мужчины — впервые в жизни</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">мужчины, которые не хотят ничего серьёзного и не заботятся</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">вокруг появились достойные, серьёзные — впервые в жизни</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Смотреть видео-отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner" style="padding:20px 0;display:flex;justify-content:center">
+                    <div class="video-circle"><video src="kruzhok-muzhchiny.mp4" controls preload="none" playsinline></video></div>
+                </div></div>
+            </div>
+
+            <!-- Блог + КРУЖОК (первая строка) -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Реализация</span>
+                    <p class="result-headline">Веду блог свободно, зарабатываю на рекламе</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">хотела вести блог, но страхи — кто что подумает, бездействие</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">веду блог, выкладываю что хочу, зарабатываю на рекламе</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Смотреть видео-отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner" style="padding:20px 0;display:flex;justify-content:center">
+                    <div class="video-circle"><video src="kruzhok-blog.mp4" controls preload="none" playsinline></video></div>
+                </div></div>
+            </div>
+
+            <!-- Предложение -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Отношения</span>
+                    <p class="result-headline">Предложение выйти замуж от любимого человека</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">страхи в отношениях, сомнения в намерениях партнёра</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">проработка страхов, освобождение от убеждений, которые мешали</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Читать полный отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="predlozhenie.png" alt="Отзыв" loading="lazy"></div></div>
+            </div>
+
+            <!-- +100 000₽ -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Деньги</span>
+                    <p class="result-headline">+100 000₽ из разных источников</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">долги, жизнь в нехватке, дефицитное мышление</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">мышление изобилия, изменение программ дефицита</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Читать полный отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="100tys.jpg" alt="Отзыв" loading="lazy"></div></div>
+            </div>
+
+            <!-- Заработок ×2 -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Деньги</span>
+                    <p class="result-headline">Заработок вырос в два раза, деньги приходят легко</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">мышление дефицита, заработок через тяжесть</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">изменение убеждений и программ, деньги в лёгкости</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Читать полный отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="dva-raza.jpeg" alt="Отзыв" loading="lazy"></div></div>
+            </div>
+
+            <!-- Ресурсы от мира -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Самоценность</span>
+                    <p class="result-headline">Лёгкое получение ресурсов от мира</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">стыдно просить, заявлять о своих желаниях</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">мир сам приносит подарки и ресурсы</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Читать полный отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="otzyv-iphone.jpg" alt="Отзыв" loading="lazy"></div></div>
+            </div>
+
+            <!-- Встреча мужчины мечты -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Отношения</span>
+                    <p class="result-headline">Встреча мужчины мечты</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">абьюзивные мужчины, которые не настроены серьёзно</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">появился мужчина, которого давно хотела</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Читать полный отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="otzyv-muzhchina-1.jpg" alt="Отзыв" loading="lazy"></div></div>
+            </div>
+
+            <!-- Мужчина мечты + свадьба -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Отношения</span>
+                    <p class="result-headline">Мужчина мечты — скоро свадьба</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">мужчины, которые изменяют и плохо относятся</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">встреча мужчины мечты, скоро свадьба</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Читать полный отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="otzyv-muzhchina-2.jpg" alt="Отзыв" loading="lazy"></div></div>
+            </div>
+
+            <!-- Похудение -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Тело · Отношения · Реализация</span>
+                    <p class="result-headline">Похудение, свободное проявление, достойные мужчины</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">лишний вес, страх осуждения, мужчины не проявляются</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">похудение, свобода в блоге, появление достойных мужчин</span></div>
+                    </div>
+                    <button class="expand-btn" onclick="toggleDrawer(this)">
+                        <span>Читать полный отзыв</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
+                    </button>
+                </div>
+                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="pohudenie.jpg" alt="Отзыв" loading="lazy"></div></div>
+            </div>
+
+            <!-- Анастасия — деньги начали приходить -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Деньги</span>
+                    <p class="result-headline">«Деньги резко начали приходить — я испугалась, что теперь есть достаток»</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">всё знаю, всё понимаю, но ничего не меняется</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">деньги резко начали приходить после работы с программами</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Катя + Skarlatovaa — дружба и результаты -->
+            <div class="reveal result-card">
+                <div class="result-inner">
+                    <span class="tag">Состояние · Жизнь</span>
+                    <p class="result-headline">Пришли к тому, чего хотели — и ещё нашли лучшую подругу</p>
+                    <div class="before-after">
+                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">разные запросы, неопределённость</span></div>
+                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">каждая пришла к желаемому, познакомились на курсе и дружат уже 3 месяца</span></div>
+                    </div>
+                    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(168,180,190,0.08)">
+                        <p style="font-family:'Inter',sans-serif;font-size:12px;font-weight:300;color:rgba(255,255,255,0.4);line-height:1.7;font-style:italic">«Мы пришли к тому, чего хотели. Тебе спасибо за всё»</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+<footer class="relative z-10 py-10 px-6 md:px-10 max-w-6xl mx-auto" style="border-top:1px solid rgba(168,180,190,0.07)">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <span class="font-display font-light text-[10px] tracking-[0.22em] uppercase text-white/20">Silverwind © 2024</span>
+                <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2">
+            <a href="https://t.me/silverwind_care" target="_blank" class="font-display font-light text-[9px] tracking-[0.18em] uppercase text-white/20 hover:text-white/50 transition-colors">Telegram</a>
+            <a href="oferta.html" target="_blank" class="font-display font-light text-[9px] tracking-[0.18em] uppercase text-white/20 hover:text-white/50 transition-colors">Оферта</a>
+            <a href="terms.html" target="_blank" class="font-display font-light text-[9px] tracking-[0.18em] uppercase text-white/20 hover:text-white/50 transition-colors">Соглашение</a>
+            <a href="privacy-policy.html" target="_blank" class="font-display font-light text-[9px] tracking-[0.18em] uppercase text-white/20 hover:text-white/50 transition-colors">Конфиденциальность</a>
+            <a href="cookie-policy.html" target="_blank" class="font-display font-light text-[9px] tracking-[0.18em] uppercase text-white/20 hover:text-white/50 transition-colors">Cookie</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function toggleDrawer(btn) {
+        const card = btn.closest('.result-card');
+        const drawer = card.querySelector('.photo-drawer');
+        const isOpen = drawer.classList.contains('open');
+        drawer.classList.toggle('open', !isOpen);
+        card.classList.toggle('expanded', !isOpen);
+        btn.querySelector('span').textContent = isOpen ? 'Читать полный отзыв' : 'Скрыть';
+    }
+
+    // Reveal on scroll
+    const revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, {threshold:0.08});
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    const sg = document.getElementById('starsGlobal');
+    [[200,'s1'],[120,'s2'],[60,'s3']].forEach(([count,cls]) => {
+        const l = document.createElement('div'); l.className=`s-layer ${cls}`;
+        for(let j=0;j<count;j++){const d=document.createElement('div');d.className='s-dot';const sz=Math.random()<.15?2:1;d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:rgba(255,255,255,${.07+Math.random()*.3})`;l.appendChild(d)}
+        sg.appendChild(l);
+    });
+</script>
+</body>
+</html>
