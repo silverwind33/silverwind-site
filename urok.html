@@ -159,6 +159,59 @@
 
     <div class="section-line"></div>
 
+    <!-- АУДИО: Новая точка сборки -->
+    <section class="py-14">
+        <p class="font-display font-light text-[10px] tracking-[0.28em] uppercase mb-4" style="color:var(--accent)">Аудио-практика</p>
+        <h2 class="font-display font-bold uppercase mb-4" style="font-size:clamp(1.3rem,3vw,2rem);letter-spacing:0.04em;line-height:1.1;color:#fff">Новая точка сборки</h2>
+        <p style="font-family:'Inter',sans-serif;font-size:14px;color:rgba(168,180,190,0.7);line-height:1.75;max-width:560px;margin-bottom:28px">Запись для тех, кто хочет не просто понять — а физически почувствовать переход в новую реальность. Слушать в тишине, желательно в наушниках. Можно ускорить, если уже знаком с форматом.</p>
+
+        <!-- Плеер -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(168,180,190,0.12);border-radius:16px;padding:20px 24px;max-width:520px">
+            <audio id="nts-audio" src="novaya-proshivka.mp3" preload="metadata"></audio>
+
+            <!-- Play + время -->
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+                <button id="nts-play" onclick="ntsToggle()" style="width:44px;height:44px;border-radius:50%;background:rgba(168,180,190,0.15);border:1px solid rgba(168,180,190,0.25);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">▶</button>
+                <div style="flex:1">
+                    <div id="nts-bar-wrap" onclick="ntsSeek(event)" style="height:3px;background:rgba(168,180,190,0.15);border-radius:2px;cursor:pointer;position:relative;margin-bottom:6px">
+                        <div id="nts-bar" style="height:100%;width:0%;background:rgba(168,180,190,0.6);border-radius:2px;transition:width .3s linear"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between">
+                        <span id="nts-cur" style="font-family:'Inter',sans-serif;font-size:10px;color:rgba(168,180,190,0.45)">0:00</span>
+                        <span id="nts-dur" style="font-family:'Inter',sans-serif;font-size:10px;color:rgba(168,180,190,0.3)">--:--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Скорость -->
+            <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-family:'Inter',sans-serif;font-size:10px;color:rgba(168,180,190,0.35);letter-spacing:0.08em;margin-right:4px">СКОРОСТЬ</span>
+                <button onclick="ntsSpeed(0.75)" class="nts-spd" data-s="0.75" style="font-family:'Inter',sans-serif;font-size:10px;padding:4px 9px;border-radius:20px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.5);cursor:pointer">×0.75</button>
+                <button onclick="ntsSpeed(1)" class="nts-spd nts-spd-active" data-s="1" style="font-family:'Inter',sans-serif;font-size:10px;padding:4px 9px;border-radius:20px;border:1px solid rgba(168,180,190,0.4);background:rgba(168,180,190,0.08);color:rgba(168,180,190,0.9);cursor:pointer">×1</button>
+                <button onclick="ntsSpeed(1.25)" class="nts-spd" data-s="1.25" style="font-family:'Inter',sans-serif;font-size:10px;padding:4px 9px;border-radius:20px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.5);cursor:pointer">×1.25</button>
+                <button onclick="ntsSpeed(1.5)" class="nts-spd" data-s="1.5" style="font-family:'Inter',sans-serif;font-size:10px;padding:4px 9px;border-radius:20px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.5);cursor:pointer">×1.5</button>
+                <button onclick="ntsSpeed(2)" class="nts-spd" data-s="2" style="font-family:'Inter',sans-serif;font-size:10px;padding:4px 9px;border-radius:20px;border:1px solid rgba(168,180,190,0.15);background:transparent;color:rgba(168,180,190,0.5);cursor:pointer">×2</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const _a = document.getElementById('nts-audio');
+    const _play = document.getElementById('nts-play');
+    const _bar = document.getElementById('nts-bar');
+    const _cur = document.getElementById('nts-cur');
+    const _dur = document.getElementById('nts-dur');
+    function ntsToggle(){if(_a.paused){_a.play();_play.textContent='⏸'}else{_a.pause();_play.textContent='▶'}}
+    function ntsFmt(s){const m=Math.floor(s/60);return m+':'+(Math.floor(s%60)+'').padStart(2,'0')}
+    _a.addEventListener('timeupdate',()=>{if(!_a.duration)return;_bar.style.width=(_a.currentTime/_a.duration*100)+'%';_cur.textContent=ntsFmt(_a.currentTime)});
+    _a.addEventListener('loadedmetadata',()=>{_dur.textContent=ntsFmt(_a.duration)});
+    _a.addEventListener('ended',()=>{_play.textContent='▶';_bar.style.width='0%'});
+    function ntsSeek(e){if(!_a.duration)return;const r=e.currentTarget.getBoundingClientRect();_a.currentTime=((e.clientX-r.left)/r.width)*_a.duration}
+    function ntsSpeed(s){_a.playbackRate=s;document.querySelectorAll('.nts-spd').forEach(b=>{const active=parseFloat(b.dataset.s)===s;b.style.borderColor=active?'rgba(168,180,190,0.4)':'rgba(168,180,190,0.15)';b.style.background=active?'rgba(168,180,190,0.08)':'transparent';b.style.color=active?'rgba(168,180,190,0.9)':'rgba(168,180,190,0.5)'})}
+    </script>
+
+    <div class="section-line"></div>
+
     <!-- CTA -->
     <section class="py-14 md:py-18">
         <a href="https://t.me/silverwind_care_bot?start=razbor" target="_blank" class="font-display font-bold uppercase text-center px-10 py-4 rounded-full inline-block" style="font-size:13px;letter-spacing:0.12em;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4)">Получить разбор вашего запроса без оплаты</a>
