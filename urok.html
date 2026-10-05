@@ -107,58 +107,6 @@
         </h1>
     </section>
 
-    <!-- VIDEO + RESOURCES -->
-    <section class="pb-16 enter e4">
-        <div class="flex flex-col lg:flex-row gap-5">
-
-            <!-- VIDEO + AUDIO (left) -->
-            <div class="flex-1 flex flex-col gap-4" style="min-width:0">
-                <div class="video-wrap" style="aspect-ratio:16/9">
-                    <iframe src="https://www.youtube.com/embed/wLCOSopw6aY?rel=0&modestbranding=1"
-                            allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                </div>
-
-            </div>
-
-            <!-- RESOURCES (right) -->
-            <div class="flex flex-col gap-4 lg:w-[420px] flex-shrink-0">
-
-                <!-- Конспект-карусель -->
-                <div style="border:1px solid rgba(168,180,190,0.18);border-radius:16px;overflow:hidden;box-shadow:0 0 20px rgba(168,180,190,0.06)">
-                    <!-- Header -->
-                    <div style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(168,180,190,0.08)">
-                        <div>
-                            <p class="font-display font-light" style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(168,180,190,0.5);margin-bottom:2px">Конспект</p>
-                            <p class="font-display font-light" style="font-size:12px;letter-spacing:0.04em;color:rgba(255,255,255,0.9)">Реальность — это зеркало</p>
-                        </div>
-                        <span id="kSlideNum" class="font-display font-light" style="font-size:10px;letter-spacing:0.14em;color:rgba(168,180,190,0.4)">1 / 15</span>
-                    </div>
-                    <!-- Slide viewport — вертикальная карусель -->
-                    <div id="kViewport" style="position:relative;background:#0a0a0a;overflow:hidden;cursor:pointer" onclick="kNavClick(event)">
-                        <div id="kTrack" style="display:flex;flex-direction:column;transition:transform .45s cubic-bezier(0.16,1,0.3,1)">
-                            <!-- слайды вставляются JS-ом -->
-                        </div>
-                        <!-- Hint overlay -->
-                        <div id="kHint" style="position:absolute;bottom:12px;left:0;right:0;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .4s">
-                            <span style="font-family:'Unbounded',sans-serif;font-size:10px;color:rgba(168,180,190,0.45);letter-spacing:0.1em">↑ листать ↓</span>
-                        </div>
-                    </div>
-                    <!-- Dots (вертикальный прогресс-бар справа) -->
-                    <div style="padding:10px 18px;display:flex;gap:4px;flex-wrap:wrap;justify-content:center;border-top:1px solid rgba(168,180,190,0.06)">
-                        <div id="kDots"></div>
-                    </div>
-                    <!-- Download -->
-                    <div style="padding:10px 18px;border-top:1px solid rgba(168,180,190,0.06);text-align:center">
-                        <a href="/realnost-zerkalo-konspekt.pdf" target="_blank" class="font-display font-light" style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(168,180,190,0.35);text-decoration:none">Скачать PDF →</a>
-                    </div>
-                </div><!-- /конспект-карусель -->
-
-            </div>
-        </div>
-    </section>
-
-    <div class="section-line"></div>
-
     <!-- АУДИО: Новая точка сборки -->
     <section class="py-14">
         <p class="font-display font-light text-[10px] tracking-[0.28em] uppercase mb-4" style="color:var(--accent)">Аудио урок</p>
@@ -209,14 +157,65 @@
     function ntsSpeed(s){_a.playbackRate=s;document.querySelectorAll('.nts-spd').forEach(b=>{const active=parseFloat(b.dataset.s)===s;b.style.borderColor=active?'rgba(168,180,190,0.4)':'rgba(168,180,190,0.15)';b.style.background=active?'rgba(168,180,190,0.08)':'transparent';b.style.color=active?'rgba(168,180,190,0.9)':'rgba(168,180,190,0.5)'})}
     </script>
 
-    <div class="section-line"></div>
-
     <section class="py-10">
         <p style="font-family:'Inter',sans-serif;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.8;max-width:520px;margin-bottom:10px">Вы не получаете реальность. Вы её создаёте. Прямо сейчас.</p>
         <p style="font-family:'Inter',sans-serif;font-size:14px;color:rgba(168,180,190,0.6);line-height:1.8;max-width:520px;margin-bottom:10px">Всё что не так — деньги, отношения, ощущение что топчетесь на месте — это не невезение. Это точное отражение прошивки, с которой вы живёте. Старой. Где всё хорошее нужно заслужить, выбить, выпросить.</p>
         <p style="font-family:'Inter',sans-serif;font-size:14px;color:rgba(168,180,190,0.6);line-height:1.8;max-width:520px;margin-bottom:28px">16 минут — и точка, из которой вы смотрите на жизнь, меняется.</p>
         <a href="https://t.me/silverwind_care" target="_blank" class="font-display font-bold uppercase text-center px-10 py-4 rounded-full inline-block" style="font-size:13px;letter-spacing:0.12em;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border:1px solid rgba(168,180,190,0.4);text-decoration:none">Задать вопрос</a>
     </section>
+
+    <div class="section-line"></div>
+
+    <!-- VIDEO + RESOURCES -->
+    <section class="pb-16 enter e4">
+        <div class="flex flex-col lg:flex-row gap-5">
+
+            <!-- VIDEO + AUDIO (left) -->
+            <div class="flex-1 flex flex-col gap-4" style="min-width:0">
+                <div class="video-wrap" style="aspect-ratio:16/9">
+                    <iframe src="https://www.youtube.com/embed/wLCOSopw6aY?rel=0&modestbranding=1"
+                            allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                </div>
+
+            </div>
+
+            <!-- RESOURCES (right) -->
+            <div class="flex flex-col gap-4 lg:w-[420px] flex-shrink-0">
+
+                <!-- Конспект-карусель -->
+                <div style="border:1px solid rgba(168,180,190,0.18);border-radius:16px;overflow:hidden;box-shadow:0 0 20px rgba(168,180,190,0.06)">
+                    <!-- Header -->
+                    <div style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(168,180,190,0.08)">
+                        <div>
+                            <p class="font-display font-light" style="font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(168,180,190,0.5);margin-bottom:2px">Конспект</p>
+                            <p class="font-display font-light" style="font-size:12px;letter-spacing:0.04em;color:rgba(255,255,255,0.9)">Реальность — это зеркало</p>
+                        </div>
+                        <span id="kSlideNum" class="font-display font-light" style="font-size:10px;letter-spacing:0.14em;color:rgba(168,180,190,0.4)">1 / 15</span>
+                    </div>
+                    <!-- Slide viewport — вертикальная карусель -->
+                    <div id="kViewport" style="position:relative;background:#0a0a0a;overflow:hidden;cursor:pointer" onclick="kNavClick(event)">
+                        <div id="kTrack" style="display:flex;flex-direction:column;transition:transform .45s cubic-bezier(0.16,1,0.3,1)">
+                            <!-- слайды вставляются JS-ом -->
+                        </div>
+                        <!-- Hint overlay -->
+                        <div id="kHint" style="position:absolute;bottom:12px;left:0;right:0;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .4s">
+                            <span style="font-family:'Unbounded',sans-serif;font-size:10px;color:rgba(168,180,190,0.45);letter-spacing:0.1em">↑ листать ↓</span>
+                        </div>
+                    </div>
+                    <!-- Dots (вертикальный прогресс-бар справа) -->
+                    <div style="padding:10px 18px;display:flex;gap:4px;flex-wrap:wrap;justify-content:center;border-top:1px solid rgba(168,180,190,0.06)">
+                        <div id="kDots"></div>
+                    </div>
+                    <!-- Download -->
+                    <div style="padding:10px 18px;border-top:1px solid rgba(168,180,190,0.06);text-align:center">
+                        <a href="/realnost-zerkalo-konspekt.pdf" target="_blank" class="font-display font-light" style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(168,180,190,0.35);text-decoration:none">Скачать PDF →</a>
+                    </div>
+                </div><!-- /конспект-карусель -->
+
+            </div>
+        </div>
+    </section>
+
 
 </main>
 
