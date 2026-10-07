@@ -51,6 +51,64 @@
         .shiny-media.shiny-screen{border-radius:14px}
         .shiny-media.shiny-screen::after{border-radius:12px}
         .shiny-media.shiny-screen>*{border-radius:11px}
+    
+        @keyframes border-spin { to { transform: rotate(360deg); } }
+        .shiny-media {
+            position: relative;
+            display: block;
+            border-radius: 18px;
+            padding: 2.5px;
+            overflow: hidden;
+        }
+        .shiny-media::before {
+            content: '';
+            position: absolute;
+            top: -100%; left: -100%; right: -100%; bottom: -100%;
+            background: conic-gradient(from 0deg,
+                transparent 0deg, transparent 130deg,
+                rgba(168,180,190,0.7) 168deg,
+                rgba(220,235,230,1) 180deg,
+                rgba(168,180,190,0.7) 192deg,
+                transparent 230deg, transparent 360deg);
+            animation: border-spin 4s linear infinite;
+            z-index: 0;
+        }
+        /* Silver shimmer border */
+        .shiny-silver::before {
+            background: conic-gradient(from 0deg,
+                transparent 0deg, transparent 110deg,
+                rgba(180,180,190,0.5) 148deg,
+                rgba(255,255,255,1) 180deg,
+                rgba(220,220,230,0.9) 195deg,
+                rgba(180,180,190,0.5) 212deg,
+                transparent 250deg, transparent 360deg);
+            animation: border-spin 3s linear infinite;
+        }
+        .shiny-media::after {
+            content: '';
+            position: absolute;
+            inset: 2.5px;
+            background: #0A0A0A;
+            border-radius: 16px;
+            z-index: 1;
+        }
+        .shiny-media > * {
+            position: relative;
+            z-index: 2;
+            display: block;
+            width: 100%;
+            border-radius: 15px;
+            background: #0A0A0A;
+        }
+        .shiny-media.circle { border-radius: 50%; }
+        .shiny-media.circle::after { border-radius: 50%; inset: 2.5px; }
+        .shiny-media.circle > * { border-radius: 50%; }
+        .shiny-media.shiny-flat { border-radius: 4px; }
+        .shiny-media.shiny-flat::after { border-radius: 2px; }
+        .shiny-media.shiny-flat > * { border-radius: 1px; }
+        .shiny-media.shiny-screen { border-radius: 14px; }
+        .shiny-media.shiny-screen::after { border-radius: 12px; }
+        .shiny-media.shiny-screen > * { border-radius: 11px; }
     </style>
 </head>
 <body class="noise">
@@ -105,41 +163,8 @@
 
     <!-- RESULTS -->
     <section class="py-14">
-        <p class="font-display font-light text-[10px] tracking-[0.28em] uppercase mb-12" style="color:var(--accent)">Реальные индивидуальные результаты</p>
 
-        <style>
-            .result-card{border-radius:20px;border:1px solid rgba(168,180,190,0.18);box-shadow:0 0 20px rgba(168,180,190,0.08),inset 0 0 20px rgba(168,180,190,0.03);transition:box-shadow .4s,border-color .4s;overflow:hidden}
-            .result-card:hover{border-color:rgba(168,180,190,0.35);box-shadow:0 0 32px rgba(168,180,190,0.15),inset 0 0 24px rgba(168,180,190,0.06)}
-            .result-inner{padding:24px;background:rgba(255,255,255,0.025);display:flex;flex-direction:column;gap:18px}
-            .tag{display:inline-block;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;padding:4px 12px;border-radius:999px;border:1px solid rgba(168,180,190,0.25);color:var(--accent)}
-            .result-headline{font-family:'Unbounded',sans-serif;font-size:15px;font-weight:600;line-height:1.4;color:#fff;letter-spacing:0.01em}
-            .before-after{display:flex;flex-direction:column;gap:8px;border-top:1px solid rgba(168,180,190,0.08);padding-top:14px;margin-top:4px}
-            .ba-row{display:flex;gap:8px;align-items:baseline}
-            .ba-label{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(168,180,190,0.5);flex-shrink:0;padding-top:2px}
-            .ba-text{font-family:'Inter',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.7}
-            /* Expand toggle */
-            .expand-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-top:1px solid rgba(168,180,190,0.08);padding:12px 0 0;cursor:pointer;margin-top:4px}
-            .expand-btn span{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(168,180,190,0.5);transition:color .2s}
-            .expand-btn svg{flex-shrink:0;transition:transform .4s cubic-bezier(0.16,1,0.3,1);color:rgba(168,180,190,0.4)}
-            .expand-btn:hover span,.expand-btn:hover svg{color:rgba(168,180,190,0.85) !important}
-            .result-card.expanded .expand-btn svg{transform:rotate(180deg)}
-            .result-card.expanded .expand-btn span{color:rgba(168,180,190,0.7)}
-            /* Accordion photo */
-            .photo-drawer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(0.16,1,0.3,1)}
-            .photo-drawer.open{grid-template-rows:1fr}
-            .photo-drawer-inner{overflow:hidden}
-            .photo-drawer-inner img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;border-radius:0;margin-top:0;transition:opacity .4s}
-            .photo-drawer.open .photo-drawer-inner img{opacity:1}
-            .photo-drawer:not(.open) .photo-drawer-inner img{opacity:0}
-        </style>
 
-        <style>
-            .video-circle{width:min(200px,80%);aspect-ratio:1;border-radius:50%;overflow:hidden;margin:0 auto;border:2px solid rgba(168,180,190,0.25);box-shadow:0 0 24px rgba(168,180,190,0.1)}
-            .video-circle video{width:100%;height:100%;object-fit:cover;display:block}
-            .video-card{border-radius:20px;border:1px solid rgba(168,180,190,0.18);overflow:hidden;background:rgba(255,255,255,0.015);box-shadow:0 0 20px rgba(168,180,190,0.08)}
-            .video-card video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000}
-            .video-card-body{padding:16px 20px}
-        </style>
 
         <!-- ИСТОРИЯ: САША -->
         <div class="reveal mb-10" style="border-radius:28px;overflow:hidden;background:linear-gradient(145deg,rgba(168,180,190,0.08) 0%,rgba(168,180,190,0.03) 100%);border:1px solid rgba(168,180,190,0.28);box-shadow:0 0 60px rgba(168,180,190,0.08),inset 0 1px 0 rgba(255,255,255,0.06)">
@@ -199,169 +224,195 @@
             <p style="font-family:'Inter',sans-serif;font-size:10px;color:rgba(168,180,190,0.4);margin:0 20px 20px;letter-spacing:0.06em">* Личный архив Александры. Отзыв опубликован с согласия клиента.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" style="align-items:start">
-
-            <!-- Достойные мужчины + КРУЖОК (первая строка) -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Отношения</span>
-                    <p class="result-headline">Достойные мужчины — впервые в жизни</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">мужчины, которые не хотят ничего серьёзного и не заботятся</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">вокруг появились достойные, серьёзные — впервые в жизни</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Смотреть видео-отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner" style="padding:20px 0;display:flex;justify-content:center">
-                    <div class="video-circle"><video src="kruzhok-muzhchiny.mp4" controls preload="none" playsinline></video></div>
-                </div></div>
-            </div>
-
-            <!-- Блог + КРУЖОК (первая строка) -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Реализация</span>
-                    <p class="result-headline">Веду блог свободно, зарабатываю на рекламе</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">хотела вести блог, но страхи — кто что подумает, бездействие</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">веду блог, выкладываю что хочу, зарабатываю на рекламе</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Смотреть видео-отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner" style="padding:20px 0;display:flex;justify-content:center">
-                    <div class="video-circle"><video src="kruzhok-blog.mp4" controls preload="none" playsinline></video></div>
-                </div></div>
-            </div>
-
-            <!-- Предложение -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Отношения</span>
-                    <p class="result-headline">Предложение выйти замуж от любимого человека</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">страхи в отношениях, сомнения в намерениях партнёра</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">проработка страхов, освобождение от убеждений, которые мешали</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Читать полный отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="predlozhenie.png" alt="Отзыв"></div></div>
-            </div>
-
-            <!-- +100 000₽ -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Деньги</span>
-                    <p class="result-headline">+100 000₽ из разных источников</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">долги, жизнь в нехватке, дефицитное мышление</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">мышление изобилия, изменение программ дефицита</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Читать полный отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="100tys.jpg" alt="Отзыв"></div></div>
-            </div>
-
-            <!-- Заработок ×2 -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Деньги</span>
-                    <p class="result-headline">Заработок вырос в два раза, деньги приходят легко</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">мышление дефицита, заработок через тяжесть</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">изменение убеждений и программ, деньги в лёгкости</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Читать полный отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="dva-raza.jpeg" alt="Отзыв"></div></div>
-            </div>
-
-            <!-- Ресурсы от мира -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Самоценность</span>
-                    <p class="result-headline">Лёгкое получение ресурсов от мира</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">стыдно просить, заявлять о своих желаниях</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">мир сам приносит подарки и ресурсы</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Читать полный отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="otzyv-iphone.jpg" alt="Отзыв"></div></div>
-            </div>
-
-            <!-- Встреча мужчины мечты -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Отношения</span>
-                    <p class="result-headline">Встреча мужчины мечты</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">абьюзивные мужчины, которые не настроены серьёзно</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">появился мужчина, которого давно хотела</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Читать полный отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="otzyv-muzhchina-1.jpg" alt="Отзыв"></div></div>
-            </div>
-
-            <!-- Мужчина мечты + свадьба -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Отношения</span>
-                    <p class="result-headline">Мужчина мечты — скоро свадьба</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">мужчины, которые изменяют и плохо относятся</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">встреча мужчины мечты, скоро свадьба</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Читать полный отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="otzyv-muzhchina-2.jpg" alt="Отзыв"></div></div>
-            </div>
-
-            <!-- Похудение -->
-            <div class="reveal result-card">
-                <div class="result-inner">
-                    <span class="tag">Тело · Отношения · Реализация</span>
-                    <p class="result-headline">Похудение, свободное проявление, достойные мужчины</p>
-                    <div class="before-after">
-                        <div class="ba-row"><span class="ba-label">До</span><span class="ba-text">лишний вес, страх осуждения, мужчины не проявляются</span></div>
-                        <div class="ba-row"><span class="ba-label">После</span><span class="ba-text">похудение, свобода в блоге, появление достойных мужчин</span></div>
-                    </div>
-                    <button class="expand-btn" onclick="toggleDrawer(this)">
-                        <span>Читать полный отзыв</span>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 5l5 5 5-5"/></svg>
-                    </button>
-                </div>
-                <div class="photo-drawer"><div class="photo-drawer-inner"><img src="pohudenie.jpg" alt="Отзыв"></div></div>
-            </div>
-
-        </div>
-
     </section>
 
+    <div class="section-line"></div>
+
+    <section id="results" class="relative py-24 md:py-32" style="background: transparent;">
+        <div class="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
+            <h2 class="reveal font-display text-[1.4rem] md:text-[2rem] font-bold tracking-[0.04em] uppercase text-center mb-16 md:mb-20 text-white">
+                Результаты
+            </h2>
+
+            <!-- Текстовые отзывы + кружочки вперемешку -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 mb-16" style="align-items: start;">
+
+                <!-- 1 — +100к -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">долги, жизнь в нехватке, дефицитное мышление</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">мышление изобилия, изменение программ дефицита. <span style="color:#fff;font-weight:600;">Как результат на материи: +100 000₽ из разных источников</span></span>
+                        </p>
+                        <p class="font-body text-[10px] leading-[1.6]" style="color:rgba(255,255,255,0.25);margin-top:4px;">* Результат конкретного человека, не является типичным. Доход зависит от индивидуальных усилий и обстоятельств.</p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="100tys.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- 2 — Предложение -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">страхи в отношениях, сомнения по поводу намерений партнёра</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">проработка страхов и освобождение от убеждений, которые мешали. <span style="color:#fff;font-weight:600;">Как результат на материи: предложение выйти замуж от любимого человека</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="predlozhenie.png" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- 4 — Кружок мужчины -->
+                <div class="reveal flex flex-col gap-5 items-center">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">вокруг мужчины, которые не хотят ничего серьёзного и не заботятся</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">изменение внутренних программ и убеждений в теме отношений. <span style="color:#fff;font-weight:600;">Как результат: появление вокруг достойных мужчин, которые проявляются серьёзно впервые в жизни</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media circle" style="width: min(220px, 100%);">
+                        <video class="w-full h-full object-cover" style="aspect-ratio:1;" controls preload="metadata" playsinline>
+                            <source src="kruzhok-muzhchiny.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 3 — Х2 -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">мышление дефицита, заработок через тяжесть, программы в теме денег, нехватка</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">изменение убеждений и программ. <span style="color:#fff;font-weight:600;">Как результат: деньги в лёгкости, увеличение заработка в два раза</span></span>
+                        </p>
+                        <p class="font-body text-[10px] leading-[1.6]" style="color:rgba(255,255,255,0.25);margin-top:4px;">* Результат конкретного человека, не является типичным. Доход зависит от индивидуальных усилий и обстоятельств.</p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="dva-raza.jpeg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- 5 — Кружок блог -->
+                <div class="reveal flex flex-col gap-5 items-center">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">желание проявляться, вести блог, но много страхов — кто что подумает, из-за этого бездействие</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">перепрошивка страхов и программ. <span style="color:#fff;font-weight:600;">Как результат: исполнила свою мечту — «веду свой блог, выкладываю что хочу и не думаю кто что подумает, начала зарабатывать на рекламе с блога»</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media circle" style="width: min(220px, 100%);">
+                        <video class="w-full h-full object-cover" style="aspect-ratio:1;" controls preload="metadata" playsinline>
+                            <source src="kruzhok-blog.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- 6 — Аудио свадьба -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">мужчины, которые изменяют, плохо относятся, не хотят ничего серьёзного</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">внутренние изменения программ, полностью изменилась сфера отношений. <span style="color:#fff;font-weight:600;">Как результат: встреча мужчины мечты, 9 месяцев вместе, скоро свадьба</span></span>
+                        </p>
+                    </div>
+                    <div class="shiny-media" style="border-radius: 999px;">
+                        <div style="border-radius: 999px; background: #0A0A0A; padding: 14px 20px; display:flex; align-items:center; gap:12px;">
+                            <svg class="flex-shrink-0 w-5 h-5" style="color:var(--accent);opacity:0.7;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                            <audio controls preload="metadata" style="flex:1;min-width:0;height:32px;accent-color:#A8B4BE;">
+                                <source src="audio-svadba..mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Новые отзывы -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16" style="align-items:start;">
+
+                <!-- Айфон -->
+                <div class="reveal flex flex-col gap-5">
+                    <div class="flex flex-col gap-2">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">стыдно просить, заявлять о своих желаниях</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;font-weight:600;">лёгкое получение ресурсов от мира</span>
+                        </p>
+                    </div>
+                    <div class="shiny-media shiny-screen"><img src="otzyv-iphone.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- Муж 1 — До -->
+                <div class="reveal flex flex-col gap-5">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                        <span style="color:#fff;">абьюзивные мужчины, которые не настроены серьёзно</span>
+                    </p>
+                    <div class="shiny-media shiny-screen"><img src="otzyv-muzhchina-1.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+                <!-- Муж 2 — После -->
+                <div class="reveal flex flex-col gap-5">
+                    <p class="font-body text-[13px] leading-[1.8] text-white">
+                        <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                        <span style="color:#fff;font-weight:600;">встреча мужчины мечты, с которым скоро свадьба</span>
+                    </p>
+                    <div class="shiny-media shiny-screen"><img src="otzyv-muzhchina-2.jpg" alt="" class="w-full h-auto"></div>
+                </div>
+
+
+
+            </div>
+
+            <!-- Видео во всю ширину -->
+            <div class="flex flex-col gap-10">
+
+                <!-- 7 — Видео похудение -->
+                <div class="reveal flex flex-col gap-4">
+                    <p class="font-display text-[10px] tracking-[0.2em] uppercase mb-1" style="color:var(--accent);opacity:0.6;">Видео-отзыв:</p>
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">До:</span>
+                            <span style="color:#fff;">лишний вес, мужчины, которые не проявляются</span>
+                        </p>
+                        <p class="font-body text-[13px] leading-[1.8] text-white">
+                            <span class="font-display text-[10px] tracking-[0.18em] uppercase mr-2" style="color:var(--accent);">После:</span>
+                            <span style="color:#fff;">изменения мышления и программ. <span style="color:#fff;font-weight:600;">Как результат: свобода от страха осуждения и «кто что подумает», свободное проявление в блоге, появление в поле заботливых достойных мужчин, похудение и качественное изменение жизни</span></span>
+                        </p>
+                        <p class="font-body text-[10px] leading-[1.6]" style="color:rgba(255,255,255,0.25);margin-top:4px;">* Результат конкретного человека, не является типичным. Доход зависит от индивидуальных усилий и обстоятельств. Работа с мышлением не является медицинской услугой.</p>
+                    </div>
+                    <div class="shiny-media w-full">
+                        <video class="w-full" controls preload="metadata" playsinline style="max-height:90vh;object-fit:contain;background:#0a0a0a;">
+                            <source src="video-pohudenie.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
 </main>
 
@@ -379,15 +430,6 @@
 </footer>
 
 <script>
-    function toggleDrawer(btn) {
-        const card = btn.closest('.result-card');
-        const drawer = card.querySelector('.photo-drawer');
-        const isOpen = drawer.classList.contains('open');
-        drawer.classList.toggle('open', !isOpen);
-        card.classList.toggle('expanded', !isOpen);
-        btn.querySelector('span').textContent = isOpen ? 'Читать полный отзыв' : 'Скрыть';
-    }
-
     // Reveal on scroll
     const revealObs = new IntersectionObserver((entries) => {
         entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
