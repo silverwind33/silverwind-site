@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Бесплатный урок — Silverwind</title>
     <script src="/tailwind.js"></script>
-    <link rel="stylesheet" href="/fonts/fonts.css">
     <script>
         if (typeof tailwind !== 'undefined') {
             tailwind.config = { theme: { extend: { fontFamily: { display:['Unbounded','sans-serif'], body:['Inter','system-ui','sans-serif'] } } } }
         }
     </script>
+    <link rel="preload" href="/fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/fonts/fonts.css"></noscript>
     <style>
         :root{--bg:#0A0A0A;--accent:#A8B4BE;--accent-soft:#C8D2DC}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
