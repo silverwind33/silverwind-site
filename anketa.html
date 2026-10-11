@@ -182,7 +182,13 @@
         <!-- Формат -->
         <div>
             <label class="field-label">Какой формат взаимодействия со мной вы бы выбрали? Что откликается больше?</label>
-            <textarea name="формат" required placeholder="Личная работа, групповое, курс..."></textarea>
+            <div class="radio-wrap">
+                <label class="radio-option"><input type="radio" name="формат" value="Онлайн-курс" required><span>Онлайн-курс</span></label>
+                <label class="radio-option"><input type="radio" name="формат" value="Групповая программа"><span>Групповая программа</span></label>
+                <label class="radio-option"><input type="radio" name="формат" value="Личная работа 1:1"><span>Личная работа 1:1</span></label>
+                <label class="radio-option"><input type="radio" name="формат" value="Подписка / клуб"><span>Подписка / клуб</span></label>
+                <label class="radio-option"><input type="radio" name="формат" value="AI-бот / самостоятельно"><span>AI-бот / самостоятельно</span></label>
+            </div>
         </div>
 
         <!-- Telegram -->
