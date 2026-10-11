@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Спасибо — Silverwind</title>
+    <script src="/tailwind.js"></script>
+    <script>
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = { theme: { extend: { fontFamily: { display:['Unbounded','sans-serif'], body:['Inter','system-ui','sans-serif'] } } } }
+        }
+    </script>
     <link rel="preload" href="/fonts/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/fonts/fonts.css"></noscript>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',system-ui,sans-serif;background:#0A0A0A;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-        .wrap{text-align:center;max-width:440px}
+        :root{--bg:#0A0A0A;--accent:#A8B4BE}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{-webkit-font-smoothing:antialiased}
+        body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+        a{text-decoration:none;color:inherit}
+        .btn{display:inline-block;font-family:'Unbounded',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318 !important;border-radius:100px;padding:16px 40px}
     </style>
 </head>
 <body>
-<div class="wrap">
+<div style="text-align:center;max-width:440px">
     <p style="font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#A8B4BE;margin-bottom:20px">Готово</p>
     <h1 style="font-family:'Unbounded',sans-serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;text-transform:uppercase;letter-spacing:0.04em;line-height:1.1;margin-bottom:16px">Спасибо за ответы 🎁</h1>
     <p style="font-size:14px;color:rgba(168,180,190,0.6);line-height:1.8;margin-bottom:36px">Ваши ответы очень ценны. Забирайте урок — он уже ждёт вас.</p>
-    <a href="/urok.html" style="display:inline-block;font-family:'Unbounded',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;background:linear-gradient(135deg,#A8B4BE 0%,#d0d8de 60%,#A8B4BE 100%);color:#0e1318;border-radius:100px;padding:16px 40px;text-decoration:none">Получить урок →</a>
+    <a href="/urok.html" class="btn">Получить урок →</a>
 </div>
 </body>
 </html>
